@@ -3,7 +3,7 @@
 
 ## 1. Overview:
 
-Unreal 4.14 - 4.16 Blueprint SDKs for PlayFab
+Unreal 4.14 - 4.17 Blueprint SDKs for PlayFab
 
 Our example project requires setting a #define if you're using an older version.  See the Setup section below.
 
