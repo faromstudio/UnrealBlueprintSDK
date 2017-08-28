@@ -330,7 +330,6 @@ FClientReportPlayerClientResult UPlayFabClientModelDecoder::decodeReportPlayerCl
     FClientReportPlayerClientResult tempStruct;
     UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
 
-    tempStruct.Updated = !(dataObj->HasField("Updated")) ? false : dataObj->GetBoolField("Updated");
     tempStruct.SubmissionsRemaining = !(dataObj->HasField("SubmissionsRemaining")) ? 0 : int(dataObj->GetNumberField("SubmissionsRemaining"));
 
     return tempStruct;

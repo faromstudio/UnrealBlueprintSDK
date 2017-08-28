@@ -241,12 +241,15 @@ public:
     /** Text of message to send. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
         FString Message;
-    /** Defines all possible push attributes like message, title, icon, etc */
+    /** Defines all possible push attributes like message, title, icon, etc. Not supported for iOS devices. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
         UPlayFabJsonObject* Package = nullptr;
-    /** Subject of message to send (may not be displayed in all platforms. */
+    /** Subject of message to send (may not be displayed in all platforms. Not supported for Android devices (use Package instead). */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
         FString Subject;
+    /** Platforms that should receive the message. If omitted, we will send to all available platforms. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
+        FString TargetPlatforms;
 };
 
 USTRUCT(BlueprintType)
@@ -1203,9 +1206,6 @@ struct FServerReportPlayerServerResult
 {
     GENERATED_USTRUCT_BODY()
 public:
-    /** Deprecated: Always true */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Player Item Management Models")
-        bool Updated = false;
     /** The number of remaining reports which may be filed today by this reporting player. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Player Item Management Models")
         int32 SubmissionsRemaining = 0;

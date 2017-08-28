@@ -5669,7 +5669,7 @@ void UPlayFabClientAPI::HelperWriteTitleEvent(FPlayFabBaseModel response, UObjec
 ///////////////////////////////////////////////////////
 // Shared Group Data
 //////////////////////////////////////////////////////
-/** Adds users to the set of those able to update both the shared data, as well as the set of users in the group. Only users in the group can add new members. */
+/** Adds users to the set of those able to update both the shared data, as well as the set of users  in the group. Only users in the group can add new members. Shared Groups are designed for sharing data between a very  small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
 UPlayFabClientAPI* UPlayFabClientAPI::AddSharedGroupMembers(FClientAddSharedGroupMembersRequest request,
     FDelegateOnSuccessAddSharedGroupMembers onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -5728,7 +5728,7 @@ void UPlayFabClientAPI::HelperAddSharedGroupMembers(FPlayFabBaseModel response, 
     this->RemoveFromRoot();
 }
 
-/** Requests the creation of a shared group object, containing key/value pairs which may be updated by all members of the group. Upon creation, the current user will be the only member of the group. */
+/** Requests the creation of a shared group object, containing key/value pairs which may be updated by  all members of the group. Upon creation, the current user will be the only member of the group. Shared Groups are designed  for sharing data between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
 UPlayFabClientAPI* UPlayFabClientAPI::CreateSharedGroup(FClientCreateSharedGroupRequest request,
     FDelegateOnSuccessCreateSharedGroup onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -5779,7 +5779,7 @@ void UPlayFabClientAPI::HelperCreateSharedGroup(FPlayFabBaseModel response, UObj
     this->RemoveFromRoot();
 }
 
-/** Retrieves data stored in a shared group object, as well as the list of members in the group. Non-members of the group may use this to retrieve group data, including membership, but they will not receive data for keys marked as private. */
+/** Retrieves data stored in a shared group object, as well as the list of members in  the group. Non-members of the group may use this to retrieve group data, including membership, but they  will not receive data for keys marked as private. Shared Groups are designed for sharing data between a  very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
 UPlayFabClientAPI* UPlayFabClientAPI::GetSharedGroupData(FClientGetSharedGroupDataRequest request,
     FDelegateOnSuccessGetSharedGroupData onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -5839,7 +5839,7 @@ void UPlayFabClientAPI::HelperGetSharedGroupData(FPlayFabBaseModel response, UOb
     this->RemoveFromRoot();
 }
 
-/** Removes users from the set of those able to update the shared data and the set of users in the group. Only users in the group can remove members. If as a result of the call, zero users remain with access, the group and its associated data will be deleted. */
+/** Removes users from the set of those able to update the shared data and the set of users  in the group. Only users in the group can remove members. If as a result of the call, zero users remain with  access, the group and its associated data will be deleted. Shared Groups are designed for sharing data between  a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
 UPlayFabClientAPI* UPlayFabClientAPI::RemoveSharedGroupMembers(FClientRemoveSharedGroupMembersRequest request,
     FDelegateOnSuccessRemoveSharedGroupMembers onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -5898,7 +5898,7 @@ void UPlayFabClientAPI::HelperRemoveSharedGroupMembers(FPlayFabBaseModel respons
     this->RemoveFromRoot();
 }
 
-/** Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group can update the data. */
+/** Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group can update the data. Shared Groups are designed  for sharing data between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
 UPlayFabClientAPI* UPlayFabClientAPI::UpdateSharedGroupData(FClientUpdateSharedGroupDataRequest request,
     FDelegateOnSuccessUpdateSharedGroupData onSuccess,
     FDelegateOnFailurePlayFabError onFailure,

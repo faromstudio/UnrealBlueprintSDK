@@ -985,9 +985,6 @@ struct FClientReportPlayerClientResult
 {
     GENERATED_USTRUCT_BODY()
 public:
-    /** Deprecated: Always true */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Account Management Models")
-        bool Updated = false;
     /** The number of remaining reports which may be filed today. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Account Management Models")
         int32 SubmissionsRemaining = 0;

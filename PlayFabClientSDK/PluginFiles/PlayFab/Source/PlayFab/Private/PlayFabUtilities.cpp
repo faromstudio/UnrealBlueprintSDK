@@ -353,6 +353,14 @@ FString UPlayFabUtilities::getErrorText(int32 code)
     case 1327: returnText = "AuthTokenDoesNotExist"; break;
     case 1328: returnText = "AuthTokenExpired"; break;
     case 1329: returnText = "AuthTokenAlreadyUsedToResetPassword"; break;
+    case 1330: returnText = "MembershipNameTooLong"; break;
+    case 1331: returnText = "MembershipNotFound"; break;
+    case 1332: returnText = "GoogleServiceAccountInvalid"; break;
+    case 1333: returnText = "GoogleServiceAccountParseFailure"; break;
+    case 1334: returnText = "EntityTokenMissing"; break;
+    case 1335: returnText = "EntityTokenInvalid"; break;
+    case 1336: returnText = "EntityTokenExpired"; break;
+    case 1337: returnText = "EntityTokenRevoked"; break;
     }
 
     // Return the text
