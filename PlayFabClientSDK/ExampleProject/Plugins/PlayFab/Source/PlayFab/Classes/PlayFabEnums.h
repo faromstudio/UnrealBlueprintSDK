@@ -567,6 +567,20 @@ enum class EPfSourceType : uint8
     pfenum_Partner UMETA(DisplayName = "Partner"),
 };
 
+// Enum for SubscriptionProviderStatus
+UENUM(BlueprintType)
+enum class ESubscriptionProviderStatus : uint8
+{
+    pfenum_NoError UMETA(DisplayName = "NoError"),
+    pfenum_Cancelled UMETA(DisplayName = "Cancelled"),
+    pfenum_UnknownError UMETA(DisplayName = "UnknownError"),
+    pfenum_BillingError UMETA(DisplayName = "BillingError"),
+    pfenum_ProductUnavailable UMETA(DisplayName = "ProductUnavailable"),
+    pfenum_CustomerDidNotAcceptPriceChange UMETA(DisplayName = "CustomerDidNotAcceptPriceChange"),
+    pfenum_FreeTrial UMETA(DisplayName = "FreeTrial"),
+    pfenum_PaymentPending UMETA(DisplayName = "PaymentPending"),
+};
+
 // Enum for TitleActivationStatus
 UENUM(BlueprintType)
 enum class ETitleActivationStatus : uint8

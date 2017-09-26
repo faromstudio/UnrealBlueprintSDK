@@ -361,6 +361,12 @@ FString UPlayFabUtilities::getErrorText(int32 code)
     case 1335: returnText = "EntityTokenInvalid"; break;
     case 1336: returnText = "EntityTokenExpired"; break;
     case 1337: returnText = "EntityTokenRevoked"; break;
+    case 1338: returnText = "InvalidProductForSubscription"; break;
+    case 1339: returnText = "XboxInaccessible"; break;
+    case 1340: returnText = "SubscriptionAlreadyTaken"; break;
+    case 1341: returnText = "SmtpAddonNotEnabled"; break;
+    case 1342: returnText = "APIConcurrentRequestLimitExceeded"; break;
+    case 1343: returnText = "XboxRejectedXSTSExchangeRequest"; break;
     }
 
     // Return the text

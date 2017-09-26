@@ -653,6 +653,20 @@ enum class EStatisticVersionStatus : uint8
     pfenum_Archived UMETA(DisplayName = "Archived"),
 };
 
+// Enum for SubscriptionProviderStatus
+UENUM(BlueprintType)
+enum class ESubscriptionProviderStatus : uint8
+{
+    pfenum_NoError UMETA(DisplayName = "NoError"),
+    pfenum_Cancelled UMETA(DisplayName = "Cancelled"),
+    pfenum_UnknownError UMETA(DisplayName = "UnknownError"),
+    pfenum_BillingError UMETA(DisplayName = "BillingError"),
+    pfenum_ProductUnavailable UMETA(DisplayName = "ProductUnavailable"),
+    pfenum_CustomerDidNotAcceptPriceChange UMETA(DisplayName = "CustomerDidNotAcceptPriceChange"),
+    pfenum_FreeTrial UMETA(DisplayName = "FreeTrial"),
+    pfenum_PaymentPending UMETA(DisplayName = "PaymentPending"),
+};
+
 // Enum for TaskInstanceStatus
 UENUM(BlueprintType)
 enum class ETaskInstanceStatus : uint8

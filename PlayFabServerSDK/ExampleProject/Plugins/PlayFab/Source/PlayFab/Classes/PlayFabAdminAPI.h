@@ -45,101 +45,6 @@ public:
     //////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////
-    // Authentication
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreatePlayerSharedSecret, FAdminCreatePlayerSharedSecretResult, result, UObject*, customData);
-
-    /** Creates a new Player Shared Secret Key. It may take up to 5 minutes for this key to become generally available after this API returns. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* CreatePlayerSharedSecret(FAdminCreatePlayerSharedSecretRequest request,
-            FDelegateOnSuccessCreatePlayerSharedSecret onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperCreatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeletePlayerSharedSecret, FAdminDeletePlayerSharedSecretResult, result, UObject*, customData);
-
-    /** Deletes an existing Player Shared Secret Key. It may take up to 5 minutes for this delete to be reflected after this API returns. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* DeletePlayerSharedSecret(FAdminDeletePlayerSharedSecretRequest request,
-            FDelegateOnSuccessDeletePlayerSharedSecret onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperDeletePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerSharedSecrets, FAdminGetPlayerSharedSecretsResult, result, UObject*, customData);
-
-    /** Returns all Player Shared Secret Keys including disabled and expired. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetPlayerSharedSecrets(FAdminGetPlayerSharedSecretsRequest request,
-            FDelegateOnSuccessGetPlayerSharedSecrets onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetPlayerSharedSecrets(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPolicy, FAdminGetPolicyResponse, result, UObject*, customData);
-
-    /** Gets the requested policy. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetPolicy(FAdminGetPolicyRequest request,
-            FDelegateOnSuccessGetPolicy onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetPolicy(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPlayerSecret, FAdminSetPlayerSecretResult, result, UObject*, customData);
-
-    /** Sets or resets the player's secret. Player secrets are used to sign API requests. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* SetPlayerSecret(FAdminSetPlayerSecretRequest request,
-            FDelegateOnSuccessSetPlayerSecret onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetPlayerSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdatePlayerSharedSecret, FAdminUpdatePlayerSharedSecretResult, result, UObject*, customData);
-
-    /** Updates a existing Player Shared Secret Key. It may take up to 5 minutes for this update to become generally available after this API returns. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* UpdatePlayerSharedSecret(FAdminUpdatePlayerSharedSecretRequest request,
-            FDelegateOnSuccessUpdatePlayerSharedSecret onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdatePolicy, FAdminUpdatePolicyResponse, result, UObject*, customData);
-
-    /** Changes a policy for a title */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* UpdatePolicy(FAdminUpdatePolicyRequest request,
-            FDelegateOnSuccessUpdatePolicy onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdatePolicy(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
     // Account Management
     //////////////////////////////////////////////////////
     // callbacks
@@ -271,6 +176,286 @@ public:
     // Implements FOnPlayFabAdminRequestCompleted
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
         void HelperUpdateUserTitleDisplayName(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Authentication
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreatePlayerSharedSecret, FAdminCreatePlayerSharedSecretResult, result, UObject*, customData);
+
+    /** Creates a new Player Shared Secret Key. It may take up to 5 minutes for this key to become generally available after this API returns. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* CreatePlayerSharedSecret(FAdminCreatePlayerSharedSecretRequest request,
+            FDelegateOnSuccessCreatePlayerSharedSecret onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperCreatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeletePlayerSharedSecret, FAdminDeletePlayerSharedSecretResult, result, UObject*, customData);
+
+    /** Deletes an existing Player Shared Secret Key. It may take up to 5 minutes for this delete to be reflected after this API returns. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* DeletePlayerSharedSecret(FAdminDeletePlayerSharedSecretRequest request,
+            FDelegateOnSuccessDeletePlayerSharedSecret onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperDeletePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerSharedSecrets, FAdminGetPlayerSharedSecretsResult, result, UObject*, customData);
+
+    /** Returns all Player Shared Secret Keys including disabled and expired. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetPlayerSharedSecrets(FAdminGetPlayerSharedSecretsRequest request,
+            FDelegateOnSuccessGetPlayerSharedSecrets onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPlayerSharedSecrets(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPolicy, FAdminGetPolicyResponse, result, UObject*, customData);
+
+    /** Gets the requested policy. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetPolicy(FAdminGetPolicyRequest request,
+            FDelegateOnSuccessGetPolicy onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPolicy(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPlayerSecret, FAdminSetPlayerSecretResult, result, UObject*, customData);
+
+    /** Sets or resets the player's secret. Player secrets are used to sign API requests. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* SetPlayerSecret(FAdminSetPlayerSecretRequest request,
+            FDelegateOnSuccessSetPlayerSecret onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetPlayerSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdatePlayerSharedSecret, FAdminUpdatePlayerSharedSecretResult, result, UObject*, customData);
+
+    /** Updates a existing Player Shared Secret Key. It may take up to 5 minutes for this update to become generally available after this API returns. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* UpdatePlayerSharedSecret(FAdminUpdatePlayerSharedSecretRequest request,
+            FDelegateOnSuccessUpdatePlayerSharedSecret onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdatePolicy, FAdminUpdatePolicyResponse, result, UObject*, customData);
+
+    /** Changes a policy for a title */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* UpdatePolicy(FAdminUpdatePolicyRequest request,
+            FDelegateOnSuccessUpdatePolicy onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdatePolicy(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Characters
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessResetCharacterStatistics, FAdminResetCharacterStatisticsResult, result, UObject*, customData);
+
+    /** Completely removes all statistics for the specified character, for the current game */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* ResetCharacterStatistics(FAdminResetCharacterStatisticsRequest request,
+            FDelegateOnSuccessResetCharacterStatistics onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperResetCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Content
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteContent, FAdminBlankResult, result, UObject*, customData);
+
+    /** Delete a content file from the title. When deleting a file that does not exist, it returns success. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* DeleteContent(FAdminDeleteContentRequest request,
+            FDelegateOnSuccessDeleteContent onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperDeleteContent(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetContentList, FAdminGetContentListResult, result, UObject*, customData);
+
+    /** List all contents of the title and get statistics such as size */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetContentList(FAdminGetContentListRequest request,
+            FDelegateOnSuccessGetContentList onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetContentList(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetContentUploadUrl, FAdminGetContentUploadUrlResult, result, UObject*, customData);
+
+    /** Retrieves the pre-signed URL for uploading a content file. A subsequent HTTP PUT to the returned URL uploads the  content. Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetContentUploadUrl(FAdminGetContentUploadUrlRequest request,
+            FDelegateOnSuccessGetContentUploadUrl onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetContentUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Custom Server Management
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddServerBuild, FAdminAddServerBuildResult, result, UObject*, customData);
+
+    /** Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a client is permitted to request in a call to StartGame */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* AddServerBuild(FAdminAddServerBuildRequest request,
+            FDelegateOnSuccessAddServerBuild onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAddServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetServerBuildInfo, FAdminGetServerBuildInfoResult, result, UObject*, customData);
+
+    /** Retrieves the build details for the specified game server executable */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetServerBuildInfo(FAdminGetServerBuildInfoRequest request,
+            FDelegateOnSuccessGetServerBuildInfo onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetServerBuildInfo(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetServerBuildUploadUrl, FAdminGetServerBuildUploadURLResult, result, UObject*, customData);
+
+    /** Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for use - see AddServerBuild) */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetServerBuildUploadUrl(FAdminGetServerBuildUploadURLRequest request,
+            FDelegateOnSuccessGetServerBuildUploadUrl onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetServerBuildUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessListServerBuilds, FAdminListBuildsResult, result, UObject*, customData);
+
+    /** Retrieves the build details for all game server executables which are currently defined for the title */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* ListServerBuilds(FAdminListBuildsRequest request,
+            FDelegateOnSuccessListServerBuilds onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperListServerBuilds(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessModifyServerBuild, FAdminModifyServerBuildResult, result, UObject*, customData);
+
+    /** Updates the build details for the specified game server executable */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* ModifyServerBuild(FAdminModifyServerBuildRequest request,
+            FDelegateOnSuccessModifyServerBuild onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperModifyServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveServerBuild, FAdminRemoveServerBuildResult, result, UObject*, customData);
+
+    /** Removes the game server executable specified from the set of those a client is permitted to request in a call to StartGame */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* RemoveServerBuild(FAdminRemoveServerBuildRequest request,
+            FDelegateOnSuccessRemoveServerBuild onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRemoveServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Matchmaking
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetMatchmakerGameInfo, FAdminGetMatchmakerGameInfoResult, result, UObject*, customData);
+
+    /** Retrieves the details for a specific completed session, including links to standard out and standard error logs */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetMatchmakerGameInfo(FAdminGetMatchmakerGameInfoRequest request,
+            FDelegateOnSuccessGetMatchmakerGameInfo onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetMatchmakerGameInfo(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetMatchmakerGameModes, FAdminGetMatchmakerGameModesResult, result, UObject*, customData);
+
+    /** Retrieves the details of defined game modes for the specified game server executable */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetMatchmakerGameModes(FAdminGetMatchmakerGameModesRequest request,
+            FDelegateOnSuccessGetMatchmakerGameModes onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessModifyMatchmakerGameModes, FAdminModifyMatchmakerGameModesResult, result, UObject*, customData);
+
+    /** Updates the game server mode details for the specified game server executable */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* ModifyMatchmakerGameModes(FAdminModifyMatchmakerGameModesRequest request,
+            FDelegateOnSuccessModifyMatchmakerGameModes onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperModifyMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful);
 
 
     ///////////////////////////////////////////////////////
@@ -564,6 +749,377 @@ public:
 
 
     ///////////////////////////////////////////////////////
+    // Player Item Management
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddUserVirtualCurrency, FAdminModifyUserVirtualCurrencyResult, result, UObject*, customData);
+
+    /** Increments the specified virtual currency by the stated amount */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* AddUserVirtualCurrency(FAdminAddUserVirtualCurrencyRequest request,
+            FDelegateOnSuccessAddUserVirtualCurrency onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAddUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetUserInventory, FAdminGetUserInventoryResult, result, UObject*, customData);
+
+    /** Retrieves the specified user's current inventory of virtual goods */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetUserInventory(FAdminGetUserInventoryRequest request,
+            FDelegateOnSuccessGetUserInventory onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetUserInventory(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGrantItemsToUsers, FAdminGrantItemsToUsersResult, result, UObject*, customData);
+
+    /** Adds the specified items to the specified user inventories */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GrantItemsToUsers(FAdminGrantItemsToUsersRequest request,
+            FDelegateOnSuccessGrantItemsToUsers onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGrantItemsToUsers(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRevokeInventoryItem, FAdminRevokeInventoryResult, result, UObject*, customData);
+
+    /** Revokes access to an item in a user's inventory */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* RevokeInventoryItem(FAdminRevokeInventoryItemRequest request,
+            FDelegateOnSuccessRevokeInventoryItem onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRevokeInventoryItem(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSubtractUserVirtualCurrency, FAdminModifyUserVirtualCurrencyResult, result, UObject*, customData);
+
+    /** Decrements the specified virtual currency by the stated amount */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* SubtractUserVirtualCurrency(FAdminSubtractUserVirtualCurrencyRequest request,
+            FDelegateOnSuccessSubtractUserVirtualCurrency onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSubtractUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // PlayStream
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddPlayerTag, FAdminAddPlayerTagResult, result, UObject*, customData);
+
+    /** Adds a given tag to a player profile. The tag's namespace is automatically generated based on the source of the tag. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* AddPlayerTag(FAdminAddPlayerTagRequest request,
+            FDelegateOnSuccessAddPlayerTag onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAddPlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetAllActionGroups, FAdminGetAllActionGroupsResult, result, UObject*, customData);
+
+    /** Retrieve a list of all PlayStream actions groups. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetAllActionGroups(FAdminGetAllActionGroupsRequest request,
+            FDelegateOnSuccessGetAllActionGroups onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetAllActionGroups(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetAllSegments, FAdminGetAllSegmentsResult, result, UObject*, customData);
+
+    /** Retrieves an array of player segment definitions. Results from this can be used in subsequent API calls such as GetPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not change. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetAllSegments(FAdminGetAllSegmentsRequest request,
+            FDelegateOnSuccessGetAllSegments onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetAllSegments(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerSegments, FAdminGetPlayerSegmentsResult, result, UObject*, customData);
+
+    /** List all segments that a player currently belongs to at this moment in time. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetPlayerSegments(FAdminGetPlayersSegmentsRequest request,
+            FDelegateOnSuccessGetPlayerSegments onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPlayerSegments(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayersInSegment, FAdminGetPlayersInSegmentResult, result, UObject*, customData);
+
+    /** Allows for paging through all players in a given segment. This API creates a snapshot of all player profiles that match the segment definition at the time of its creation and lives through the Total Seconds to Live, refreshing its life span on each subsequent use of the Continuation Token. Profiles that change during the course of paging will not be reflected in the results. AB Test segments are currently not supported by this operation. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetPlayersInSegment(FAdminGetPlayersInSegmentRequest request,
+            FDelegateOnSuccessGetPlayersInSegment onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPlayersInSegment(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerTags, FAdminGetPlayerTagsResult, result, UObject*, customData);
+
+    /** Get all tags with a given Namespace (optional) from a player profile. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetPlayerTags(FAdminGetPlayerTagsRequest request,
+            FDelegateOnSuccessGetPlayerTags onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPlayerTags(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemovePlayerTag, FAdminRemovePlayerTagResult, result, UObject*, customData);
+
+    /** Remove a given tag from a player profile. The tag's namespace is automatically generated based on the source of the tag. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* RemovePlayerTag(FAdminRemovePlayerTagRequest request,
+            FDelegateOnSuccessRemovePlayerTag onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRemovePlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // ScheduledTask
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAbortTaskInstance, FAdminEmptyResult, result, UObject*, customData);
+
+    /** Abort an ongoing task instance. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* AbortTaskInstance(FAdminAbortTaskInstanceRequest request,
+            FDelegateOnSuccessAbortTaskInstance onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAbortTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask, FAdminCreateTaskResult, result, UObject*, customData);
+
+    /** Create an ActionsOnPlayersInSegment task, which iterates through all players in a segment to execute action. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* CreateActionsOnPlayersInSegmentTask(FAdminCreateActionsOnPlayerSegmentTaskRequest request,
+            FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperCreateActionsOnPlayersInSegmentTask(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreateCloudScriptTask, FAdminCreateTaskResult, result, UObject*, customData);
+
+    /** Create a CloudScript task, which can run a CloudScript on a schedule. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* CreateCloudScriptTask(FAdminCreateCloudScriptTaskRequest request,
+            FDelegateOnSuccessCreateCloudScriptTask onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperCreateCloudScriptTask(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteTask, FAdminEmptyResult, result, UObject*, customData);
+
+    /** Delete a task. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* DeleteTask(FAdminDeleteTaskRequest request,
+            FDelegateOnSuccessDeleteTask onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperDeleteTask(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance, FAdminGetActionsOnPlayersInSegmentTaskInstanceResult, result, UObject*, customData);
+
+    /** Get information about a ActionsOnPlayersInSegment task instance. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetActionsOnPlayersInSegmentTaskInstance(FAdminGetTaskInstanceRequest request,
+            FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetActionsOnPlayersInSegmentTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCloudScriptTaskInstance, FAdminGetCloudScriptTaskInstanceResult, result, UObject*, customData);
+
+    /** Get detail information about a CloudScript task instance. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetCloudScriptTaskInstance(FAdminGetTaskInstanceRequest request,
+            FDelegateOnSuccessGetCloudScriptTaskInstance onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCloudScriptTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTaskInstances, FAdminGetTaskInstancesResult, result, UObject*, customData);
+
+    /** Query for task instances by task, status, or time range. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetTaskInstances(FAdminGetTaskInstancesRequest request,
+            FDelegateOnSuccessGetTaskInstances onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetTaskInstances(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTasks, FAdminGetTasksResult, result, UObject*, customData);
+
+    /** Get definition information on a specified task or all tasks within a title. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetTasks(FAdminGetTasksRequest request,
+            FDelegateOnSuccessGetTasks onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetTasks(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRunTask, FAdminRunTaskResult, result, UObject*, customData);
+
+    /** Run a task immediately regardless of its schedule. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* RunTask(FAdminRunTaskRequest request,
+            FDelegateOnSuccessRunTask onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRunTask(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateTask, FAdminEmptyResult, result, UObject*, customData);
+
+    /** Update an existing task. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* UpdateTask(FAdminUpdateTaskRequest request,
+            FDelegateOnSuccessUpdateTask onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdateTask(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Server-Side Cloud Script
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCloudScriptRevision, FAdminGetCloudScriptRevisionResult, result, UObject*, customData);
+
+    /** Gets the contents and information of a specific Cloud Script revision. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetCloudScriptRevision(FAdminGetCloudScriptRevisionRequest request,
+            FDelegateOnSuccessGetCloudScriptRevision onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCloudScriptRevision(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCloudScriptVersions, FAdminGetCloudScriptVersionsResult, result, UObject*, customData);
+
+    /** Lists all the current cloud script versions. For each version, information about the current published and latest revisions is also listed. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetCloudScriptVersions(FAdminGetCloudScriptVersionsRequest request,
+            FDelegateOnSuccessGetCloudScriptVersions onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCloudScriptVersions(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPublishedRevision, FAdminSetPublishedRevisionResult, result, UObject*, customData);
+
+    /** Sets the currently published revision of a title Cloud Script */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* SetPublishedRevision(FAdminSetPublishedRevisionRequest request,
+            FDelegateOnSuccessSetPublishedRevision onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetPublishedRevision(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCloudScript, FAdminUpdateCloudScriptResult, result, UObject*, customData);
+
+    /** Creates a new Cloud Script revision and uploads source code to it. Note that at this time, only one file should be submitted in the revision. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* UpdateCloudScript(FAdminUpdateCloudScriptRequest request,
+            FDelegateOnSuccessUpdateCloudScript onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdateCloudScript(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Shared Group Data
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPublisherData, FAdminSetPublisherDataResult, result, UObject*, customData);
+
+    /** Updates the key-value store of custom publisher settings */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* SetPublisherData(FAdminSetPublisherDataRequest request,
+            FDelegateOnSuccessSetPublisherData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
     // Title-Wide Data Management
     //////////////////////////////////////////////////////
     // callbacks
@@ -814,562 +1370,6 @@ public:
         void HelperUpdateStoreItems(FPlayFabBaseModel response, UObject* customData, bool successful);
 
 
-    ///////////////////////////////////////////////////////
-    // Player Item Management
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddUserVirtualCurrency, FAdminModifyUserVirtualCurrencyResult, result, UObject*, customData);
-
-    /** Increments the specified virtual currency by the stated amount */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* AddUserVirtualCurrency(FAdminAddUserVirtualCurrencyRequest request,
-            FDelegateOnSuccessAddUserVirtualCurrency onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAddUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetUserInventory, FAdminGetUserInventoryResult, result, UObject*, customData);
-
-    /** Retrieves the specified user's current inventory of virtual goods */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetUserInventory(FAdminGetUserInventoryRequest request,
-            FDelegateOnSuccessGetUserInventory onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetUserInventory(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGrantItemsToUsers, FAdminGrantItemsToUsersResult, result, UObject*, customData);
-
-    /** Adds the specified items to the specified user inventories */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GrantItemsToUsers(FAdminGrantItemsToUsersRequest request,
-            FDelegateOnSuccessGrantItemsToUsers onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGrantItemsToUsers(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRevokeInventoryItem, FAdminRevokeInventoryResult, result, UObject*, customData);
-
-    /** Revokes access to an item in a user's inventory */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* RevokeInventoryItem(FAdminRevokeInventoryItemRequest request,
-            FDelegateOnSuccessRevokeInventoryItem onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRevokeInventoryItem(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSubtractUserVirtualCurrency, FAdminModifyUserVirtualCurrencyResult, result, UObject*, customData);
-
-    /** Decrements the specified virtual currency by the stated amount */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* SubtractUserVirtualCurrency(FAdminSubtractUserVirtualCurrencyRequest request,
-            FDelegateOnSuccessSubtractUserVirtualCurrency onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSubtractUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Matchmaking
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetMatchmakerGameInfo, FAdminGetMatchmakerGameInfoResult, result, UObject*, customData);
-
-    /** Retrieves the details for a specific completed session, including links to standard out and standard error logs */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetMatchmakerGameInfo(FAdminGetMatchmakerGameInfoRequest request,
-            FDelegateOnSuccessGetMatchmakerGameInfo onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetMatchmakerGameInfo(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetMatchmakerGameModes, FAdminGetMatchmakerGameModesResult, result, UObject*, customData);
-
-    /** Retrieves the details of defined game modes for the specified game server executable */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetMatchmakerGameModes(FAdminGetMatchmakerGameModesRequest request,
-            FDelegateOnSuccessGetMatchmakerGameModes onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessModifyMatchmakerGameModes, FAdminModifyMatchmakerGameModesResult, result, UObject*, customData);
-
-    /** Updates the game server mode details for the specified game server executable */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* ModifyMatchmakerGameModes(FAdminModifyMatchmakerGameModesRequest request,
-            FDelegateOnSuccessModifyMatchmakerGameModes onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperModifyMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Custom Server Management
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddServerBuild, FAdminAddServerBuildResult, result, UObject*, customData);
-
-    /** Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a client is permitted to request in a call to StartGame */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* AddServerBuild(FAdminAddServerBuildRequest request,
-            FDelegateOnSuccessAddServerBuild onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAddServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetServerBuildInfo, FAdminGetServerBuildInfoResult, result, UObject*, customData);
-
-    /** Retrieves the build details for the specified game server executable */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetServerBuildInfo(FAdminGetServerBuildInfoRequest request,
-            FDelegateOnSuccessGetServerBuildInfo onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetServerBuildInfo(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetServerBuildUploadUrl, FAdminGetServerBuildUploadURLResult, result, UObject*, customData);
-
-    /** Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for use - see AddServerBuild) */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetServerBuildUploadUrl(FAdminGetServerBuildUploadURLRequest request,
-            FDelegateOnSuccessGetServerBuildUploadUrl onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetServerBuildUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessListServerBuilds, FAdminListBuildsResult, result, UObject*, customData);
-
-    /** Retrieves the build details for all game server executables which are currently defined for the title */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* ListServerBuilds(FAdminListBuildsRequest request,
-            FDelegateOnSuccessListServerBuilds onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperListServerBuilds(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessModifyServerBuild, FAdminModifyServerBuildResult, result, UObject*, customData);
-
-    /** Updates the build details for the specified game server executable */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* ModifyServerBuild(FAdminModifyServerBuildRequest request,
-            FDelegateOnSuccessModifyServerBuild onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperModifyServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveServerBuild, FAdminRemoveServerBuildResult, result, UObject*, customData);
-
-    /** Removes the game server executable specified from the set of those a client is permitted to request in a call to StartGame */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* RemoveServerBuild(FAdminRemoveServerBuildRequest request,
-            FDelegateOnSuccessRemoveServerBuild onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRemoveServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Shared Group Data
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPublisherData, FAdminSetPublisherDataResult, result, UObject*, customData);
-
-    /** Updates the key-value store of custom publisher settings */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* SetPublisherData(FAdminSetPublisherDataRequest request,
-            FDelegateOnSuccessSetPublisherData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Server-Side Cloud Script
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCloudScriptRevision, FAdminGetCloudScriptRevisionResult, result, UObject*, customData);
-
-    /** Gets the contents and information of a specific Cloud Script revision. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetCloudScriptRevision(FAdminGetCloudScriptRevisionRequest request,
-            FDelegateOnSuccessGetCloudScriptRevision onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCloudScriptRevision(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCloudScriptVersions, FAdminGetCloudScriptVersionsResult, result, UObject*, customData);
-
-    /** Lists all the current cloud script versions. For each version, information about the current published and latest revisions is also listed. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetCloudScriptVersions(FAdminGetCloudScriptVersionsRequest request,
-            FDelegateOnSuccessGetCloudScriptVersions onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCloudScriptVersions(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPublishedRevision, FAdminSetPublishedRevisionResult, result, UObject*, customData);
-
-    /** Sets the currently published revision of a title Cloud Script */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* SetPublishedRevision(FAdminSetPublishedRevisionRequest request,
-            FDelegateOnSuccessSetPublishedRevision onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetPublishedRevision(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCloudScript, FAdminUpdateCloudScriptResult, result, UObject*, customData);
-
-    /** Creates a new Cloud Script revision and uploads source code to it. Note that at this time, only one file should be submitted in the revision. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* UpdateCloudScript(FAdminUpdateCloudScriptRequest request,
-            FDelegateOnSuccessUpdateCloudScript onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdateCloudScript(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Content
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteContent, FAdminBlankResult, result, UObject*, customData);
-
-    /** Delete a content file from the title. When deleting a file that does not exist, it returns success. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* DeleteContent(FAdminDeleteContentRequest request,
-            FDelegateOnSuccessDeleteContent onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperDeleteContent(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetContentList, FAdminGetContentListResult, result, UObject*, customData);
-
-    /** List all contents of the title and get statistics such as size */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetContentList(FAdminGetContentListRequest request,
-            FDelegateOnSuccessGetContentList onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetContentList(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetContentUploadUrl, FAdminGetContentUploadUrlResult, result, UObject*, customData);
-
-    /** Retrieves the pre-signed URL for uploading a content file. A subsequent HTTP PUT to the returned URL uploads the  content. Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetContentUploadUrl(FAdminGetContentUploadUrlRequest request,
-            FDelegateOnSuccessGetContentUploadUrl onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetContentUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Characters
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessResetCharacterStatistics, FAdminResetCharacterStatisticsResult, result, UObject*, customData);
-
-    /** Completely removes all statistics for the specified character, for the current game */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* ResetCharacterStatistics(FAdminResetCharacterStatisticsRequest request,
-            FDelegateOnSuccessResetCharacterStatistics onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperResetCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // PlayStream
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddPlayerTag, FAdminAddPlayerTagResult, result, UObject*, customData);
-
-    /** Adds a given tag to a player profile. The tag's namespace is automatically generated based on the source of the tag. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* AddPlayerTag(FAdminAddPlayerTagRequest request,
-            FDelegateOnSuccessAddPlayerTag onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAddPlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetAllActionGroups, FAdminGetAllActionGroupsResult, result, UObject*, customData);
-
-    /** Retrieve a list of all PlayStream actions groups. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetAllActionGroups(FAdminGetAllActionGroupsRequest request,
-            FDelegateOnSuccessGetAllActionGroups onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetAllActionGroups(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetAllSegments, FAdminGetAllSegmentsResult, result, UObject*, customData);
-
-    /** Retrieves an array of player segment definitions. Results from this can be used in subsequent API calls such as GetPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not change. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetAllSegments(FAdminGetAllSegmentsRequest request,
-            FDelegateOnSuccessGetAllSegments onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetAllSegments(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerSegments, FAdminGetPlayerSegmentsResult, result, UObject*, customData);
-
-    /** List all segments that a player currently belongs to at this moment in time. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetPlayerSegments(FAdminGetPlayersSegmentsRequest request,
-            FDelegateOnSuccessGetPlayerSegments onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetPlayerSegments(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayersInSegment, FAdminGetPlayersInSegmentResult, result, UObject*, customData);
-
-    /** Allows for paging through all players in a given segment. This API creates a snapshot of all player profiles that match the segment definition at the time of its creation and lives through the Total Seconds to Live, refreshing its life span on each subsequent use of the Continuation Token. Profiles that change during the course of paging will not be reflected in the results. AB Test segments are currently not supported by this operation. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetPlayersInSegment(FAdminGetPlayersInSegmentRequest request,
-            FDelegateOnSuccessGetPlayersInSegment onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetPlayersInSegment(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerTags, FAdminGetPlayerTagsResult, result, UObject*, customData);
-
-    /** Get all tags with a given Namespace (optional) from a player profile. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetPlayerTags(FAdminGetPlayerTagsRequest request,
-            FDelegateOnSuccessGetPlayerTags onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetPlayerTags(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemovePlayerTag, FAdminRemovePlayerTagResult, result, UObject*, customData);
-
-    /** Remove a given tag from a player profile. The tag's namespace is automatically generated based on the source of the tag. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* RemovePlayerTag(FAdminRemovePlayerTagRequest request,
-            FDelegateOnSuccessRemovePlayerTag onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRemovePlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // ScheduledTask
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAbortTaskInstance, FAdminEmptyResult, result, UObject*, customData);
-
-    /** Abort an ongoing task instance. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* AbortTaskInstance(FAdminAbortTaskInstanceRequest request,
-            FDelegateOnSuccessAbortTaskInstance onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAbortTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask, FAdminCreateTaskResult, result, UObject*, customData);
-
-    /** Create an ActionsOnPlayersInSegment task, which iterates through all players in a segment to execute action. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* CreateActionsOnPlayersInSegmentTask(FAdminCreateActionsOnPlayerSegmentTaskRequest request,
-            FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperCreateActionsOnPlayersInSegmentTask(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreateCloudScriptTask, FAdminCreateTaskResult, result, UObject*, customData);
-
-    /** Create a CloudScript task, which can run a CloudScript on a schedule. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* CreateCloudScriptTask(FAdminCreateCloudScriptTaskRequest request,
-            FDelegateOnSuccessCreateCloudScriptTask onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperCreateCloudScriptTask(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteTask, FAdminEmptyResult, result, UObject*, customData);
-
-    /** Delete a task. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* DeleteTask(FAdminDeleteTaskRequest request,
-            FDelegateOnSuccessDeleteTask onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperDeleteTask(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance, FAdminGetActionsOnPlayersInSegmentTaskInstanceResult, result, UObject*, customData);
-
-    /** Get information about a ActionsOnPlayersInSegment task instance. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetActionsOnPlayersInSegmentTaskInstance(FAdminGetTaskInstanceRequest request,
-            FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetActionsOnPlayersInSegmentTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCloudScriptTaskInstance, FAdminGetCloudScriptTaskInstanceResult, result, UObject*, customData);
-
-    /** Get detail information about a CloudScript task instance. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetCloudScriptTaskInstance(FAdminGetTaskInstanceRequest request,
-            FDelegateOnSuccessGetCloudScriptTaskInstance onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCloudScriptTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTaskInstances, FAdminGetTaskInstancesResult, result, UObject*, customData);
-
-    /** Query for task instances by task, status, or time range. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetTaskInstances(FAdminGetTaskInstancesRequest request,
-            FDelegateOnSuccessGetTaskInstances onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetTaskInstances(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTasks, FAdminGetTasksResult, result, UObject*, customData);
-
-    /** Get definition information on a specified task or all tasks within a title. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* GetTasks(FAdminGetTasksRequest request,
-            FDelegateOnSuccessGetTasks onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetTasks(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRunTask, FAdminRunTaskResult, result, UObject*, customData);
-
-    /** Run a task immediately regardless of its schedule. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* RunTask(FAdminRunTaskRequest request,
-            FDelegateOnSuccessRunTask onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRunTask(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateTask, FAdminEmptyResult, result, UObject*, customData);
-
-    /** Update an existing task. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabAdminAPI* UpdateTask(FAdminUpdateTaskRequest request,
-            FDelegateOnSuccessUpdateTask onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabAdminRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdateTask(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
 
     /** PlayFab Request Info */
     FString PlayFabRequestURL;
@@ -1384,13 +1384,6 @@ public:
     UObject* mCustomData;
 
     FDelegateOnFailurePlayFabError OnFailure;
-    FDelegateOnSuccessCreatePlayerSharedSecret OnSuccessCreatePlayerSharedSecret;
-    FDelegateOnSuccessDeletePlayerSharedSecret OnSuccessDeletePlayerSharedSecret;
-    FDelegateOnSuccessGetPlayerSharedSecrets OnSuccessGetPlayerSharedSecrets;
-    FDelegateOnSuccessGetPolicy OnSuccessGetPolicy;
-    FDelegateOnSuccessSetPlayerSecret OnSuccessSetPlayerSecret;
-    FDelegateOnSuccessUpdatePlayerSharedSecret OnSuccessUpdatePlayerSharedSecret;
-    FDelegateOnSuccessUpdatePolicy OnSuccessUpdatePolicy;
     FDelegateOnSuccessBanUsers OnSuccessBanUsers;
     FDelegateOnSuccessDeletePlayer OnSuccessDeletePlayer;
     FDelegateOnSuccessGetUserAccountInfo OnSuccessGetUserAccountInfo;
@@ -1401,6 +1394,26 @@ public:
     FDelegateOnSuccessSendAccountRecoveryEmail OnSuccessSendAccountRecoveryEmail;
     FDelegateOnSuccessUpdateBans OnSuccessUpdateBans;
     FDelegateOnSuccessUpdateUserTitleDisplayName OnSuccessUpdateUserTitleDisplayName;
+    FDelegateOnSuccessCreatePlayerSharedSecret OnSuccessCreatePlayerSharedSecret;
+    FDelegateOnSuccessDeletePlayerSharedSecret OnSuccessDeletePlayerSharedSecret;
+    FDelegateOnSuccessGetPlayerSharedSecrets OnSuccessGetPlayerSharedSecrets;
+    FDelegateOnSuccessGetPolicy OnSuccessGetPolicy;
+    FDelegateOnSuccessSetPlayerSecret OnSuccessSetPlayerSecret;
+    FDelegateOnSuccessUpdatePlayerSharedSecret OnSuccessUpdatePlayerSharedSecret;
+    FDelegateOnSuccessUpdatePolicy OnSuccessUpdatePolicy;
+    FDelegateOnSuccessResetCharacterStatistics OnSuccessResetCharacterStatistics;
+    FDelegateOnSuccessDeleteContent OnSuccessDeleteContent;
+    FDelegateOnSuccessGetContentList OnSuccessGetContentList;
+    FDelegateOnSuccessGetContentUploadUrl OnSuccessGetContentUploadUrl;
+    FDelegateOnSuccessAddServerBuild OnSuccessAddServerBuild;
+    FDelegateOnSuccessGetServerBuildInfo OnSuccessGetServerBuildInfo;
+    FDelegateOnSuccessGetServerBuildUploadUrl OnSuccessGetServerBuildUploadUrl;
+    FDelegateOnSuccessListServerBuilds OnSuccessListServerBuilds;
+    FDelegateOnSuccessModifyServerBuild OnSuccessModifyServerBuild;
+    FDelegateOnSuccessRemoveServerBuild OnSuccessRemoveServerBuild;
+    FDelegateOnSuccessGetMatchmakerGameInfo OnSuccessGetMatchmakerGameInfo;
+    FDelegateOnSuccessGetMatchmakerGameModes OnSuccessGetMatchmakerGameModes;
+    FDelegateOnSuccessModifyMatchmakerGameModes OnSuccessModifyMatchmakerGameModes;
     FDelegateOnSuccessCreatePlayerStatisticDefinition OnSuccessCreatePlayerStatisticDefinition;
     FDelegateOnSuccessDeleteUsers OnSuccessDeleteUsers;
     FDelegateOnSuccessGetDataReport OnSuccessGetDataReport;
@@ -1423,6 +1436,33 @@ public:
     FDelegateOnSuccessUpdateUserPublisherInternalData OnSuccessUpdateUserPublisherInternalData;
     FDelegateOnSuccessUpdateUserPublisherReadOnlyData OnSuccessUpdateUserPublisherReadOnlyData;
     FDelegateOnSuccessUpdateUserReadOnlyData OnSuccessUpdateUserReadOnlyData;
+    FDelegateOnSuccessAddUserVirtualCurrency OnSuccessAddUserVirtualCurrency;
+    FDelegateOnSuccessGetUserInventory OnSuccessGetUserInventory;
+    FDelegateOnSuccessGrantItemsToUsers OnSuccessGrantItemsToUsers;
+    FDelegateOnSuccessRevokeInventoryItem OnSuccessRevokeInventoryItem;
+    FDelegateOnSuccessSubtractUserVirtualCurrency OnSuccessSubtractUserVirtualCurrency;
+    FDelegateOnSuccessAddPlayerTag OnSuccessAddPlayerTag;
+    FDelegateOnSuccessGetAllActionGroups OnSuccessGetAllActionGroups;
+    FDelegateOnSuccessGetAllSegments OnSuccessGetAllSegments;
+    FDelegateOnSuccessGetPlayerSegments OnSuccessGetPlayerSegments;
+    FDelegateOnSuccessGetPlayersInSegment OnSuccessGetPlayersInSegment;
+    FDelegateOnSuccessGetPlayerTags OnSuccessGetPlayerTags;
+    FDelegateOnSuccessRemovePlayerTag OnSuccessRemovePlayerTag;
+    FDelegateOnSuccessAbortTaskInstance OnSuccessAbortTaskInstance;
+    FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask OnSuccessCreateActionsOnPlayersInSegmentTask;
+    FDelegateOnSuccessCreateCloudScriptTask OnSuccessCreateCloudScriptTask;
+    FDelegateOnSuccessDeleteTask OnSuccessDeleteTask;
+    FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance OnSuccessGetActionsOnPlayersInSegmentTaskInstance;
+    FDelegateOnSuccessGetCloudScriptTaskInstance OnSuccessGetCloudScriptTaskInstance;
+    FDelegateOnSuccessGetTaskInstances OnSuccessGetTaskInstances;
+    FDelegateOnSuccessGetTasks OnSuccessGetTasks;
+    FDelegateOnSuccessRunTask OnSuccessRunTask;
+    FDelegateOnSuccessUpdateTask OnSuccessUpdateTask;
+    FDelegateOnSuccessGetCloudScriptRevision OnSuccessGetCloudScriptRevision;
+    FDelegateOnSuccessGetCloudScriptVersions OnSuccessGetCloudScriptVersions;
+    FDelegateOnSuccessSetPublishedRevision OnSuccessSetPublishedRevision;
+    FDelegateOnSuccessUpdateCloudScript OnSuccessUpdateCloudScript;
+    FDelegateOnSuccessSetPublisherData OnSuccessSetPublisherData;
     FDelegateOnSuccessAddNews OnSuccessAddNews;
     FDelegateOnSuccessAddVirtualCurrencyTypes OnSuccessAddVirtualCurrencyTypes;
     FDelegateOnSuccessDeleteStore OnSuccessDeleteStore;
@@ -1442,46 +1482,6 @@ public:
     FDelegateOnSuccessUpdateCatalogItems OnSuccessUpdateCatalogItems;
     FDelegateOnSuccessUpdateRandomResultTables OnSuccessUpdateRandomResultTables;
     FDelegateOnSuccessUpdateStoreItems OnSuccessUpdateStoreItems;
-    FDelegateOnSuccessAddUserVirtualCurrency OnSuccessAddUserVirtualCurrency;
-    FDelegateOnSuccessGetUserInventory OnSuccessGetUserInventory;
-    FDelegateOnSuccessGrantItemsToUsers OnSuccessGrantItemsToUsers;
-    FDelegateOnSuccessRevokeInventoryItem OnSuccessRevokeInventoryItem;
-    FDelegateOnSuccessSubtractUserVirtualCurrency OnSuccessSubtractUserVirtualCurrency;
-    FDelegateOnSuccessGetMatchmakerGameInfo OnSuccessGetMatchmakerGameInfo;
-    FDelegateOnSuccessGetMatchmakerGameModes OnSuccessGetMatchmakerGameModes;
-    FDelegateOnSuccessModifyMatchmakerGameModes OnSuccessModifyMatchmakerGameModes;
-    FDelegateOnSuccessAddServerBuild OnSuccessAddServerBuild;
-    FDelegateOnSuccessGetServerBuildInfo OnSuccessGetServerBuildInfo;
-    FDelegateOnSuccessGetServerBuildUploadUrl OnSuccessGetServerBuildUploadUrl;
-    FDelegateOnSuccessListServerBuilds OnSuccessListServerBuilds;
-    FDelegateOnSuccessModifyServerBuild OnSuccessModifyServerBuild;
-    FDelegateOnSuccessRemoveServerBuild OnSuccessRemoveServerBuild;
-    FDelegateOnSuccessSetPublisherData OnSuccessSetPublisherData;
-    FDelegateOnSuccessGetCloudScriptRevision OnSuccessGetCloudScriptRevision;
-    FDelegateOnSuccessGetCloudScriptVersions OnSuccessGetCloudScriptVersions;
-    FDelegateOnSuccessSetPublishedRevision OnSuccessSetPublishedRevision;
-    FDelegateOnSuccessUpdateCloudScript OnSuccessUpdateCloudScript;
-    FDelegateOnSuccessDeleteContent OnSuccessDeleteContent;
-    FDelegateOnSuccessGetContentList OnSuccessGetContentList;
-    FDelegateOnSuccessGetContentUploadUrl OnSuccessGetContentUploadUrl;
-    FDelegateOnSuccessResetCharacterStatistics OnSuccessResetCharacterStatistics;
-    FDelegateOnSuccessAddPlayerTag OnSuccessAddPlayerTag;
-    FDelegateOnSuccessGetAllActionGroups OnSuccessGetAllActionGroups;
-    FDelegateOnSuccessGetAllSegments OnSuccessGetAllSegments;
-    FDelegateOnSuccessGetPlayerSegments OnSuccessGetPlayerSegments;
-    FDelegateOnSuccessGetPlayersInSegment OnSuccessGetPlayersInSegment;
-    FDelegateOnSuccessGetPlayerTags OnSuccessGetPlayerTags;
-    FDelegateOnSuccessRemovePlayerTag OnSuccessRemovePlayerTag;
-    FDelegateOnSuccessAbortTaskInstance OnSuccessAbortTaskInstance;
-    FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask OnSuccessCreateActionsOnPlayersInSegmentTask;
-    FDelegateOnSuccessCreateCloudScriptTask OnSuccessCreateCloudScriptTask;
-    FDelegateOnSuccessDeleteTask OnSuccessDeleteTask;
-    FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance OnSuccessGetActionsOnPlayersInSegmentTaskInstance;
-    FDelegateOnSuccessGetCloudScriptTaskInstance OnSuccessGetCloudScriptTaskInstance;
-    FDelegateOnSuccessGetTaskInstances OnSuccessGetTaskInstances;
-    FDelegateOnSuccessGetTasks OnSuccessGetTasks;
-    FDelegateOnSuccessRunTask OnSuccessRunTask;
-    FDelegateOnSuccessUpdateTask OnSuccessUpdateTask;
 
 private:
     /** Internal bind function for the IHTTPRequest::OnProcessRequestCompleted() event */

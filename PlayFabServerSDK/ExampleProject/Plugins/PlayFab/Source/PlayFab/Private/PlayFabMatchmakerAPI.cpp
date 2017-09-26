@@ -251,14 +251,6 @@ UPlayFabMatchmakerAPI* UPlayFabMatchmakerAPI::StartGame(FMatchmakerStartGameRequ
     } else {
         OutRestJsonObj->SetStringField(TEXT("Build"), request.Build);
     }
-    FString temp_Region;
-    if (GetEnumValueToString<ERegion>(TEXT("ERegion"), request.Region, temp_Region))
-        OutRestJsonObj->SetStringField(TEXT("Region"), temp_Region);
-    if (request.GameMode.IsEmpty() || request.GameMode == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("GameMode"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("GameMode"), request.GameMode);
-    }
     if (request.CustomCommandLineData.IsEmpty() || request.CustomCommandLineData == "") {
         OutRestJsonObj->SetFieldNull(TEXT("CustomCommandLineData"));
     } else {
@@ -269,6 +261,14 @@ UPlayFabMatchmakerAPI* UPlayFabMatchmakerAPI::StartGame(FMatchmakerStartGameRequ
     } else {
         OutRestJsonObj->SetStringField(TEXT("ExternalMatchmakerEventEndpoint"), request.ExternalMatchmakerEventEndpoint);
     }
+    if (request.GameMode.IsEmpty() || request.GameMode == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("GameMode"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("GameMode"), request.GameMode);
+    }
+    FString temp_Region;
+    if (GetEnumValueToString<ERegion>(TEXT("ERegion"), request.Region, temp_Region))
+        OutRestJsonObj->SetStringField(TEXT("Region"), temp_Region);
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -315,12 +315,12 @@ UPlayFabMatchmakerAPI* UPlayFabMatchmakerAPI::UserInfo(FMatchmakerUserInfoReques
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
+    OutRestJsonObj->SetNumberField(TEXT("MinCatalogVersion"), request.MinCatalogVersion);
     if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
         OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
     }
-    OutRestJsonObj->SetNumberField(TEXT("MinCatalogVersion"), request.MinCatalogVersion);
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);

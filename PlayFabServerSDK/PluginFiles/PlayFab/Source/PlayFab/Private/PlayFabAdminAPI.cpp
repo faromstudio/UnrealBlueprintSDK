@@ -58,379 +58,6 @@ FString UPlayFabAdminAPI::PercentEncode(const FString& Text)
 
 
 ///////////////////////////////////////////////////////
-// Authentication
-//////////////////////////////////////////////////////
-/** Creates a new Player Shared Secret Key. It may take up to 5 minutes for this key to become generally available after this API returns. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::CreatePlayerSharedSecret(FAdminCreatePlayerSharedSecretRequest request,
-    FDelegateOnSuccessCreatePlayerSharedSecret onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessCreatePlayerSharedSecret = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperCreatePlayerSharedSecret);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/CreatePlayerSharedSecret";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.FriendlyName.IsEmpty() || request.FriendlyName == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("FriendlyName"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("FriendlyName"), request.FriendlyName);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperCreatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessCreatePlayerSharedSecret.IsBound())
-    {
-        FAdminCreatePlayerSharedSecretResult result = UPlayFabAdminModelDecoder::decodeCreatePlayerSharedSecretResultResponse(response.responseData);
-        OnSuccessCreatePlayerSharedSecret.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Deletes an existing Player Shared Secret Key. It may take up to 5 minutes for this delete to be reflected after this API returns. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::DeletePlayerSharedSecret(FAdminDeletePlayerSharedSecretRequest request,
-    FDelegateOnSuccessDeletePlayerSharedSecret onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessDeletePlayerSharedSecret = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeletePlayerSharedSecret);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/DeletePlayerSharedSecret";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.SecretKey.IsEmpty() || request.SecretKey == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("SecretKey"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("SecretKey"), request.SecretKey);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperDeletePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessDeletePlayerSharedSecret.IsBound())
-    {
-        FAdminDeletePlayerSharedSecretResult result = UPlayFabAdminModelDecoder::decodeDeletePlayerSharedSecretResultResponse(response.responseData);
-        OnSuccessDeletePlayerSharedSecret.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Returns all Player Shared Secret Keys including disabled and expired. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerSharedSecrets(FAdminGetPlayerSharedSecretsRequest request,
-    FDelegateOnSuccessGetPlayerSharedSecrets onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetPlayerSharedSecrets = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerSharedSecrets);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetPlayerSharedSecrets";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetPlayerSharedSecrets(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetPlayerSharedSecrets.IsBound())
-    {
-        FAdminGetPlayerSharedSecretsResult result = UPlayFabAdminModelDecoder::decodeGetPlayerSharedSecretsResultResponse(response.responseData);
-        OnSuccessGetPlayerSharedSecrets.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Gets the requested policy. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetPolicy(FAdminGetPolicyRequest request,
-    FDelegateOnSuccessGetPolicy onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetPolicy = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPolicy);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetPolicy";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PolicyName.IsEmpty() || request.PolicyName == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PolicyName"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PolicyName"), request.PolicyName);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetPolicy(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetPolicy.IsBound())
-    {
-        FAdminGetPolicyResponse result = UPlayFabAdminModelDecoder::decodeGetPolicyResponseResponse(response.responseData);
-        OnSuccessGetPolicy.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Sets or resets the player's secret. Player secrets are used to sign API requests. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::SetPlayerSecret(FAdminSetPlayerSecretRequest request,
-    FDelegateOnSuccessSetPlayerSecret onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessSetPlayerSecret = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSetPlayerSecret);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/SetPlayerSecret";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayerSecret.IsEmpty() || request.PlayerSecret == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayerSecret"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayerSecret"), request.PlayerSecret);
-    }
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperSetPlayerSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessSetPlayerSecret.IsBound())
-    {
-        FAdminSetPlayerSecretResult result = UPlayFabAdminModelDecoder::decodeSetPlayerSecretResultResponse(response.responseData);
-        OnSuccessSetPlayerSecret.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Updates a existing Player Shared Secret Key. It may take up to 5 minutes for this update to become generally available after this API returns. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::UpdatePlayerSharedSecret(FAdminUpdatePlayerSharedSecretRequest request,
-    FDelegateOnSuccessUpdatePlayerSharedSecret onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessUpdatePlayerSharedSecret = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdatePlayerSharedSecret);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/UpdatePlayerSharedSecret";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.SecretKey.IsEmpty() || request.SecretKey == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("SecretKey"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("SecretKey"), request.SecretKey);
-    }
-    if (request.FriendlyName.IsEmpty() || request.FriendlyName == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("FriendlyName"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("FriendlyName"), request.FriendlyName);
-    }
-    OutRestJsonObj->SetBoolField(TEXT("Disabled"), request.Disabled);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperUpdatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessUpdatePlayerSharedSecret.IsBound())
-    {
-        FAdminUpdatePlayerSharedSecretResult result = UPlayFabAdminModelDecoder::decodeUpdatePlayerSharedSecretResultResponse(response.responseData);
-        OnSuccessUpdatePlayerSharedSecret.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Changes a policy for a title */
-UPlayFabAdminAPI* UPlayFabAdminAPI::UpdatePolicy(FAdminUpdatePolicyRequest request,
-    FDelegateOnSuccessUpdatePolicy onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessUpdatePolicy = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdatePolicy);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/UpdatePolicy";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PolicyName.IsEmpty() || request.PolicyName == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PolicyName"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PolicyName"), request.PolicyName);
-    }
-    if (request.Statements.Num() == 0) {
-        OutRestJsonObj->SetFieldNull(TEXT("Statements"));
-    } else {
-        OutRestJsonObj->SetObjectArrayField(TEXT("Statements"), request.Statements);
-    }
-    OutRestJsonObj->SetBoolField(TEXT("OverwritePolicy"), request.OverwritePolicy);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperUpdatePolicy(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessUpdatePolicy.IsBound())
-    {
-        FAdminUpdatePolicyResponse result = UPlayFabAdminModelDecoder::decodeUpdatePolicyResponseResponse(response.responseData);
-        OnSuccessUpdatePolicy.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
 // Account Management
 //////////////////////////////////////////////////////
 /** Bans users by PlayFab ID with optional IP address, or MAC address for the provided game. */
@@ -558,25 +185,25 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserAccountInfo(FAdminLookupUserAccountIn
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.Email.IsEmpty() || request.Email == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Email"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("Email"), request.Email);
     }
-    if (request.Username.IsEmpty() || request.Username == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Username"));
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
     } else {
-        OutRestJsonObj->SetStringField(TEXT("Username"), request.Username);
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
     }
     if (request.TitleDisplayName.IsEmpty() || request.TitleDisplayName == "") {
         OutRestJsonObj->SetFieldNull(TEXT("TitleDisplayName"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("TitleDisplayName"), request.TitleDisplayName);
+    }
+    if (request.Username.IsEmpty() || request.Username == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Username"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Username"), request.Username);
     }
 
     // Add Request to manager
@@ -933,15 +560,15 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserTitleDisplayName(FAdminUpdateUserT
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.DisplayName.IsEmpty() || request.DisplayName == "") {
         OutRestJsonObj->SetFieldNull(TEXT("DisplayName"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("DisplayName"), request.DisplayName);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
     }
 
     // Add Request to manager
@@ -962,6 +589,1123 @@ void UPlayFabAdminAPI::HelperUpdateUserTitleDisplayName(FPlayFabBaseModel respon
     {
         FAdminUpdateUserTitleDisplayNameResult result = UPlayFabAdminModelDecoder::decodeUpdateUserTitleDisplayNameResultResponse(response.responseData);
         OnSuccessUpdateUserTitleDisplayName.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Authentication
+//////////////////////////////////////////////////////
+/** Creates a new Player Shared Secret Key. It may take up to 5 minutes for this key to become generally available after this API returns. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::CreatePlayerSharedSecret(FAdminCreatePlayerSharedSecretRequest request,
+    FDelegateOnSuccessCreatePlayerSharedSecret onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessCreatePlayerSharedSecret = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperCreatePlayerSharedSecret);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/CreatePlayerSharedSecret";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.FriendlyName.IsEmpty() || request.FriendlyName == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("FriendlyName"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("FriendlyName"), request.FriendlyName);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperCreatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessCreatePlayerSharedSecret.IsBound())
+    {
+        FAdminCreatePlayerSharedSecretResult result = UPlayFabAdminModelDecoder::decodeCreatePlayerSharedSecretResultResponse(response.responseData);
+        OnSuccessCreatePlayerSharedSecret.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Deletes an existing Player Shared Secret Key. It may take up to 5 minutes for this delete to be reflected after this API returns. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::DeletePlayerSharedSecret(FAdminDeletePlayerSharedSecretRequest request,
+    FDelegateOnSuccessDeletePlayerSharedSecret onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessDeletePlayerSharedSecret = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeletePlayerSharedSecret);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/DeletePlayerSharedSecret";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.SecretKey.IsEmpty() || request.SecretKey == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("SecretKey"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("SecretKey"), request.SecretKey);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperDeletePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessDeletePlayerSharedSecret.IsBound())
+    {
+        FAdminDeletePlayerSharedSecretResult result = UPlayFabAdminModelDecoder::decodeDeletePlayerSharedSecretResultResponse(response.responseData);
+        OnSuccessDeletePlayerSharedSecret.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Returns all Player Shared Secret Keys including disabled and expired. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerSharedSecrets(FAdminGetPlayerSharedSecretsRequest request,
+    FDelegateOnSuccessGetPlayerSharedSecrets onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPlayerSharedSecrets = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerSharedSecrets);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetPlayerSharedSecrets";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetPlayerSharedSecrets(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPlayerSharedSecrets.IsBound())
+    {
+        FAdminGetPlayerSharedSecretsResult result = UPlayFabAdminModelDecoder::decodeGetPlayerSharedSecretsResultResponse(response.responseData);
+        OnSuccessGetPlayerSharedSecrets.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Gets the requested policy. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetPolicy(FAdminGetPolicyRequest request,
+    FDelegateOnSuccessGetPolicy onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPolicy = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPolicy);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetPolicy";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.PolicyName.IsEmpty() || request.PolicyName == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PolicyName"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PolicyName"), request.PolicyName);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetPolicy(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPolicy.IsBound())
+    {
+        FAdminGetPolicyResponse result = UPlayFabAdminModelDecoder::decodeGetPolicyResponseResponse(response.responseData);
+        OnSuccessGetPolicy.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Sets or resets the player's secret. Player secrets are used to sign API requests. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::SetPlayerSecret(FAdminSetPlayerSecretRequest request,
+    FDelegateOnSuccessSetPlayerSecret onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessSetPlayerSecret = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSetPlayerSecret);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/SetPlayerSecret";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.PlayerSecret.IsEmpty() || request.PlayerSecret == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayerSecret"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayerSecret"), request.PlayerSecret);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperSetPlayerSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessSetPlayerSecret.IsBound())
+    {
+        FAdminSetPlayerSecretResult result = UPlayFabAdminModelDecoder::decodeSetPlayerSecretResultResponse(response.responseData);
+        OnSuccessSetPlayerSecret.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Updates a existing Player Shared Secret Key. It may take up to 5 minutes for this update to become generally available after this API returns. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::UpdatePlayerSharedSecret(FAdminUpdatePlayerSharedSecretRequest request,
+    FDelegateOnSuccessUpdatePlayerSharedSecret onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessUpdatePlayerSharedSecret = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdatePlayerSharedSecret);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/UpdatePlayerSharedSecret";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetBoolField(TEXT("Disabled"), request.Disabled);
+    if (request.FriendlyName.IsEmpty() || request.FriendlyName == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("FriendlyName"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("FriendlyName"), request.FriendlyName);
+    }
+    if (request.SecretKey.IsEmpty() || request.SecretKey == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("SecretKey"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("SecretKey"), request.SecretKey);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperUpdatePlayerSharedSecret(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessUpdatePlayerSharedSecret.IsBound())
+    {
+        FAdminUpdatePlayerSharedSecretResult result = UPlayFabAdminModelDecoder::decodeUpdatePlayerSharedSecretResultResponse(response.responseData);
+        OnSuccessUpdatePlayerSharedSecret.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Changes a policy for a title */
+UPlayFabAdminAPI* UPlayFabAdminAPI::UpdatePolicy(FAdminUpdatePolicyRequest request,
+    FDelegateOnSuccessUpdatePolicy onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessUpdatePolicy = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdatePolicy);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/UpdatePolicy";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetBoolField(TEXT("OverwritePolicy"), request.OverwritePolicy);
+    if (request.PolicyName.IsEmpty() || request.PolicyName == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PolicyName"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PolicyName"), request.PolicyName);
+    }
+    if (request.Statements.Num() == 0) {
+        OutRestJsonObj->SetFieldNull(TEXT("Statements"));
+    } else {
+        OutRestJsonObj->SetObjectArrayField(TEXT("Statements"), request.Statements);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperUpdatePolicy(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessUpdatePolicy.IsBound())
+    {
+        FAdminUpdatePolicyResponse result = UPlayFabAdminModelDecoder::decodeUpdatePolicyResponseResponse(response.responseData);
+        OnSuccessUpdatePolicy.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Characters
+//////////////////////////////////////////////////////
+/** Completely removes all statistics for the specified character, for the current game */
+UPlayFabAdminAPI* UPlayFabAdminAPI::ResetCharacterStatistics(FAdminResetCharacterStatisticsRequest request,
+    FDelegateOnSuccessResetCharacterStatistics onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessResetCharacterStatistics = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperResetCharacterStatistics);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/ResetCharacterStatistics";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.CharacterId.IsEmpty() || request.CharacterId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("CharacterId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("CharacterId"), request.CharacterId);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperResetCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessResetCharacterStatistics.IsBound())
+    {
+        FAdminResetCharacterStatisticsResult result = UPlayFabAdminModelDecoder::decodeResetCharacterStatisticsResultResponse(response.responseData);
+        OnSuccessResetCharacterStatistics.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Content
+//////////////////////////////////////////////////////
+/** Delete a content file from the title. When deleting a file that does not exist, it returns success. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::DeleteContent(FAdminDeleteContentRequest request,
+    FDelegateOnSuccessDeleteContent onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessDeleteContent = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeleteContent);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/DeleteContent";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Key.IsEmpty() || request.Key == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Key"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperDeleteContent(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessDeleteContent.IsBound())
+    {
+        FAdminBlankResult result = UPlayFabAdminModelDecoder::decodeBlankResultResponse(response.responseData);
+        OnSuccessDeleteContent.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** List all contents of the title and get statistics such as size */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetContentList(FAdminGetContentListRequest request,
+    FDelegateOnSuccessGetContentList onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetContentList = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetContentList);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetContentList";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Prefix.IsEmpty() || request.Prefix == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Prefix"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Prefix"), request.Prefix);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetContentList(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetContentList.IsBound())
+    {
+        FAdminGetContentListResult result = UPlayFabAdminModelDecoder::decodeGetContentListResultResponse(response.responseData);
+        OnSuccessGetContentList.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieves the pre-signed URL for uploading a content file. A subsequent HTTP PUT to the returned URL uploads the  content. Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetContentUploadUrl(FAdminGetContentUploadUrlRequest request,
+    FDelegateOnSuccessGetContentUploadUrl onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetContentUploadUrl = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetContentUploadUrl);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetContentUploadUrl";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.ContentType.IsEmpty() || request.ContentType == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ContentType"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ContentType"), request.ContentType);
+    }
+    if (request.Key.IsEmpty() || request.Key == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Key"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetContentUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetContentUploadUrl.IsBound())
+    {
+        FAdminGetContentUploadUrlResult result = UPlayFabAdminModelDecoder::decodeGetContentUploadUrlResultResponse(response.responseData);
+        OnSuccessGetContentUploadUrl.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Custom Server Management
+//////////////////////////////////////////////////////
+/** Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a client is permitted to request in a call to StartGame */
+UPlayFabAdminAPI* UPlayFabAdminAPI::AddServerBuild(FAdminAddServerBuildRequest request,
+    FDelegateOnSuccessAddServerBuild onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessAddServerBuild = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAddServerBuild);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/AddServerBuild";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    // Check to see if string is empty
+    if (request.ActiveRegions.IsEmpty() || request.ActiveRegions == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ActiveRegions"));
+    } else {
+        TArray<FString> ActiveRegionsArray;
+        FString(request.ActiveRegions).ParseIntoArray(ActiveRegionsArray, TEXT(","), false);
+        OutRestJsonObj->SetStringArrayField(TEXT("ActiveRegions"), ActiveRegionsArray);
+    }
+    if (request.BuildId.IsEmpty() || request.BuildId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
+    }
+    if (request.CommandLineTemplate.IsEmpty() || request.CommandLineTemplate == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("CommandLineTemplate"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("CommandLineTemplate"), request.CommandLineTemplate);
+    }
+    if (request.Comment.IsEmpty() || request.Comment == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Comment"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Comment"), request.Comment);
+    }
+    if (request.ExecutablePath.IsEmpty() || request.ExecutablePath == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ExecutablePath"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ExecutablePath"), request.ExecutablePath);
+    }
+    OutRestJsonObj->SetNumberField(TEXT("MaxGamesPerHost"), request.MaxGamesPerHost);
+    OutRestJsonObj->SetNumberField(TEXT("MinFreeGameSlots"), request.MinFreeGameSlots);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperAddServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessAddServerBuild.IsBound())
+    {
+        FAdminAddServerBuildResult result = UPlayFabAdminModelDecoder::decodeAddServerBuildResultResponse(response.responseData);
+        OnSuccessAddServerBuild.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieves the build details for the specified game server executable */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetServerBuildInfo(FAdminGetServerBuildInfoRequest request,
+    FDelegateOnSuccessGetServerBuildInfo onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetServerBuildInfo = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetServerBuildInfo);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetServerBuildInfo";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.BuildId.IsEmpty() || request.BuildId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetServerBuildInfo(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetServerBuildInfo.IsBound())
+    {
+        FAdminGetServerBuildInfoResult result = UPlayFabAdminModelDecoder::decodeGetServerBuildInfoResultResponse(response.responseData);
+        OnSuccessGetServerBuildInfo.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for use - see AddServerBuild) */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetServerBuildUploadUrl(FAdminGetServerBuildUploadURLRequest request,
+    FDelegateOnSuccessGetServerBuildUploadUrl onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetServerBuildUploadUrl = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetServerBuildUploadUrl);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetServerBuildUploadUrl";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.BuildId.IsEmpty() || request.BuildId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetServerBuildUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetServerBuildUploadUrl.IsBound())
+    {
+        FAdminGetServerBuildUploadURLResult result = UPlayFabAdminModelDecoder::decodeGetServerBuildUploadURLResultResponse(response.responseData);
+        OnSuccessGetServerBuildUploadUrl.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieves the build details for all game server executables which are currently defined for the title */
+UPlayFabAdminAPI* UPlayFabAdminAPI::ListServerBuilds(FAdminListBuildsRequest request,
+    FDelegateOnSuccessListServerBuilds onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessListServerBuilds = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperListServerBuilds);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/ListServerBuilds";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperListServerBuilds(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessListServerBuilds.IsBound())
+    {
+        FAdminListBuildsResult result = UPlayFabAdminModelDecoder::decodeListBuildsResultResponse(response.responseData);
+        OnSuccessListServerBuilds.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Updates the build details for the specified game server executable */
+UPlayFabAdminAPI* UPlayFabAdminAPI::ModifyServerBuild(FAdminModifyServerBuildRequest request,
+    FDelegateOnSuccessModifyServerBuild onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessModifyServerBuild = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperModifyServerBuild);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/ModifyServerBuild";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    // Check to see if string is empty
+    if (request.ActiveRegions.IsEmpty() || request.ActiveRegions == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ActiveRegions"));
+    } else {
+        TArray<FString> ActiveRegionsArray;
+        FString(request.ActiveRegions).ParseIntoArray(ActiveRegionsArray, TEXT(","), false);
+        OutRestJsonObj->SetStringArrayField(TEXT("ActiveRegions"), ActiveRegionsArray);
+    }
+    if (request.BuildId.IsEmpty() || request.BuildId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
+    }
+    if (request.CommandLineTemplate.IsEmpty() || request.CommandLineTemplate == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("CommandLineTemplate"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("CommandLineTemplate"), request.CommandLineTemplate);
+    }
+    if (request.Comment.IsEmpty() || request.Comment == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Comment"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Comment"), request.Comment);
+    }
+    if (request.ExecutablePath.IsEmpty() || request.ExecutablePath == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ExecutablePath"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ExecutablePath"), request.ExecutablePath);
+    }
+    OutRestJsonObj->SetNumberField(TEXT("MaxGamesPerHost"), request.MaxGamesPerHost);
+    OutRestJsonObj->SetNumberField(TEXT("MinFreeGameSlots"), request.MinFreeGameSlots);
+    if (request.Timestamp.IsEmpty() || request.Timestamp == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Timestamp"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Timestamp"), request.Timestamp);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperModifyServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessModifyServerBuild.IsBound())
+    {
+        FAdminModifyServerBuildResult result = UPlayFabAdminModelDecoder::decodeModifyServerBuildResultResponse(response.responseData);
+        OnSuccessModifyServerBuild.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Removes the game server executable specified from the set of those a client is permitted to request in a call to StartGame */
+UPlayFabAdminAPI* UPlayFabAdminAPI::RemoveServerBuild(FAdminRemoveServerBuildRequest request,
+    FDelegateOnSuccessRemoveServerBuild onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessRemoveServerBuild = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRemoveServerBuild);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/RemoveServerBuild";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.BuildId.IsEmpty() || request.BuildId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperRemoveServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessRemoveServerBuild.IsBound())
+    {
+        FAdminRemoveServerBuildResult result = UPlayFabAdminModelDecoder::decodeRemoveServerBuildResultResponse(response.responseData);
+        OnSuccessRemoveServerBuild.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Matchmaking
+//////////////////////////////////////////////////////
+/** Retrieves the details for a specific completed session, including links to standard out and standard error logs */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetMatchmakerGameInfo(FAdminGetMatchmakerGameInfoRequest request,
+    FDelegateOnSuccessGetMatchmakerGameInfo onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetMatchmakerGameInfo = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetMatchmakerGameInfo);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetMatchmakerGameInfo";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.LobbyId.IsEmpty() || request.LobbyId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("LobbyId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("LobbyId"), request.LobbyId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetMatchmakerGameInfo(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetMatchmakerGameInfo.IsBound())
+    {
+        FAdminGetMatchmakerGameInfoResult result = UPlayFabAdminModelDecoder::decodeGetMatchmakerGameInfoResultResponse(response.responseData);
+        OnSuccessGetMatchmakerGameInfo.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieves the details of defined game modes for the specified game server executable */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetMatchmakerGameModes(FAdminGetMatchmakerGameModesRequest request,
+    FDelegateOnSuccessGetMatchmakerGameModes onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetMatchmakerGameModes = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetMatchmakerGameModes);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetMatchmakerGameModes";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.BuildVersion.IsEmpty() || request.BuildVersion == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("BuildVersion"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("BuildVersion"), request.BuildVersion);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetMatchmakerGameModes.IsBound())
+    {
+        FAdminGetMatchmakerGameModesResult result = UPlayFabAdminModelDecoder::decodeGetMatchmakerGameModesResultResponse(response.responseData);
+        OnSuccessGetMatchmakerGameModes.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Updates the game server mode details for the specified game server executable */
+UPlayFabAdminAPI* UPlayFabAdminAPI::ModifyMatchmakerGameModes(FAdminModifyMatchmakerGameModesRequest request,
+    FDelegateOnSuccessModifyMatchmakerGameModes onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessModifyMatchmakerGameModes = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperModifyMatchmakerGameModes);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/ModifyMatchmakerGameModes";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.BuildVersion.IsEmpty() || request.BuildVersion == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("BuildVersion"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("BuildVersion"), request.BuildVersion);
+    }
+    if (request.GameModes.Num() == 0) {
+        OutRestJsonObj->SetFieldNull(TEXT("GameModes"));
+    } else {
+        OutRestJsonObj->SetObjectArrayField(TEXT("GameModes"), request.GameModes);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperModifyMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessModifyMatchmakerGameModes.IsBound())
+    {
+        FAdminModifyMatchmakerGameModesResult result = UPlayFabAdminModelDecoder::decodeModifyMatchmakerGameModesResultResponse(response.responseData);
+        OnSuccessModifyMatchmakerGameModes.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }
@@ -993,6 +1737,9 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::CreatePlayerStatisticDefinition(FAdminCreate
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
+    FString temp_AggregationMethod;
+    if (GetEnumValueToString<EStatisticAggregationMethod>(TEXT("EStatisticAggregationMethod"), request.AggregationMethod, temp_AggregationMethod))
+        OutRestJsonObj->SetStringField(TEXT("AggregationMethod"), temp_AggregationMethod);
     if (request.StatisticName.IsEmpty() || request.StatisticName == "") {
         OutRestJsonObj->SetFieldNull(TEXT("StatisticName"));
     } else {
@@ -1001,9 +1748,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::CreatePlayerStatisticDefinition(FAdminCreate
     FString temp_VersionChangeInterval;
     if (GetEnumValueToString<EStatisticResetIntervalOption>(TEXT("EStatisticResetIntervalOption"), request.VersionChangeInterval, temp_VersionChangeInterval))
         OutRestJsonObj->SetStringField(TEXT("VersionChangeInterval"), temp_VersionChangeInterval);
-    FString temp_AggregationMethod;
-    if (GetEnumValueToString<EStatisticAggregationMethod>(TEXT("EStatisticAggregationMethod"), request.AggregationMethod, temp_AggregationMethod))
-        OutRestJsonObj->SetStringField(TEXT("AggregationMethod"), temp_AggregationMethod);
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1105,14 +1849,14 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetDataReport(FAdminGetDataReportRequest req
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
+    OutRestJsonObj->SetNumberField(TEXT("Day"), request.Day);
+    OutRestJsonObj->SetNumberField(TEXT("Month"), request.Month);
     if (request.ReportName.IsEmpty() || request.ReportName == "") {
         OutRestJsonObj->SetFieldNull(TEXT("ReportName"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("ReportName"), request.ReportName);
     }
     OutRestJsonObj->SetNumberField(TEXT("Year"), request.Year);
-    OutRestJsonObj->SetNumberField(TEXT("Month"), request.Month);
-    OutRestJsonObj->SetNumberField(TEXT("Day"), request.Day);
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1256,11 +2000,7 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserData(FAdminGetUserDataRequest request
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
+    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
     // Check to see if string is empty
     if (request.Keys.IsEmpty() || request.Keys == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Keys"));
@@ -1269,7 +2009,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserData(FAdminGetUserDataRequest request
         FString(request.Keys).ParseIntoArray(KeysArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("Keys"), KeysArray);
     }
-    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1316,11 +2060,7 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserInternalData(FAdminGetUserDataRequest
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
+    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
     // Check to see if string is empty
     if (request.Keys.IsEmpty() || request.Keys == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Keys"));
@@ -1329,7 +2069,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserInternalData(FAdminGetUserDataRequest
         FString(request.Keys).ParseIntoArray(KeysArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("Keys"), KeysArray);
     }
-    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1376,11 +2120,7 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserPublisherData(FAdminGetUserDataReques
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
+    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
     // Check to see if string is empty
     if (request.Keys.IsEmpty() || request.Keys == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Keys"));
@@ -1389,7 +2129,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserPublisherData(FAdminGetUserDataReques
         FString(request.Keys).ParseIntoArray(KeysArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("Keys"), KeysArray);
     }
-    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1436,11 +2180,7 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserPublisherInternalData(FAdminGetUserDa
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
+    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
     // Check to see if string is empty
     if (request.Keys.IsEmpty() || request.Keys == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Keys"));
@@ -1449,7 +2189,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserPublisherInternalData(FAdminGetUserDa
         FString(request.Keys).ParseIntoArray(KeysArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("Keys"), KeysArray);
     }
-    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1496,11 +2240,7 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserPublisherReadOnlyData(FAdminGetUserDa
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
+    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
     // Check to see if string is empty
     if (request.Keys.IsEmpty() || request.Keys == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Keys"));
@@ -1509,7 +2249,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserPublisherReadOnlyData(FAdminGetUserDa
         FString(request.Keys).ParseIntoArray(KeysArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("Keys"), KeysArray);
     }
-    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1556,11 +2300,7 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserReadOnlyData(FAdminGetUserDataRequest
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
+    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
     // Check to see if string is empty
     if (request.Keys.IsEmpty() || request.Keys == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Keys"));
@@ -1569,7 +2309,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserReadOnlyData(FAdminGetUserDataRequest
         FString(request.Keys).ParseIntoArray(KeysArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("Keys"), KeysArray);
     }
-    OutRestJsonObj->SetNumberField(TEXT("IfChangedFromDataVersion"), request.IfChangedFromDataVersion);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1667,15 +2411,15 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::RefundPurchase(FAdminRefundPurchaseRequest r
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.OrderId.IsEmpty() || request.OrderId == "") {
         OutRestJsonObj->SetFieldNull(TEXT("OrderId"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("OrderId"), request.OrderId);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
     }
     if (request.Reason.IsEmpty() || request.Reason == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Reason"));
@@ -1779,24 +2523,24 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::ResolvePurchaseDispute(FAdminResolvePurchase
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.OrderId.IsEmpty() || request.OrderId == "") {
         OutRestJsonObj->SetFieldNull(TEXT("OrderId"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("OrderId"), request.OrderId);
+    }
+    FString temp_Outcome;
+    if (GetEnumValueToString<EResolutionOutcome>(TEXT("EResolutionOutcome"), request.Outcome, temp_Outcome))
+        OutRestJsonObj->SetStringField(TEXT("Outcome"), temp_Outcome);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
     }
     if (request.Reason.IsEmpty() || request.Reason == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Reason"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("Reason"), request.Reason);
     }
-    FString temp_Outcome;
-    if (GetEnumValueToString<EResolutionOutcome>(TEXT("EResolutionOutcome"), request.Outcome, temp_Outcome))
-        OutRestJsonObj->SetStringField(TEXT("Outcome"), temp_Outcome);
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1843,6 +2587,9 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdatePlayerStatisticDefinition(FAdminUpdate
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
+    FString temp_AggregationMethod;
+    if (GetEnumValueToString<EStatisticAggregationMethod>(TEXT("EStatisticAggregationMethod"), request.AggregationMethod, temp_AggregationMethod))
+        OutRestJsonObj->SetStringField(TEXT("AggregationMethod"), temp_AggregationMethod);
     if (request.StatisticName.IsEmpty() || request.StatisticName == "") {
         OutRestJsonObj->SetFieldNull(TEXT("StatisticName"));
     } else {
@@ -1851,9 +2598,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdatePlayerStatisticDefinition(FAdminUpdate
     FString temp_VersionChangeInterval;
     if (GetEnumValueToString<EStatisticResetIntervalOption>(TEXT("EStatisticResetIntervalOption"), request.VersionChangeInterval, temp_VersionChangeInterval))
         OutRestJsonObj->SetStringField(TEXT("VersionChangeInterval"), temp_VersionChangeInterval);
-    FString temp_AggregationMethod;
-    if (GetEnumValueToString<EStatisticAggregationMethod>(TEXT("EStatisticAggregationMethod"), request.AggregationMethod, temp_AggregationMethod))
-        OutRestJsonObj->SetStringField(TEXT("AggregationMethod"), temp_AggregationMethod);
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1900,11 +2644,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserData(FAdminUpdateUserDataRequest r
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.Data != nullptr) OutRestJsonObj->SetObjectField(TEXT("Data"), request.Data);
     // Check to see if string is empty
     if (request.KeysToRemove.IsEmpty() || request.KeysToRemove == "") {
@@ -1917,6 +2656,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserData(FAdminUpdateUserDataRequest r
     FString temp_Permission;
     if (GetEnumValueToString<EUserDataPermission>(TEXT("EUserDataPermission"), request.Permission, temp_Permission))
         OutRestJsonObj->SetStringField(TEXT("Permission"), temp_Permission);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -1963,11 +2707,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserInternalData(FAdminUpdateUserInter
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.Data != nullptr) OutRestJsonObj->SetObjectField(TEXT("Data"), request.Data);
     // Check to see if string is empty
     if (request.KeysToRemove.IsEmpty() || request.KeysToRemove == "") {
@@ -1976,6 +2715,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserInternalData(FAdminUpdateUserInter
         TArray<FString> KeysToRemoveArray;
         FString(request.KeysToRemove).ParseIntoArray(KeysToRemoveArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("KeysToRemove"), KeysToRemoveArray);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
     }
 
     // Add Request to manager
@@ -2023,11 +2767,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserPublisherData(FAdminUpdateUserData
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.Data != nullptr) OutRestJsonObj->SetObjectField(TEXT("Data"), request.Data);
     // Check to see if string is empty
     if (request.KeysToRemove.IsEmpty() || request.KeysToRemove == "") {
@@ -2040,6 +2779,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserPublisherData(FAdminUpdateUserData
     FString temp_Permission;
     if (GetEnumValueToString<EUserDataPermission>(TEXT("EUserDataPermission"), request.Permission, temp_Permission))
         OutRestJsonObj->SetStringField(TEXT("Permission"), temp_Permission);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -2086,11 +2830,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserPublisherInternalData(FAdminUpdate
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.Data != nullptr) OutRestJsonObj->SetObjectField(TEXT("Data"), request.Data);
     // Check to see if string is empty
     if (request.KeysToRemove.IsEmpty() || request.KeysToRemove == "") {
@@ -2099,6 +2838,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserPublisherInternalData(FAdminUpdate
         TArray<FString> KeysToRemoveArray;
         FString(request.KeysToRemove).ParseIntoArray(KeysToRemoveArray, TEXT(","), false);
         OutRestJsonObj->SetStringArrayField(TEXT("KeysToRemove"), KeysToRemoveArray);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
     }
 
     // Add Request to manager
@@ -2146,11 +2890,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserPublisherReadOnlyData(FAdminUpdate
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.Data != nullptr) OutRestJsonObj->SetObjectField(TEXT("Data"), request.Data);
     // Check to see if string is empty
     if (request.KeysToRemove.IsEmpty() || request.KeysToRemove == "") {
@@ -2163,6 +2902,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserPublisherReadOnlyData(FAdminUpdate
     FString temp_Permission;
     if (GetEnumValueToString<EUserDataPermission>(TEXT("EUserDataPermission"), request.Permission, temp_Permission))
         OutRestJsonObj->SetStringField(TEXT("Permission"), temp_Permission);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -2209,11 +2953,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserReadOnlyData(FAdminUpdateUserDataR
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
     if (request.Data != nullptr) OutRestJsonObj->SetObjectField(TEXT("Data"), request.Data);
     // Check to see if string is empty
     if (request.KeysToRemove.IsEmpty() || request.KeysToRemove == "") {
@@ -2226,6 +2965,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateUserReadOnlyData(FAdminUpdateUserDataR
     FString temp_Permission;
     if (GetEnumValueToString<EUserDataPermission>(TEXT("EUserDataPermission"), request.Permission, temp_Permission))
         OutRestJsonObj->SetStringField(TEXT("Permission"), temp_Permission);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -2245,6 +2989,1479 @@ void UPlayFabAdminAPI::HelperUpdateUserReadOnlyData(FPlayFabBaseModel response, 
     {
         FAdminUpdateUserDataResult result = UPlayFabAdminModelDecoder::decodeUpdateUserDataResultResponse(response.responseData);
         OnSuccessUpdateUserReadOnlyData.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Player Item Management
+//////////////////////////////////////////////////////
+/** Increments the specified virtual currency by the stated amount */
+UPlayFabAdminAPI* UPlayFabAdminAPI::AddUserVirtualCurrency(FAdminAddUserVirtualCurrencyRequest request,
+    FDelegateOnSuccessAddUserVirtualCurrency onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessAddUserVirtualCurrency = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAddUserVirtualCurrency);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/AddUserVirtualCurrency";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetNumberField(TEXT("Amount"), request.Amount);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+    if (request.VirtualCurrency.IsEmpty() || request.VirtualCurrency == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("VirtualCurrency"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("VirtualCurrency"), request.VirtualCurrency);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperAddUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessAddUserVirtualCurrency.IsBound())
+    {
+        FAdminModifyUserVirtualCurrencyResult result = UPlayFabAdminModelDecoder::decodeModifyUserVirtualCurrencyResultResponse(response.responseData);
+        OnSuccessAddUserVirtualCurrency.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieves the specified user's current inventory of virtual goods */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserInventory(FAdminGetUserInventoryRequest request,
+    FDelegateOnSuccessGetUserInventory onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetUserInventory = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetUserInventory);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetUserInventory";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetUserInventory(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetUserInventory.IsBound())
+    {
+        FAdminGetUserInventoryResult result = UPlayFabAdminModelDecoder::decodeGetUserInventoryResultResponse(response.responseData);
+        OnSuccessGetUserInventory.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Adds the specified items to the specified user inventories */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GrantItemsToUsers(FAdminGrantItemsToUsersRequest request,
+    FDelegateOnSuccessGrantItemsToUsers onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGrantItemsToUsers = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGrantItemsToUsers);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GrantItemsToUsers";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.CatalogVersion.IsEmpty() || request.CatalogVersion == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("CatalogVersion"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
+    }
+    if (request.ItemGrants.Num() == 0) {
+        OutRestJsonObj->SetFieldNull(TEXT("ItemGrants"));
+    } else {
+        OutRestJsonObj->SetObjectArrayField(TEXT("ItemGrants"), request.ItemGrants);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGrantItemsToUsers(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGrantItemsToUsers.IsBound())
+    {
+        FAdminGrantItemsToUsersResult result = UPlayFabAdminModelDecoder::decodeGrantItemsToUsersResultResponse(response.responseData);
+        OnSuccessGrantItemsToUsers.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Revokes access to an item in a user's inventory */
+UPlayFabAdminAPI* UPlayFabAdminAPI::RevokeInventoryItem(FAdminRevokeInventoryItemRequest request,
+    FDelegateOnSuccessRevokeInventoryItem onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessRevokeInventoryItem = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRevokeInventoryItem);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/RevokeInventoryItem";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.CharacterId.IsEmpty() || request.CharacterId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("CharacterId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("CharacterId"), request.CharacterId);
+    }
+    if (request.ItemInstanceId.IsEmpty() || request.ItemInstanceId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ItemInstanceId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ItemInstanceId"), request.ItemInstanceId);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperRevokeInventoryItem(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessRevokeInventoryItem.IsBound())
+    {
+        FAdminRevokeInventoryResult result = UPlayFabAdminModelDecoder::decodeRevokeInventoryResultResponse(response.responseData);
+        OnSuccessRevokeInventoryItem.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Decrements the specified virtual currency by the stated amount */
+UPlayFabAdminAPI* UPlayFabAdminAPI::SubtractUserVirtualCurrency(FAdminSubtractUserVirtualCurrencyRequest request,
+    FDelegateOnSuccessSubtractUserVirtualCurrency onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessSubtractUserVirtualCurrency = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSubtractUserVirtualCurrency);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/SubtractUserVirtualCurrency";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetNumberField(TEXT("Amount"), request.Amount);
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+    if (request.VirtualCurrency.IsEmpty() || request.VirtualCurrency == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("VirtualCurrency"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("VirtualCurrency"), request.VirtualCurrency);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperSubtractUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessSubtractUserVirtualCurrency.IsBound())
+    {
+        FAdminModifyUserVirtualCurrencyResult result = UPlayFabAdminModelDecoder::decodeModifyUserVirtualCurrencyResultResponse(response.responseData);
+        OnSuccessSubtractUserVirtualCurrency.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// PlayStream
+//////////////////////////////////////////////////////
+/** Adds a given tag to a player profile. The tag's namespace is automatically generated based on the source of the tag. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::AddPlayerTag(FAdminAddPlayerTagRequest request,
+    FDelegateOnSuccessAddPlayerTag onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessAddPlayerTag = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAddPlayerTag);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/AddPlayerTag";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+    if (request.TagName.IsEmpty() || request.TagName == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("TagName"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("TagName"), request.TagName);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperAddPlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessAddPlayerTag.IsBound())
+    {
+        FAdminAddPlayerTagResult result = UPlayFabAdminModelDecoder::decodeAddPlayerTagResultResponse(response.responseData);
+        OnSuccessAddPlayerTag.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieve a list of all PlayStream actions groups. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetAllActionGroups(FAdminGetAllActionGroupsRequest request,
+    FDelegateOnSuccessGetAllActionGroups onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetAllActionGroups = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetAllActionGroups);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetAllActionGroups";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetAllActionGroups(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetAllActionGroups.IsBound())
+    {
+        FAdminGetAllActionGroupsResult result = UPlayFabAdminModelDecoder::decodeGetAllActionGroupsResultResponse(response.responseData);
+        OnSuccessGetAllActionGroups.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Retrieves an array of player segment definitions. Results from this can be used in subsequent API calls such as GetPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not change. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetAllSegments(FAdminGetAllSegmentsRequest request,
+    FDelegateOnSuccessGetAllSegments onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetAllSegments = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetAllSegments);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetAllSegments";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetAllSegments(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetAllSegments.IsBound())
+    {
+        FAdminGetAllSegmentsResult result = UPlayFabAdminModelDecoder::decodeGetAllSegmentsResultResponse(response.responseData);
+        OnSuccessGetAllSegments.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** List all segments that a player currently belongs to at this moment in time. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerSegments(FAdminGetPlayersSegmentsRequest request,
+    FDelegateOnSuccessGetPlayerSegments onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPlayerSegments = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerSegments);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetPlayerSegments";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetPlayerSegments(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPlayerSegments.IsBound())
+    {
+        FAdminGetPlayerSegmentsResult result = UPlayFabAdminModelDecoder::decodeGetPlayerSegmentsResultResponse(response.responseData);
+        OnSuccessGetPlayerSegments.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Allows for paging through all players in a given segment. This API creates a snapshot of all player profiles that match the segment definition at the time of its creation and lives through the Total Seconds to Live, refreshing its life span on each subsequent use of the Continuation Token. Profiles that change during the course of paging will not be reflected in the results. AB Test segments are currently not supported by this operation. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayersInSegment(FAdminGetPlayersInSegmentRequest request,
+    FDelegateOnSuccessGetPlayersInSegment onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPlayersInSegment = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayersInSegment);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetPlayersInSegment";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.ContinuationToken.IsEmpty() || request.ContinuationToken == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ContinuationToken"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ContinuationToken"), request.ContinuationToken);
+    }
+    OutRestJsonObj->SetNumberField(TEXT("MaxBatchSize"), request.MaxBatchSize);
+    OutRestJsonObj->SetNumberField(TEXT("SecondsToLive"), request.SecondsToLive);
+    if (request.SegmentId.IsEmpty() || request.SegmentId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("SegmentId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("SegmentId"), request.SegmentId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetPlayersInSegment(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPlayersInSegment.IsBound())
+    {
+        FAdminGetPlayersInSegmentResult result = UPlayFabAdminModelDecoder::decodeGetPlayersInSegmentResultResponse(response.responseData);
+        OnSuccessGetPlayersInSegment.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Get all tags with a given Namespace (optional) from a player profile. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerTags(FAdminGetPlayerTagsRequest request,
+    FDelegateOnSuccessGetPlayerTags onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPlayerTags = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerTags);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetPlayerTags";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Namespace.IsEmpty() || request.Namespace == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Namespace"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Namespace"), request.Namespace);
+    }
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetPlayerTags(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPlayerTags.IsBound())
+    {
+        FAdminGetPlayerTagsResult result = UPlayFabAdminModelDecoder::decodeGetPlayerTagsResultResponse(response.responseData);
+        OnSuccessGetPlayerTags.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Remove a given tag from a player profile. The tag's namespace is automatically generated based on the source of the tag. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::RemovePlayerTag(FAdminRemovePlayerTagRequest request,
+    FDelegateOnSuccessRemovePlayerTag onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessRemovePlayerTag = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRemovePlayerTag);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/RemovePlayerTag";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+    if (request.TagName.IsEmpty() || request.TagName == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("TagName"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("TagName"), request.TagName);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperRemovePlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessRemovePlayerTag.IsBound())
+    {
+        FAdminRemovePlayerTagResult result = UPlayFabAdminModelDecoder::decodeRemovePlayerTagResultResponse(response.responseData);
+        OnSuccessRemovePlayerTag.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// ScheduledTask
+//////////////////////////////////////////////////////
+/** Abort an ongoing task instance. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::AbortTaskInstance(FAdminAbortTaskInstanceRequest request,
+    FDelegateOnSuccessAbortTaskInstance onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessAbortTaskInstance = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAbortTaskInstance);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/AbortTaskInstance";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.TaskInstanceId.IsEmpty() || request.TaskInstanceId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("TaskInstanceId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("TaskInstanceId"), request.TaskInstanceId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperAbortTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessAbortTaskInstance.IsBound())
+    {
+        FAdminEmptyResult result = UPlayFabAdminModelDecoder::decodeEmptyResultResponse(response.responseData);
+        OnSuccessAbortTaskInstance.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Create an ActionsOnPlayersInSegment task, which iterates through all players in a segment to execute action. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::CreateActionsOnPlayersInSegmentTask(FAdminCreateActionsOnPlayerSegmentTaskRequest request,
+    FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessCreateActionsOnPlayersInSegmentTask = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperCreateActionsOnPlayersInSegmentTask);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/CreateActionsOnPlayersInSegmentTask";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Description.IsEmpty() || request.Description == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Description"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Description"), request.Description);
+    }
+    OutRestJsonObj->SetBoolField(TEXT("IsActive"), request.IsActive);
+    if (request.Name.IsEmpty() || request.Name == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Name"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
+    }
+    if (request.Parameter != nullptr) OutRestJsonObj->SetObjectField(TEXT("Parameter"), request.Parameter);
+    if (request.Schedule.IsEmpty() || request.Schedule == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Schedule"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Schedule"), request.Schedule);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperCreateActionsOnPlayersInSegmentTask(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessCreateActionsOnPlayersInSegmentTask.IsBound())
+    {
+        FAdminCreateTaskResult result = UPlayFabAdminModelDecoder::decodeCreateTaskResultResponse(response.responseData);
+        OnSuccessCreateActionsOnPlayersInSegmentTask.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Create a CloudScript task, which can run a CloudScript on a schedule. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::CreateCloudScriptTask(FAdminCreateCloudScriptTaskRequest request,
+    FDelegateOnSuccessCreateCloudScriptTask onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessCreateCloudScriptTask = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperCreateCloudScriptTask);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/CreateCloudScriptTask";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Description.IsEmpty() || request.Description == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Description"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Description"), request.Description);
+    }
+    OutRestJsonObj->SetBoolField(TEXT("IsActive"), request.IsActive);
+    if (request.Name.IsEmpty() || request.Name == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Name"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
+    }
+    if (request.Parameter != nullptr) OutRestJsonObj->SetObjectField(TEXT("Parameter"), request.Parameter);
+    if (request.Schedule.IsEmpty() || request.Schedule == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Schedule"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Schedule"), request.Schedule);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperCreateCloudScriptTask(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessCreateCloudScriptTask.IsBound())
+    {
+        FAdminCreateTaskResult result = UPlayFabAdminModelDecoder::decodeCreateTaskResultResponse(response.responseData);
+        OnSuccessCreateCloudScriptTask.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Delete a task. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::DeleteTask(FAdminDeleteTaskRequest request,
+    FDelegateOnSuccessDeleteTask onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessDeleteTask = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeleteTask);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/DeleteTask";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperDeleteTask(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessDeleteTask.IsBound())
+    {
+        FAdminEmptyResult result = UPlayFabAdminModelDecoder::decodeEmptyResultResponse(response.responseData);
+        OnSuccessDeleteTask.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Get information about a ActionsOnPlayersInSegment task instance. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetActionsOnPlayersInSegmentTaskInstance(FAdminGetTaskInstanceRequest request,
+    FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetActionsOnPlayersInSegmentTaskInstance = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetActionsOnPlayersInSegmentTaskInstance);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetActionsOnPlayersInSegmentTaskInstance";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.TaskInstanceId.IsEmpty() || request.TaskInstanceId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("TaskInstanceId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("TaskInstanceId"), request.TaskInstanceId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetActionsOnPlayersInSegmentTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetActionsOnPlayersInSegmentTaskInstance.IsBound())
+    {
+        FAdminGetActionsOnPlayersInSegmentTaskInstanceResult result = UPlayFabAdminModelDecoder::decodeGetActionsOnPlayersInSegmentTaskInstanceResultResponse(response.responseData);
+        OnSuccessGetActionsOnPlayersInSegmentTaskInstance.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Get detail information about a CloudScript task instance. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetCloudScriptTaskInstance(FAdminGetTaskInstanceRequest request,
+    FDelegateOnSuccessGetCloudScriptTaskInstance onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetCloudScriptTaskInstance = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetCloudScriptTaskInstance);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetCloudScriptTaskInstance";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.TaskInstanceId.IsEmpty() || request.TaskInstanceId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("TaskInstanceId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("TaskInstanceId"), request.TaskInstanceId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetCloudScriptTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetCloudScriptTaskInstance.IsBound())
+    {
+        FAdminGetCloudScriptTaskInstanceResult result = UPlayFabAdminModelDecoder::decodeGetCloudScriptTaskInstanceResultResponse(response.responseData);
+        OnSuccessGetCloudScriptTaskInstance.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Query for task instances by task, status, or time range. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetTaskInstances(FAdminGetTaskInstancesRequest request,
+    FDelegateOnSuccessGetTaskInstances onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetTaskInstances = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetTaskInstances);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetTaskInstances";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.StartedAtRangeFrom.IsEmpty() || request.StartedAtRangeFrom == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("StartedAtRangeFrom"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("StartedAtRangeFrom"), request.StartedAtRangeFrom);
+    }
+    if (request.StartedAtRangeTo.IsEmpty() || request.StartedAtRangeTo == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("StartedAtRangeTo"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("StartedAtRangeTo"), request.StartedAtRangeTo);
+    }
+    FString temp_StatusFilter;
+    if (GetEnumValueToString<ETaskInstanceStatus>(TEXT("ETaskInstanceStatus"), request.StatusFilter, temp_StatusFilter))
+        OutRestJsonObj->SetStringField(TEXT("StatusFilter"), temp_StatusFilter);
+    if (request.TaskIdentifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("TaskIdentifier"), request.TaskIdentifier);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetTaskInstances(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetTaskInstances.IsBound())
+    {
+        FAdminGetTaskInstancesResult result = UPlayFabAdminModelDecoder::decodeGetTaskInstancesResultResponse(response.responseData);
+        OnSuccessGetTaskInstances.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Get definition information on a specified task or all tasks within a title. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetTasks(FAdminGetTasksRequest request,
+    FDelegateOnSuccessGetTasks onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetTasks = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetTasks);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetTasks";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetTasks(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetTasks.IsBound())
+    {
+        FAdminGetTasksResult result = UPlayFabAdminModelDecoder::decodeGetTasksResultResponse(response.responseData);
+        OnSuccessGetTasks.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Run a task immediately regardless of its schedule. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::RunTask(FAdminRunTaskRequest request,
+    FDelegateOnSuccessRunTask onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessRunTask = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRunTask);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/RunTask";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperRunTask(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessRunTask.IsBound())
+    {
+        FAdminRunTaskResult result = UPlayFabAdminModelDecoder::decodeRunTaskResultResponse(response.responseData);
+        OnSuccessRunTask.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Update an existing task. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateTask(FAdminUpdateTaskRequest request,
+    FDelegateOnSuccessUpdateTask onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessUpdateTask = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdateTask);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/UpdateTask";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Description.IsEmpty() || request.Description == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Description"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Description"), request.Description);
+    }
+    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
+    OutRestJsonObj->SetBoolField(TEXT("IsActive"), request.IsActive);
+    if (request.Name.IsEmpty() || request.Name == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Name"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
+    }
+    if (request.Parameter != nullptr) OutRestJsonObj->SetObjectField(TEXT("Parameter"), request.Parameter);
+    if (request.Schedule.IsEmpty() || request.Schedule == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Schedule"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Schedule"), request.Schedule);
+    }
+    FString temp_Type;
+    if (GetEnumValueToString<EScheduledTaskType>(TEXT("EScheduledTaskType"), request.Type, temp_Type))
+        OutRestJsonObj->SetStringField(TEXT("Type"), temp_Type);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperUpdateTask(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessUpdateTask.IsBound())
+    {
+        FAdminEmptyResult result = UPlayFabAdminModelDecoder::decodeEmptyResultResponse(response.responseData);
+        OnSuccessUpdateTask.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Server-Side Cloud Script
+//////////////////////////////////////////////////////
+/** Gets the contents and information of a specific Cloud Script revision. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetCloudScriptRevision(FAdminGetCloudScriptRevisionRequest request,
+    FDelegateOnSuccessGetCloudScriptRevision onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetCloudScriptRevision = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetCloudScriptRevision);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetCloudScriptRevision";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetNumberField(TEXT("Revision"), request.Revision);
+    OutRestJsonObj->SetNumberField(TEXT("Version"), request.Version);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetCloudScriptRevision(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetCloudScriptRevision.IsBound())
+    {
+        FAdminGetCloudScriptRevisionResult result = UPlayFabAdminModelDecoder::decodeGetCloudScriptRevisionResultResponse(response.responseData);
+        OnSuccessGetCloudScriptRevision.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Lists all the current cloud script versions. For each version, information about the current published and latest revisions is also listed. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetCloudScriptVersions(FAdminGetCloudScriptVersionsRequest request,
+    FDelegateOnSuccessGetCloudScriptVersions onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetCloudScriptVersions = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetCloudScriptVersions);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetCloudScriptVersions";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetCloudScriptVersions(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetCloudScriptVersions.IsBound())
+    {
+        FAdminGetCloudScriptVersionsResult result = UPlayFabAdminModelDecoder::decodeGetCloudScriptVersionsResultResponse(response.responseData);
+        OnSuccessGetCloudScriptVersions.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Sets the currently published revision of a title Cloud Script */
+UPlayFabAdminAPI* UPlayFabAdminAPI::SetPublishedRevision(FAdminSetPublishedRevisionRequest request,
+    FDelegateOnSuccessSetPublishedRevision onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessSetPublishedRevision = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSetPublishedRevision);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/SetPublishedRevision";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetNumberField(TEXT("Revision"), request.Revision);
+    OutRestJsonObj->SetNumberField(TEXT("Version"), request.Version);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperSetPublishedRevision(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessSetPublishedRevision.IsBound())
+    {
+        FAdminSetPublishedRevisionResult result = UPlayFabAdminModelDecoder::decodeSetPublishedRevisionResultResponse(response.responseData);
+        OnSuccessSetPublishedRevision.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Creates a new Cloud Script revision and uploads source code to it. Note that at this time, only one file should be submitted in the revision. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateCloudScript(FAdminUpdateCloudScriptRequest request,
+    FDelegateOnSuccessUpdateCloudScript onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessUpdateCloudScript = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdateCloudScript);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/UpdateCloudScript";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.DeveloperPlayFabId.IsEmpty() || request.DeveloperPlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("DeveloperPlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("DeveloperPlayFabId"), request.DeveloperPlayFabId);
+    }
+    if (request.Files.Num() == 0) {
+        OutRestJsonObj->SetFieldNull(TEXT("Files"));
+    } else {
+        OutRestJsonObj->SetObjectArrayField(TEXT("Files"), request.Files);
+    }
+    OutRestJsonObj->SetBoolField(TEXT("Publish"), request.Publish);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperUpdateCloudScript(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessUpdateCloudScript.IsBound())
+    {
+        FAdminUpdateCloudScriptResult result = UPlayFabAdminModelDecoder::decodeUpdateCloudScriptResultResponse(response.responseData);
+        OnSuccessUpdateCloudScript.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+
+///////////////////////////////////////////////////////
+// Shared Group Data
+//////////////////////////////////////////////////////
+/** Updates the key-value store of custom publisher settings */
+UPlayFabAdminAPI* UPlayFabAdminAPI::SetPublisherData(FAdminSetPublisherDataRequest request,
+    FDelegateOnSuccessSetPublisherData onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessSetPublisherData = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSetPublisherData);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/SetPublisherData";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Key.IsEmpty() || request.Key == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Key"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
+    }
+    if (request.Value.IsEmpty() || request.Value == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Value"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Value"), request.Value);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperSetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessSetPublisherData.IsBound())
+    {
+        FAdminSetPublisherDataResult result = UPlayFabAdminModelDecoder::decodeSetPublisherDataResultResponse(response.responseData);
+        OnSuccessSetPublisherData.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }
@@ -2276,6 +4493,11 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::AddNews(FAdminAddNewsRequest request,
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
+    if (request.Body.IsEmpty() || request.Body == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Body"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Body"), request.Body);
+    }
     if (request.Timestamp.IsEmpty() || request.Timestamp == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Timestamp"));
     } else {
@@ -2285,11 +4507,6 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::AddNews(FAdminAddNewsRequest request,
         OutRestJsonObj->SetFieldNull(TEXT("Title"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("Title"), request.Title);
-    }
-    if (request.Body.IsEmpty() || request.Body == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Body"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Body"), request.Body);
     }
 
     // Add Request to manager
@@ -2861,17 +5078,17 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::SetCatalogItems(FAdminUpdateCatalogItemsRequ
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
+    if (request.Catalog.Num() == 0) {
+        OutRestJsonObj->SetFieldNull(TEXT("Catalog"));
+    } else {
+        OutRestJsonObj->SetObjectArrayField(TEXT("Catalog"), request.Catalog);
+    }
     if (request.CatalogVersion.IsEmpty() || request.CatalogVersion == "") {
         OutRestJsonObj->SetFieldNull(TEXT("CatalogVersion"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
     }
     OutRestJsonObj->SetBoolField(TEXT("SetAsDefaultCatalog"), request.SetAsDefaultCatalog);
-    if (request.Catalog.Num() == 0) {
-        OutRestJsonObj->SetFieldNull(TEXT("Catalog"));
-    } else {
-        OutRestJsonObj->SetObjectArrayField(TEXT("Catalog"), request.Catalog);
-    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -2923,16 +5140,16 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::SetStoreItems(FAdminUpdateStoreItemsRequest 
     } else {
         OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
     }
-    if (request.StoreId.IsEmpty() || request.StoreId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("StoreId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("StoreId"), request.StoreId);
-    }
     if (request.MarketingData != nullptr) OutRestJsonObj->SetObjectField(TEXT("MarketingData"), request.MarketingData);
     if (request.Store.Num() == 0) {
         OutRestJsonObj->SetFieldNull(TEXT("Store"));
     } else {
         OutRestJsonObj->SetObjectArrayField(TEXT("Store"), request.Store);
+    }
+    if (request.StoreId.IsEmpty() || request.StoreId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("StoreId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("StoreId"), request.StoreId);
     }
 
     // Add Request to manager
@@ -3092,25 +5309,25 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::SetupPushNotification(FAdminSetupPushNotific
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
-    if (request.Name.IsEmpty() || request.Name == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Name"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
-    }
-    FString temp_Platform;
-    if (GetEnumValueToString<EPushSetupPlatform>(TEXT("EPushSetupPlatform"), request.Platform, temp_Platform))
-        OutRestJsonObj->SetStringField(TEXT("Platform"), temp_Platform);
-    if (request.Key.IsEmpty() || request.Key == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Key"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
-    }
     if (request.Credential.IsEmpty() || request.Credential == "") {
         OutRestJsonObj->SetFieldNull(TEXT("Credential"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("Credential"), request.Credential);
     }
+    if (request.Key.IsEmpty() || request.Key == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Key"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
+    }
+    if (request.Name.IsEmpty() || request.Name == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Name"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
+    }
     OutRestJsonObj->SetBoolField(TEXT("OverwriteOldARN"), request.OverwriteOldARN);
+    FString temp_Platform;
+    if (GetEnumValueToString<EPushSetupPlatform>(TEXT("EPushSetupPlatform"), request.Platform, temp_Platform))
+        OutRestJsonObj->SetStringField(TEXT("Platform"), temp_Platform);
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -3157,17 +5374,17 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateCatalogItems(FAdminUpdateCatalogItemsR
     manager->useSecretKey = true;
 
     // Serialize all the request properties to json
+    if (request.Catalog.Num() == 0) {
+        OutRestJsonObj->SetFieldNull(TEXT("Catalog"));
+    } else {
+        OutRestJsonObj->SetObjectArrayField(TEXT("Catalog"), request.Catalog);
+    }
     if (request.CatalogVersion.IsEmpty() || request.CatalogVersion == "") {
         OutRestJsonObj->SetFieldNull(TEXT("CatalogVersion"));
     } else {
         OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
     }
     OutRestJsonObj->SetBoolField(TEXT("SetAsDefaultCatalog"), request.SetAsDefaultCatalog);
-    if (request.Catalog.Num() == 0) {
-        OutRestJsonObj->SetFieldNull(TEXT("Catalog"));
-    } else {
-        OutRestJsonObj->SetObjectArrayField(TEXT("Catalog"), request.Catalog);
-    }
 
     // Add Request to manager
     manager->SetRequestObject(OutRestJsonObj);
@@ -3275,16 +5492,16 @@ UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateStoreItems(FAdminUpdateStoreItemsReque
     } else {
         OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
     }
-    if (request.StoreId.IsEmpty() || request.StoreId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("StoreId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("StoreId"), request.StoreId);
-    }
     if (request.MarketingData != nullptr) OutRestJsonObj->SetObjectField(TEXT("MarketingData"), request.MarketingData);
     if (request.Store.Num() == 0) {
         OutRestJsonObj->SetFieldNull(TEXT("Store"));
     } else {
         OutRestJsonObj->SetObjectArrayField(TEXT("Store"), request.Store);
+    }
+    if (request.StoreId.IsEmpty() || request.StoreId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("StoreId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("StoreId"), request.StoreId);
     }
 
     // Add Request to manager
@@ -3305,2223 +5522,6 @@ void UPlayFabAdminAPI::HelperUpdateStoreItems(FPlayFabBaseModel response, UObjec
     {
         FAdminUpdateStoreItemsResult result = UPlayFabAdminModelDecoder::decodeUpdateStoreItemsResultResponse(response.responseData);
         OnSuccessUpdateStoreItems.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// Player Item Management
-//////////////////////////////////////////////////////
-/** Increments the specified virtual currency by the stated amount */
-UPlayFabAdminAPI* UPlayFabAdminAPI::AddUserVirtualCurrency(FAdminAddUserVirtualCurrencyRequest request,
-    FDelegateOnSuccessAddUserVirtualCurrency onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessAddUserVirtualCurrency = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAddUserVirtualCurrency);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/AddUserVirtualCurrency";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-    if (request.VirtualCurrency.IsEmpty() || request.VirtualCurrency == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("VirtualCurrency"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("VirtualCurrency"), request.VirtualCurrency);
-    }
-    OutRestJsonObj->SetNumberField(TEXT("Amount"), request.Amount);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperAddUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessAddUserVirtualCurrency.IsBound())
-    {
-        FAdminModifyUserVirtualCurrencyResult result = UPlayFabAdminModelDecoder::decodeModifyUserVirtualCurrencyResultResponse(response.responseData);
-        OnSuccessAddUserVirtualCurrency.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieves the specified user's current inventory of virtual goods */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserInventory(FAdminGetUserInventoryRequest request,
-    FDelegateOnSuccessGetUserInventory onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetUserInventory = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetUserInventory);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetUserInventory";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetUserInventory(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetUserInventory.IsBound())
-    {
-        FAdminGetUserInventoryResult result = UPlayFabAdminModelDecoder::decodeGetUserInventoryResultResponse(response.responseData);
-        OnSuccessGetUserInventory.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Adds the specified items to the specified user inventories */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GrantItemsToUsers(FAdminGrantItemsToUsersRequest request,
-    FDelegateOnSuccessGrantItemsToUsers onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGrantItemsToUsers = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGrantItemsToUsers);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GrantItemsToUsers";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.CatalogVersion.IsEmpty() || request.CatalogVersion == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("CatalogVersion"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
-    }
-    if (request.ItemGrants.Num() == 0) {
-        OutRestJsonObj->SetFieldNull(TEXT("ItemGrants"));
-    } else {
-        OutRestJsonObj->SetObjectArrayField(TEXT("ItemGrants"), request.ItemGrants);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGrantItemsToUsers(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGrantItemsToUsers.IsBound())
-    {
-        FAdminGrantItemsToUsersResult result = UPlayFabAdminModelDecoder::decodeGrantItemsToUsersResultResponse(response.responseData);
-        OnSuccessGrantItemsToUsers.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Revokes access to an item in a user's inventory */
-UPlayFabAdminAPI* UPlayFabAdminAPI::RevokeInventoryItem(FAdminRevokeInventoryItemRequest request,
-    FDelegateOnSuccessRevokeInventoryItem onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessRevokeInventoryItem = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRevokeInventoryItem);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/RevokeInventoryItem";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-    if (request.CharacterId.IsEmpty() || request.CharacterId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("CharacterId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("CharacterId"), request.CharacterId);
-    }
-    if (request.ItemInstanceId.IsEmpty() || request.ItemInstanceId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("ItemInstanceId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("ItemInstanceId"), request.ItemInstanceId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperRevokeInventoryItem(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessRevokeInventoryItem.IsBound())
-    {
-        FAdminRevokeInventoryResult result = UPlayFabAdminModelDecoder::decodeRevokeInventoryResultResponse(response.responseData);
-        OnSuccessRevokeInventoryItem.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Decrements the specified virtual currency by the stated amount */
-UPlayFabAdminAPI* UPlayFabAdminAPI::SubtractUserVirtualCurrency(FAdminSubtractUserVirtualCurrencyRequest request,
-    FDelegateOnSuccessSubtractUserVirtualCurrency onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessSubtractUserVirtualCurrency = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSubtractUserVirtualCurrency);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/SubtractUserVirtualCurrency";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-    if (request.VirtualCurrency.IsEmpty() || request.VirtualCurrency == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("VirtualCurrency"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("VirtualCurrency"), request.VirtualCurrency);
-    }
-    OutRestJsonObj->SetNumberField(TEXT("Amount"), request.Amount);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperSubtractUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessSubtractUserVirtualCurrency.IsBound())
-    {
-        FAdminModifyUserVirtualCurrencyResult result = UPlayFabAdminModelDecoder::decodeModifyUserVirtualCurrencyResultResponse(response.responseData);
-        OnSuccessSubtractUserVirtualCurrency.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// Matchmaking
-//////////////////////////////////////////////////////
-/** Retrieves the details for a specific completed session, including links to standard out and standard error logs */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetMatchmakerGameInfo(FAdminGetMatchmakerGameInfoRequest request,
-    FDelegateOnSuccessGetMatchmakerGameInfo onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetMatchmakerGameInfo = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetMatchmakerGameInfo);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetMatchmakerGameInfo";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.LobbyId.IsEmpty() || request.LobbyId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("LobbyId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("LobbyId"), request.LobbyId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetMatchmakerGameInfo(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetMatchmakerGameInfo.IsBound())
-    {
-        FAdminGetMatchmakerGameInfoResult result = UPlayFabAdminModelDecoder::decodeGetMatchmakerGameInfoResultResponse(response.responseData);
-        OnSuccessGetMatchmakerGameInfo.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieves the details of defined game modes for the specified game server executable */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetMatchmakerGameModes(FAdminGetMatchmakerGameModesRequest request,
-    FDelegateOnSuccessGetMatchmakerGameModes onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetMatchmakerGameModes = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetMatchmakerGameModes);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetMatchmakerGameModes";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.BuildVersion.IsEmpty() || request.BuildVersion == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("BuildVersion"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("BuildVersion"), request.BuildVersion);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetMatchmakerGameModes.IsBound())
-    {
-        FAdminGetMatchmakerGameModesResult result = UPlayFabAdminModelDecoder::decodeGetMatchmakerGameModesResultResponse(response.responseData);
-        OnSuccessGetMatchmakerGameModes.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Updates the game server mode details for the specified game server executable */
-UPlayFabAdminAPI* UPlayFabAdminAPI::ModifyMatchmakerGameModes(FAdminModifyMatchmakerGameModesRequest request,
-    FDelegateOnSuccessModifyMatchmakerGameModes onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessModifyMatchmakerGameModes = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperModifyMatchmakerGameModes);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/ModifyMatchmakerGameModes";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.BuildVersion.IsEmpty() || request.BuildVersion == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("BuildVersion"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("BuildVersion"), request.BuildVersion);
-    }
-    if (request.GameModes.Num() == 0) {
-        OutRestJsonObj->SetFieldNull(TEXT("GameModes"));
-    } else {
-        OutRestJsonObj->SetObjectArrayField(TEXT("GameModes"), request.GameModes);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperModifyMatchmakerGameModes(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessModifyMatchmakerGameModes.IsBound())
-    {
-        FAdminModifyMatchmakerGameModesResult result = UPlayFabAdminModelDecoder::decodeModifyMatchmakerGameModesResultResponse(response.responseData);
-        OnSuccessModifyMatchmakerGameModes.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// Custom Server Management
-//////////////////////////////////////////////////////
-/** Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a client is permitted to request in a call to StartGame */
-UPlayFabAdminAPI* UPlayFabAdminAPI::AddServerBuild(FAdminAddServerBuildRequest request,
-    FDelegateOnSuccessAddServerBuild onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessAddServerBuild = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAddServerBuild);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/AddServerBuild";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.BuildId.IsEmpty() || request.BuildId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
-    }
-    if (request.CommandLineTemplate.IsEmpty() || request.CommandLineTemplate == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("CommandLineTemplate"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("CommandLineTemplate"), request.CommandLineTemplate);
-    }
-    if (request.ExecutablePath.IsEmpty() || request.ExecutablePath == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("ExecutablePath"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("ExecutablePath"), request.ExecutablePath);
-    }
-    // Check to see if string is empty
-    if (request.ActiveRegions.IsEmpty() || request.ActiveRegions == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("ActiveRegions"));
-    } else {
-        TArray<FString> ActiveRegionsArray;
-        FString(request.ActiveRegions).ParseIntoArray(ActiveRegionsArray, TEXT(","), false);
-        OutRestJsonObj->SetStringArrayField(TEXT("ActiveRegions"), ActiveRegionsArray);
-    }
-    if (request.Comment.IsEmpty() || request.Comment == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Comment"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Comment"), request.Comment);
-    }
-    OutRestJsonObj->SetNumberField(TEXT("MaxGamesPerHost"), request.MaxGamesPerHost);
-    OutRestJsonObj->SetNumberField(TEXT("MinFreeGameSlots"), request.MinFreeGameSlots);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperAddServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessAddServerBuild.IsBound())
-    {
-        FAdminAddServerBuildResult result = UPlayFabAdminModelDecoder::decodeAddServerBuildResultResponse(response.responseData);
-        OnSuccessAddServerBuild.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieves the build details for the specified game server executable */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetServerBuildInfo(FAdminGetServerBuildInfoRequest request,
-    FDelegateOnSuccessGetServerBuildInfo onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetServerBuildInfo = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetServerBuildInfo);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetServerBuildInfo";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.BuildId.IsEmpty() || request.BuildId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetServerBuildInfo(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetServerBuildInfo.IsBound())
-    {
-        FAdminGetServerBuildInfoResult result = UPlayFabAdminModelDecoder::decodeGetServerBuildInfoResultResponse(response.responseData);
-        OnSuccessGetServerBuildInfo.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for use - see AddServerBuild) */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetServerBuildUploadUrl(FAdminGetServerBuildUploadURLRequest request,
-    FDelegateOnSuccessGetServerBuildUploadUrl onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetServerBuildUploadUrl = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetServerBuildUploadUrl);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetServerBuildUploadUrl";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.BuildId.IsEmpty() || request.BuildId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetServerBuildUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetServerBuildUploadUrl.IsBound())
-    {
-        FAdminGetServerBuildUploadURLResult result = UPlayFabAdminModelDecoder::decodeGetServerBuildUploadURLResultResponse(response.responseData);
-        OnSuccessGetServerBuildUploadUrl.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieves the build details for all game server executables which are currently defined for the title */
-UPlayFabAdminAPI* UPlayFabAdminAPI::ListServerBuilds(FAdminListBuildsRequest request,
-    FDelegateOnSuccessListServerBuilds onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessListServerBuilds = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperListServerBuilds);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/ListServerBuilds";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperListServerBuilds(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessListServerBuilds.IsBound())
-    {
-        FAdminListBuildsResult result = UPlayFabAdminModelDecoder::decodeListBuildsResultResponse(response.responseData);
-        OnSuccessListServerBuilds.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Updates the build details for the specified game server executable */
-UPlayFabAdminAPI* UPlayFabAdminAPI::ModifyServerBuild(FAdminModifyServerBuildRequest request,
-    FDelegateOnSuccessModifyServerBuild onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessModifyServerBuild = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperModifyServerBuild);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/ModifyServerBuild";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.BuildId.IsEmpty() || request.BuildId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
-    }
-    if (request.Timestamp.IsEmpty() || request.Timestamp == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Timestamp"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Timestamp"), request.Timestamp);
-    }
-    // Check to see if string is empty
-    if (request.ActiveRegions.IsEmpty() || request.ActiveRegions == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("ActiveRegions"));
-    } else {
-        TArray<FString> ActiveRegionsArray;
-        FString(request.ActiveRegions).ParseIntoArray(ActiveRegionsArray, TEXT(","), false);
-        OutRestJsonObj->SetStringArrayField(TEXT("ActiveRegions"), ActiveRegionsArray);
-    }
-    OutRestJsonObj->SetNumberField(TEXT("MaxGamesPerHost"), request.MaxGamesPerHost);
-    OutRestJsonObj->SetNumberField(TEXT("MinFreeGameSlots"), request.MinFreeGameSlots);
-    if (request.CommandLineTemplate.IsEmpty() || request.CommandLineTemplate == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("CommandLineTemplate"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("CommandLineTemplate"), request.CommandLineTemplate);
-    }
-    if (request.ExecutablePath.IsEmpty() || request.ExecutablePath == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("ExecutablePath"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("ExecutablePath"), request.ExecutablePath);
-    }
-    if (request.Comment.IsEmpty() || request.Comment == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Comment"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Comment"), request.Comment);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperModifyServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessModifyServerBuild.IsBound())
-    {
-        FAdminModifyServerBuildResult result = UPlayFabAdminModelDecoder::decodeModifyServerBuildResultResponse(response.responseData);
-        OnSuccessModifyServerBuild.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Removes the game server executable specified from the set of those a client is permitted to request in a call to StartGame */
-UPlayFabAdminAPI* UPlayFabAdminAPI::RemoveServerBuild(FAdminRemoveServerBuildRequest request,
-    FDelegateOnSuccessRemoveServerBuild onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessRemoveServerBuild = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRemoveServerBuild);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/RemoveServerBuild";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.BuildId.IsEmpty() || request.BuildId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("BuildId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("BuildId"), request.BuildId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperRemoveServerBuild(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessRemoveServerBuild.IsBound())
-    {
-        FAdminRemoveServerBuildResult result = UPlayFabAdminModelDecoder::decodeRemoveServerBuildResultResponse(response.responseData);
-        OnSuccessRemoveServerBuild.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// Shared Group Data
-//////////////////////////////////////////////////////
-/** Updates the key-value store of custom publisher settings */
-UPlayFabAdminAPI* UPlayFabAdminAPI::SetPublisherData(FAdminSetPublisherDataRequest request,
-    FDelegateOnSuccessSetPublisherData onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessSetPublisherData = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSetPublisherData);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/SetPublisherData";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Key.IsEmpty() || request.Key == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Key"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
-    }
-    if (request.Value.IsEmpty() || request.Value == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Value"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Value"), request.Value);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperSetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessSetPublisherData.IsBound())
-    {
-        FAdminSetPublisherDataResult result = UPlayFabAdminModelDecoder::decodeSetPublisherDataResultResponse(response.responseData);
-        OnSuccessSetPublisherData.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// Server-Side Cloud Script
-//////////////////////////////////////////////////////
-/** Gets the contents and information of a specific Cloud Script revision. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetCloudScriptRevision(FAdminGetCloudScriptRevisionRequest request,
-    FDelegateOnSuccessGetCloudScriptRevision onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetCloudScriptRevision = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetCloudScriptRevision);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetCloudScriptRevision";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    OutRestJsonObj->SetNumberField(TEXT("Version"), request.Version);
-    OutRestJsonObj->SetNumberField(TEXT("Revision"), request.Revision);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetCloudScriptRevision(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetCloudScriptRevision.IsBound())
-    {
-        FAdminGetCloudScriptRevisionResult result = UPlayFabAdminModelDecoder::decodeGetCloudScriptRevisionResultResponse(response.responseData);
-        OnSuccessGetCloudScriptRevision.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Lists all the current cloud script versions. For each version, information about the current published and latest revisions is also listed. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetCloudScriptVersions(FAdminGetCloudScriptVersionsRequest request,
-    FDelegateOnSuccessGetCloudScriptVersions onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetCloudScriptVersions = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetCloudScriptVersions);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetCloudScriptVersions";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetCloudScriptVersions(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetCloudScriptVersions.IsBound())
-    {
-        FAdminGetCloudScriptVersionsResult result = UPlayFabAdminModelDecoder::decodeGetCloudScriptVersionsResultResponse(response.responseData);
-        OnSuccessGetCloudScriptVersions.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Sets the currently published revision of a title Cloud Script */
-UPlayFabAdminAPI* UPlayFabAdminAPI::SetPublishedRevision(FAdminSetPublishedRevisionRequest request,
-    FDelegateOnSuccessSetPublishedRevision onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessSetPublishedRevision = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperSetPublishedRevision);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/SetPublishedRevision";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    OutRestJsonObj->SetNumberField(TEXT("Version"), request.Version);
-    OutRestJsonObj->SetNumberField(TEXT("Revision"), request.Revision);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperSetPublishedRevision(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessSetPublishedRevision.IsBound())
-    {
-        FAdminSetPublishedRevisionResult result = UPlayFabAdminModelDecoder::decodeSetPublishedRevisionResultResponse(response.responseData);
-        OnSuccessSetPublishedRevision.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Creates a new Cloud Script revision and uploads source code to it. Note that at this time, only one file should be submitted in the revision. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateCloudScript(FAdminUpdateCloudScriptRequest request,
-    FDelegateOnSuccessUpdateCloudScript onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessUpdateCloudScript = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdateCloudScript);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/UpdateCloudScript";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Files.Num() == 0) {
-        OutRestJsonObj->SetFieldNull(TEXT("Files"));
-    } else {
-        OutRestJsonObj->SetObjectArrayField(TEXT("Files"), request.Files);
-    }
-    OutRestJsonObj->SetBoolField(TEXT("Publish"), request.Publish);
-    if (request.DeveloperPlayFabId.IsEmpty() || request.DeveloperPlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("DeveloperPlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("DeveloperPlayFabId"), request.DeveloperPlayFabId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperUpdateCloudScript(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessUpdateCloudScript.IsBound())
-    {
-        FAdminUpdateCloudScriptResult result = UPlayFabAdminModelDecoder::decodeUpdateCloudScriptResultResponse(response.responseData);
-        OnSuccessUpdateCloudScript.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// Content
-//////////////////////////////////////////////////////
-/** Delete a content file from the title. When deleting a file that does not exist, it returns success. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::DeleteContent(FAdminDeleteContentRequest request,
-    FDelegateOnSuccessDeleteContent onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessDeleteContent = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeleteContent);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/DeleteContent";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Key.IsEmpty() || request.Key == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Key"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperDeleteContent(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessDeleteContent.IsBound())
-    {
-        FAdminBlankResult result = UPlayFabAdminModelDecoder::decodeBlankResultResponse(response.responseData);
-        OnSuccessDeleteContent.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** List all contents of the title and get statistics such as size */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetContentList(FAdminGetContentListRequest request,
-    FDelegateOnSuccessGetContentList onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetContentList = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetContentList);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetContentList";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Prefix.IsEmpty() || request.Prefix == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Prefix"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Prefix"), request.Prefix);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetContentList(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetContentList.IsBound())
-    {
-        FAdminGetContentListResult result = UPlayFabAdminModelDecoder::decodeGetContentListResultResponse(response.responseData);
-        OnSuccessGetContentList.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieves the pre-signed URL for uploading a content file. A subsequent HTTP PUT to the returned URL uploads the  content. Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetContentUploadUrl(FAdminGetContentUploadUrlRequest request,
-    FDelegateOnSuccessGetContentUploadUrl onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetContentUploadUrl = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetContentUploadUrl);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetContentUploadUrl";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Key.IsEmpty() || request.Key == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Key"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Key"), request.Key);
-    }
-    if (request.ContentType.IsEmpty() || request.ContentType == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("ContentType"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("ContentType"), request.ContentType);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetContentUploadUrl(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetContentUploadUrl.IsBound())
-    {
-        FAdminGetContentUploadUrlResult result = UPlayFabAdminModelDecoder::decodeGetContentUploadUrlResultResponse(response.responseData);
-        OnSuccessGetContentUploadUrl.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// Characters
-//////////////////////////////////////////////////////
-/** Completely removes all statistics for the specified character, for the current game */
-UPlayFabAdminAPI* UPlayFabAdminAPI::ResetCharacterStatistics(FAdminResetCharacterStatisticsRequest request,
-    FDelegateOnSuccessResetCharacterStatistics onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessResetCharacterStatistics = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperResetCharacterStatistics);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/ResetCharacterStatistics";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-    if (request.CharacterId.IsEmpty() || request.CharacterId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("CharacterId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("CharacterId"), request.CharacterId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperResetCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessResetCharacterStatistics.IsBound())
-    {
-        FAdminResetCharacterStatisticsResult result = UPlayFabAdminModelDecoder::decodeResetCharacterStatisticsResultResponse(response.responseData);
-        OnSuccessResetCharacterStatistics.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// PlayStream
-//////////////////////////////////////////////////////
-/** Adds a given tag to a player profile. The tag's namespace is automatically generated based on the source of the tag. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::AddPlayerTag(FAdminAddPlayerTagRequest request,
-    FDelegateOnSuccessAddPlayerTag onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessAddPlayerTag = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAddPlayerTag);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/AddPlayerTag";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-    if (request.TagName.IsEmpty() || request.TagName == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("TagName"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("TagName"), request.TagName);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperAddPlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessAddPlayerTag.IsBound())
-    {
-        FAdminAddPlayerTagResult result = UPlayFabAdminModelDecoder::decodeAddPlayerTagResultResponse(response.responseData);
-        OnSuccessAddPlayerTag.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieve a list of all PlayStream actions groups. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetAllActionGroups(FAdminGetAllActionGroupsRequest request,
-    FDelegateOnSuccessGetAllActionGroups onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetAllActionGroups = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetAllActionGroups);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetAllActionGroups";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetAllActionGroups(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetAllActionGroups.IsBound())
-    {
-        FAdminGetAllActionGroupsResult result = UPlayFabAdminModelDecoder::decodeGetAllActionGroupsResultResponse(response.responseData);
-        OnSuccessGetAllActionGroups.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieves an array of player segment definitions. Results from this can be used in subsequent API calls such as GetPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not change. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetAllSegments(FAdminGetAllSegmentsRequest request,
-    FDelegateOnSuccessGetAllSegments onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetAllSegments = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetAllSegments);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetAllSegments";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetAllSegments(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetAllSegments.IsBound())
-    {
-        FAdminGetAllSegmentsResult result = UPlayFabAdminModelDecoder::decodeGetAllSegmentsResultResponse(response.responseData);
-        OnSuccessGetAllSegments.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** List all segments that a player currently belongs to at this moment in time. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerSegments(FAdminGetPlayersSegmentsRequest request,
-    FDelegateOnSuccessGetPlayerSegments onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetPlayerSegments = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerSegments);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetPlayerSegments";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetPlayerSegments(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetPlayerSegments.IsBound())
-    {
-        FAdminGetPlayerSegmentsResult result = UPlayFabAdminModelDecoder::decodeGetPlayerSegmentsResultResponse(response.responseData);
-        OnSuccessGetPlayerSegments.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Allows for paging through all players in a given segment. This API creates a snapshot of all player profiles that match the segment definition at the time of its creation and lives through the Total Seconds to Live, refreshing its life span on each subsequent use of the Continuation Token. Profiles that change during the course of paging will not be reflected in the results. AB Test segments are currently not supported by this operation. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayersInSegment(FAdminGetPlayersInSegmentRequest request,
-    FDelegateOnSuccessGetPlayersInSegment onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetPlayersInSegment = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayersInSegment);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetPlayersInSegment";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.SegmentId.IsEmpty() || request.SegmentId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("SegmentId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("SegmentId"), request.SegmentId);
-    }
-    OutRestJsonObj->SetNumberField(TEXT("SecondsToLive"), request.SecondsToLive);
-    OutRestJsonObj->SetNumberField(TEXT("MaxBatchSize"), request.MaxBatchSize);
-    if (request.ContinuationToken.IsEmpty() || request.ContinuationToken == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("ContinuationToken"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("ContinuationToken"), request.ContinuationToken);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetPlayersInSegment(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetPlayersInSegment.IsBound())
-    {
-        FAdminGetPlayersInSegmentResult result = UPlayFabAdminModelDecoder::decodeGetPlayersInSegmentResultResponse(response.responseData);
-        OnSuccessGetPlayersInSegment.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Get all tags with a given Namespace (optional) from a player profile. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerTags(FAdminGetPlayerTagsRequest request,
-    FDelegateOnSuccessGetPlayerTags onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetPlayerTags = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerTags);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetPlayerTags";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-    if (request.Namespace.IsEmpty() || request.Namespace == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Namespace"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Namespace"), request.Namespace);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetPlayerTags(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetPlayerTags.IsBound())
-    {
-        FAdminGetPlayerTagsResult result = UPlayFabAdminModelDecoder::decodeGetPlayerTagsResultResponse(response.responseData);
-        OnSuccessGetPlayerTags.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Remove a given tag from a player profile. The tag's namespace is automatically generated based on the source of the tag. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::RemovePlayerTag(FAdminRemovePlayerTagRequest request,
-    FDelegateOnSuccessRemovePlayerTag onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessRemovePlayerTag = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRemovePlayerTag);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/RemovePlayerTag";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
-    }
-    if (request.TagName.IsEmpty() || request.TagName == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("TagName"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("TagName"), request.TagName);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperRemovePlayerTag(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessRemovePlayerTag.IsBound())
-    {
-        FAdminRemovePlayerTagResult result = UPlayFabAdminModelDecoder::decodeRemovePlayerTagResultResponse(response.responseData);
-        OnSuccessRemovePlayerTag.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-
-///////////////////////////////////////////////////////
-// ScheduledTask
-//////////////////////////////////////////////////////
-/** Abort an ongoing task instance. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::AbortTaskInstance(FAdminAbortTaskInstanceRequest request,
-    FDelegateOnSuccessAbortTaskInstance onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessAbortTaskInstance = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperAbortTaskInstance);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/AbortTaskInstance";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.TaskInstanceId.IsEmpty() || request.TaskInstanceId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("TaskInstanceId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("TaskInstanceId"), request.TaskInstanceId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperAbortTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessAbortTaskInstance.IsBound())
-    {
-        FAdminEmptyResult result = UPlayFabAdminModelDecoder::decodeEmptyResultResponse(response.responseData);
-        OnSuccessAbortTaskInstance.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Create an ActionsOnPlayersInSegment task, which iterates through all players in a segment to execute action. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::CreateActionsOnPlayersInSegmentTask(FAdminCreateActionsOnPlayerSegmentTaskRequest request,
-    FDelegateOnSuccessCreateActionsOnPlayersInSegmentTask onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessCreateActionsOnPlayersInSegmentTask = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperCreateActionsOnPlayersInSegmentTask);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/CreateActionsOnPlayersInSegmentTask";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Name.IsEmpty() || request.Name == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Name"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
-    }
-    if (request.Description.IsEmpty() || request.Description == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Description"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Description"), request.Description);
-    }
-    if (request.Schedule.IsEmpty() || request.Schedule == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Schedule"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Schedule"), request.Schedule);
-    }
-    OutRestJsonObj->SetBoolField(TEXT("IsActive"), request.IsActive);
-    if (request.Parameter != nullptr) OutRestJsonObj->SetObjectField(TEXT("Parameter"), request.Parameter);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperCreateActionsOnPlayersInSegmentTask(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessCreateActionsOnPlayersInSegmentTask.IsBound())
-    {
-        FAdminCreateTaskResult result = UPlayFabAdminModelDecoder::decodeCreateTaskResultResponse(response.responseData);
-        OnSuccessCreateActionsOnPlayersInSegmentTask.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Create a CloudScript task, which can run a CloudScript on a schedule. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::CreateCloudScriptTask(FAdminCreateCloudScriptTaskRequest request,
-    FDelegateOnSuccessCreateCloudScriptTask onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessCreateCloudScriptTask = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperCreateCloudScriptTask);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/CreateCloudScriptTask";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Name.IsEmpty() || request.Name == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Name"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
-    }
-    if (request.Description.IsEmpty() || request.Description == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Description"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Description"), request.Description);
-    }
-    if (request.Schedule.IsEmpty() || request.Schedule == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Schedule"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Schedule"), request.Schedule);
-    }
-    OutRestJsonObj->SetBoolField(TEXT("IsActive"), request.IsActive);
-    if (request.Parameter != nullptr) OutRestJsonObj->SetObjectField(TEXT("Parameter"), request.Parameter);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperCreateCloudScriptTask(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessCreateCloudScriptTask.IsBound())
-    {
-        FAdminCreateTaskResult result = UPlayFabAdminModelDecoder::decodeCreateTaskResultResponse(response.responseData);
-        OnSuccessCreateCloudScriptTask.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Delete a task. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::DeleteTask(FAdminDeleteTaskRequest request,
-    FDelegateOnSuccessDeleteTask onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessDeleteTask = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeleteTask);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/DeleteTask";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperDeleteTask(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessDeleteTask.IsBound())
-    {
-        FAdminEmptyResult result = UPlayFabAdminModelDecoder::decodeEmptyResultResponse(response.responseData);
-        OnSuccessDeleteTask.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Get information about a ActionsOnPlayersInSegment task instance. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetActionsOnPlayersInSegmentTaskInstance(FAdminGetTaskInstanceRequest request,
-    FDelegateOnSuccessGetActionsOnPlayersInSegmentTaskInstance onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetActionsOnPlayersInSegmentTaskInstance = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetActionsOnPlayersInSegmentTaskInstance);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetActionsOnPlayersInSegmentTaskInstance";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.TaskInstanceId.IsEmpty() || request.TaskInstanceId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("TaskInstanceId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("TaskInstanceId"), request.TaskInstanceId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetActionsOnPlayersInSegmentTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetActionsOnPlayersInSegmentTaskInstance.IsBound())
-    {
-        FAdminGetActionsOnPlayersInSegmentTaskInstanceResult result = UPlayFabAdminModelDecoder::decodeGetActionsOnPlayersInSegmentTaskInstanceResultResponse(response.responseData);
-        OnSuccessGetActionsOnPlayersInSegmentTaskInstance.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Get detail information about a CloudScript task instance. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetCloudScriptTaskInstance(FAdminGetTaskInstanceRequest request,
-    FDelegateOnSuccessGetCloudScriptTaskInstance onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetCloudScriptTaskInstance = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetCloudScriptTaskInstance);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetCloudScriptTaskInstance";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.TaskInstanceId.IsEmpty() || request.TaskInstanceId == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("TaskInstanceId"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("TaskInstanceId"), request.TaskInstanceId);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetCloudScriptTaskInstance(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetCloudScriptTaskInstance.IsBound())
-    {
-        FAdminGetCloudScriptTaskInstanceResult result = UPlayFabAdminModelDecoder::decodeGetCloudScriptTaskInstanceResultResponse(response.responseData);
-        OnSuccessGetCloudScriptTaskInstance.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Query for task instances by task, status, or time range. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetTaskInstances(FAdminGetTaskInstancesRequest request,
-    FDelegateOnSuccessGetTaskInstances onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetTaskInstances = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetTaskInstances);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetTaskInstances";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.TaskIdentifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("TaskIdentifier"), request.TaskIdentifier);
-    FString temp_StatusFilter;
-    if (GetEnumValueToString<ETaskInstanceStatus>(TEXT("ETaskInstanceStatus"), request.StatusFilter, temp_StatusFilter))
-        OutRestJsonObj->SetStringField(TEXT("StatusFilter"), temp_StatusFilter);
-    if (request.StartedAtRangeFrom.IsEmpty() || request.StartedAtRangeFrom == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("StartedAtRangeFrom"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("StartedAtRangeFrom"), request.StartedAtRangeFrom);
-    }
-    if (request.StartedAtRangeTo.IsEmpty() || request.StartedAtRangeTo == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("StartedAtRangeTo"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("StartedAtRangeTo"), request.StartedAtRangeTo);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetTaskInstances(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetTaskInstances.IsBound())
-    {
-        FAdminGetTaskInstancesResult result = UPlayFabAdminModelDecoder::decodeGetTaskInstancesResultResponse(response.responseData);
-        OnSuccessGetTaskInstances.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Get definition information on a specified task or all tasks within a title. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetTasks(FAdminGetTasksRequest request,
-    FDelegateOnSuccessGetTasks onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetTasks = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetTasks);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetTasks";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetTasks(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetTasks.IsBound())
-    {
-        FAdminGetTasksResult result = UPlayFabAdminModelDecoder::decodeGetTasksResultResponse(response.responseData);
-        OnSuccessGetTasks.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Run a task immediately regardless of its schedule. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::RunTask(FAdminRunTaskRequest request,
-    FDelegateOnSuccessRunTask onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessRunTask = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperRunTask);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/RunTask";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperRunTask(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessRunTask.IsBound())
-    {
-        FAdminRunTaskResult result = UPlayFabAdminModelDecoder::decodeRunTaskResultResponse(response.responseData);
-        OnSuccessRunTask.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Update an existing task. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::UpdateTask(FAdminUpdateTaskRequest request,
-    FDelegateOnSuccessUpdateTask onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessUpdateTask = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperUpdateTask);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/UpdateTask";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Identifier != nullptr) OutRestJsonObj->SetObjectField(TEXT("Identifier"), request.Identifier);
-    if (request.Name.IsEmpty() || request.Name == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Name"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Name"), request.Name);
-    }
-    if (request.Description.IsEmpty() || request.Description == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Description"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Description"), request.Description);
-    }
-    if (request.Schedule.IsEmpty() || request.Schedule == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("Schedule"));
-    } else {
-        OutRestJsonObj->SetStringField(TEXT("Schedule"), request.Schedule);
-    }
-    OutRestJsonObj->SetBoolField(TEXT("IsActive"), request.IsActive);
-    FString temp_Type;
-    if (GetEnumValueToString<EScheduledTaskType>(TEXT("EScheduledTaskType"), request.Type, temp_Type))
-        OutRestJsonObj->SetStringField(TEXT("Type"), temp_Type);
-    if (request.Parameter != nullptr) OutRestJsonObj->SetObjectField(TEXT("Parameter"), request.Parameter);
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperUpdateTask(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessUpdateTask.IsBound())
-    {
-        FAdminEmptyResult result = UPlayFabAdminModelDecoder::decodeEmptyResultResponse(response.responseData);
-        OnSuccessUpdateTask.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }

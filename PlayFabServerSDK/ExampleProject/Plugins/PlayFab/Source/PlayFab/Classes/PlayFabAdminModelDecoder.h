@@ -27,40 +27,6 @@ public:
 
 
     ///////////////////////////////////////////////////////
-    // Authentication
-    //////////////////////////////////////////////////////
-
-    /** Decode the CreatePlayerSharedSecretResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
-        static FAdminCreatePlayerSharedSecretResult decodeCreatePlayerSharedSecretResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the DeletePlayerSharedSecretResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
-        static FAdminDeletePlayerSharedSecretResult decodeDeletePlayerSharedSecretResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetPlayerSharedSecretsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
-        static FAdminGetPlayerSharedSecretsResult decodeGetPlayerSharedSecretsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetPolicyResponse response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
-        static FAdminGetPolicyResponse decodeGetPolicyResponseResponse(UPlayFabJsonObject* response);
-
-    /** Decode the SetPlayerSecretResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
-        static FAdminSetPlayerSecretResult decodeSetPlayerSecretResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdatePlayerSharedSecretResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
-        static FAdminUpdatePlayerSharedSecretResult decodeUpdatePlayerSharedSecretResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdatePolicyResponse response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
-        static FAdminUpdatePolicyResponse decodeUpdatePolicyResponseResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
     // Account Management
     //////////////////////////////////////////////////////
 
@@ -103,6 +69,112 @@ public:
     /** Decode the UpdateUserTitleDisplayNameResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminUpdateUserTitleDisplayNameResult decodeUpdateUserTitleDisplayNameResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Authentication
+    //////////////////////////////////////////////////////
+
+    /** Decode the CreatePlayerSharedSecretResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
+        static FAdminCreatePlayerSharedSecretResult decodeCreatePlayerSharedSecretResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the DeletePlayerSharedSecretResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
+        static FAdminDeletePlayerSharedSecretResult decodeDeletePlayerSharedSecretResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetPlayerSharedSecretsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
+        static FAdminGetPlayerSharedSecretsResult decodeGetPlayerSharedSecretsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetPolicyResponse response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
+        static FAdminGetPolicyResponse decodeGetPolicyResponseResponse(UPlayFabJsonObject* response);
+
+    /** Decode the SetPlayerSecretResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
+        static FAdminSetPlayerSecretResult decodeSetPlayerSecretResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdatePlayerSharedSecretResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
+        static FAdminUpdatePlayerSharedSecretResult decodeUpdatePlayerSharedSecretResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdatePolicyResponse response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Authentication Models")
+        static FAdminUpdatePolicyResponse decodeUpdatePolicyResponseResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Characters
+    //////////////////////////////////////////////////////
+
+    /** Decode the ResetCharacterStatisticsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Characters Models")
+        static FAdminResetCharacterStatisticsResult decodeResetCharacterStatisticsResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Content
+    //////////////////////////////////////////////////////
+
+    /** Decode the GetContentListResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content Models")
+        static FAdminGetContentListResult decodeGetContentListResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetContentUploadUrlResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content Models")
+        static FAdminGetContentUploadUrlResult decodeGetContentUploadUrlResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Custom Server Management
+    //////////////////////////////////////////////////////
+
+    /** Decode the AddServerBuildResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
+        static FAdminAddServerBuildResult decodeAddServerBuildResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetServerBuildInfoResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
+        static FAdminGetServerBuildInfoResult decodeGetServerBuildInfoResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetServerBuildUploadURLResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
+        static FAdminGetServerBuildUploadURLResult decodeGetServerBuildUploadURLResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ListBuildsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
+        static FAdminListBuildsResult decodeListBuildsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ModifyServerBuildResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
+        static FAdminModifyServerBuildResult decodeModifyServerBuildResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the RemoveServerBuildResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
+        static FAdminRemoveServerBuildResult decodeRemoveServerBuildResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Matchmaking
+    //////////////////////////////////////////////////////
+
+    /** Decode the GetMatchmakerGameInfoResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking Models")
+        static FAdminGetMatchmakerGameInfoResult decodeGetMatchmakerGameInfoResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetMatchmakerGameModesResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking Models")
+        static FAdminGetMatchmakerGameModesResult decodeGetMatchmakerGameModesResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ModifyMatchmakerGameModesResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking Models")
+        static FAdminModifyMatchmakerGameModesResult decodeModifyMatchmakerGameModesResultResponse(UPlayFabJsonObject* response);
 
 
 
@@ -161,64 +233,6 @@ public:
 
 
     ///////////////////////////////////////////////////////
-    // Title-Wide Data Management
-    //////////////////////////////////////////////////////
-
-    /** Decode the AddNewsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminAddNewsResult decodeAddNewsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the DeleteStoreResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminDeleteStoreResult decodeDeleteStoreResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetCatalogItemsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminGetCatalogItemsResult decodeGetCatalogItemsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetPublisherDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminGetPublisherDataResult decodeGetPublisherDataResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetRandomResultTablesResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminGetRandomResultTablesResult decodeGetRandomResultTablesResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetStoreItemsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminGetStoreItemsResult decodeGetStoreItemsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetTitleDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminGetTitleDataResult decodeGetTitleDataResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ListVirtualCurrencyTypesResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminListVirtualCurrencyTypesResult decodeListVirtualCurrencyTypesResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdateCatalogItemsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminUpdateCatalogItemsResult decodeUpdateCatalogItemsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdateStoreItemsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminUpdateStoreItemsResult decodeUpdateStoreItemsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the SetTitleDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminSetTitleDataResult decodeSetTitleDataResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the SetupPushNotificationResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminSetupPushNotificationResult decodeSetupPushNotificationResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdateRandomResultTablesResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
-        static FAdminUpdateRandomResultTablesResult decodeUpdateRandomResultTablesResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
     // Player Item Management
     //////////////////////////////////////////////////////
 
@@ -237,110 +251,6 @@ public:
     /** Decode the RevokeInventoryResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management Models")
         static FAdminRevokeInventoryResult decodeRevokeInventoryResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Matchmaking
-    //////////////////////////////////////////////////////
-
-    /** Decode the GetMatchmakerGameInfoResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking Models")
-        static FAdminGetMatchmakerGameInfoResult decodeGetMatchmakerGameInfoResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetMatchmakerGameModesResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking Models")
-        static FAdminGetMatchmakerGameModesResult decodeGetMatchmakerGameModesResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ModifyMatchmakerGameModesResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Matchmaking Models")
-        static FAdminModifyMatchmakerGameModesResult decodeModifyMatchmakerGameModesResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Custom Server Management
-    //////////////////////////////////////////////////////
-
-    /** Decode the AddServerBuildResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
-        static FAdminAddServerBuildResult decodeAddServerBuildResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetServerBuildInfoResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
-        static FAdminGetServerBuildInfoResult decodeGetServerBuildInfoResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetServerBuildUploadURLResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
-        static FAdminGetServerBuildUploadURLResult decodeGetServerBuildUploadURLResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ListBuildsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
-        static FAdminListBuildsResult decodeListBuildsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ModifyServerBuildResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
-        static FAdminModifyServerBuildResult decodeModifyServerBuildResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the RemoveServerBuildResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Custom Server Management Models")
-        static FAdminRemoveServerBuildResult decodeRemoveServerBuildResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Shared Group Data
-    //////////////////////////////////////////////////////
-
-    /** Decode the SetPublisherDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Shared Group Data Models")
-        static FAdminSetPublisherDataResult decodeSetPublisherDataResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Server-Side Cloud Script
-    //////////////////////////////////////////////////////
-
-    /** Decode the GetCloudScriptRevisionResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
-        static FAdminGetCloudScriptRevisionResult decodeGetCloudScriptRevisionResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetCloudScriptVersionsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
-        static FAdminGetCloudScriptVersionsResult decodeGetCloudScriptVersionsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the SetPublishedRevisionResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
-        static FAdminSetPublishedRevisionResult decodeSetPublishedRevisionResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdateCloudScriptResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
-        static FAdminUpdateCloudScriptResult decodeUpdateCloudScriptResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Content
-    //////////////////////////////////////////////////////
-
-    /** Decode the GetContentListResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content Models")
-        static FAdminGetContentListResult decodeGetContentListResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetContentUploadUrlResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content Models")
-        static FAdminGetContentUploadUrlResult decodeGetContentUploadUrlResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Characters
-    //////////////////////////////////////////////////////
-
-    /** Decode the ResetCharacterStatisticsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Characters Models")
-        static FAdminResetCharacterStatisticsResult decodeResetCharacterStatisticsResultResponse(UPlayFabJsonObject* response);
 
 
 
@@ -409,6 +319,96 @@ public:
     /** Decode the RunTaskResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | ScheduledTask Models")
         static FAdminRunTaskResult decodeRunTaskResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Server-Side Cloud Script
+    //////////////////////////////////////////////////////
+
+    /** Decode the GetCloudScriptRevisionResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
+        static FAdminGetCloudScriptRevisionResult decodeGetCloudScriptRevisionResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetCloudScriptVersionsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
+        static FAdminGetCloudScriptVersionsResult decodeGetCloudScriptVersionsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the SetPublishedRevisionResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
+        static FAdminSetPublishedRevisionResult decodeSetPublishedRevisionResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdateCloudScriptResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Server-Side Cloud Script Models")
+        static FAdminUpdateCloudScriptResult decodeUpdateCloudScriptResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Shared Group Data
+    //////////////////////////////////////////////////////
+
+    /** Decode the SetPublisherDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Shared Group Data Models")
+        static FAdminSetPublisherDataResult decodeSetPublisherDataResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Title-Wide Data Management
+    //////////////////////////////////////////////////////
+
+    /** Decode the AddNewsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminAddNewsResult decodeAddNewsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the DeleteStoreResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminDeleteStoreResult decodeDeleteStoreResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetCatalogItemsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminGetCatalogItemsResult decodeGetCatalogItemsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetPublisherDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminGetPublisherDataResult decodeGetPublisherDataResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetRandomResultTablesResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminGetRandomResultTablesResult decodeGetRandomResultTablesResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetStoreItemsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminGetStoreItemsResult decodeGetStoreItemsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetTitleDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminGetTitleDataResult decodeGetTitleDataResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ListVirtualCurrencyTypesResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminListVirtualCurrencyTypesResult decodeListVirtualCurrencyTypesResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdateCatalogItemsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminUpdateCatalogItemsResult decodeUpdateCatalogItemsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdateStoreItemsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminUpdateStoreItemsResult decodeUpdateStoreItemsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the SetTitleDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminSetTitleDataResult decodeSetTitleDataResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the SetupPushNotificationResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminSetupPushNotificationResult decodeSetupPushNotificationResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdateRandomResultTablesResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Title-Wide Data Management Models")
+        static FAdminUpdateRandomResultTablesResult decodeUpdateRandomResultTablesResultResponse(UPlayFabJsonObject* response);
 
 
 

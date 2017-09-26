@@ -27,36 +27,6 @@ public:
 
 
     ///////////////////////////////////////////////////////
-    // Authentication
-    //////////////////////////////////////////////////////
-
-    /** Decode the GetPhotonAuthenticationTokenResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
-        static FClientGetPhotonAuthenticationTokenResult decodeGetPhotonAuthenticationTokenResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetTitlePublicKeyResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
-        static FClientGetTitlePublicKeyResult decodeGetTitlePublicKeyResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetWindowsHelloChallengeResponse response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
-        static FClientGetWindowsHelloChallengeResponse decodeGetWindowsHelloChallengeResponseResponse(UPlayFabJsonObject* response);
-
-    /** Decode the LoginResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
-        static FClientLoginResult decodeLoginResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the RegisterPlayFabUserResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
-        static FClientRegisterPlayFabUserResult decodeRegisterPlayFabUserResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the SetPlayerSecretResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
-        static FClientSetPlayerSecretResult decodeSetPlayerSecretResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
     // Account Management
     //////////////////////////////////////////////////////
 
@@ -211,6 +181,198 @@ public:
 
 
     ///////////////////////////////////////////////////////
+    // Advertising
+    //////////////////////////////////////////////////////
+
+    /** Decode the AttributeInstallResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Advertising Models")
+        static FClientAttributeInstallResult decodeAttributeInstallResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Analytics
+    //////////////////////////////////////////////////////
+
+    /** Decode the WriteEventResponse response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Analytics Models")
+        static FClientWriteEventResponse decodeWriteEventResponseResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Authentication
+    //////////////////////////////////////////////////////
+
+    /** Decode the GetPhotonAuthenticationTokenResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
+        static FClientGetPhotonAuthenticationTokenResult decodeGetPhotonAuthenticationTokenResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetTitlePublicKeyResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
+        static FClientGetTitlePublicKeyResult decodeGetTitlePublicKeyResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetWindowsHelloChallengeResponse response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
+        static FClientGetWindowsHelloChallengeResponse decodeGetWindowsHelloChallengeResponseResponse(UPlayFabJsonObject* response);
+
+    /** Decode the LoginResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
+        static FClientLoginResult decodeLoginResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the RegisterPlayFabUserResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
+        static FClientRegisterPlayFabUserResult decodeRegisterPlayFabUserResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the SetPlayerSecretResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
+        static FClientSetPlayerSecretResult decodeSetPlayerSecretResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Character Data
+    //////////////////////////////////////////////////////
+
+    /** Decode the GetCharacterDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Character Data Models")
+        static FClientGetCharacterDataResult decodeGetCharacterDataResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdateCharacterDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Character Data Models")
+        static FClientUpdateCharacterDataResult decodeUpdateCharacterDataResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Characters
+    //////////////////////////////////////////////////////
+
+    /** Decode the ListUsersCharactersResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
+        static FClientListUsersCharactersResult decodeListUsersCharactersResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetCharacterLeaderboardResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
+        static FClientGetCharacterLeaderboardResult decodeGetCharacterLeaderboardResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetCharacterStatisticsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
+        static FClientGetCharacterStatisticsResult decodeGetCharacterStatisticsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetLeaderboardAroundCharacterResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
+        static FClientGetLeaderboardAroundCharacterResult decodeGetLeaderboardAroundCharacterResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetLeaderboardForUsersCharactersResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
+        static FClientGetLeaderboardForUsersCharactersResult decodeGetLeaderboardForUsersCharactersResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GrantCharacterToUserResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
+        static FClientGrantCharacterToUserResult decodeGrantCharacterToUserResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the UpdateCharacterStatisticsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
+        static FClientUpdateCharacterStatisticsResult decodeUpdateCharacterStatisticsResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Content
+    //////////////////////////////////////////////////////
+
+    /** Decode the GetContentDownloadUrlResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Content Models")
+        static FClientGetContentDownloadUrlResult decodeGetContentDownloadUrlResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Friend List Management
+    //////////////////////////////////////////////////////
+
+    /** Decode the AddFriendResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
+        static FClientAddFriendResult decodeAddFriendResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GetFriendsListResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
+        static FClientGetFriendsListResult decodeGetFriendsListResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the RemoveFriendResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
+        static FClientRemoveFriendResult decodeRemoveFriendResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the SetFriendTagsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
+        static FClientSetFriendTagsResult decodeSetFriendTagsResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Guilds
+    //////////////////////////////////////////////////////
+
+
+
+    ///////////////////////////////////////////////////////
+    // Matchmaking
+    //////////////////////////////////////////////////////
+
+    /** Decode the CurrentGamesResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
+        static FClientCurrentGamesResult decodeCurrentGamesResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the GameServerRegionsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
+        static FClientGameServerRegionsResult decodeGameServerRegionsResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the MatchmakeResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
+        static FClientMatchmakeResult decodeMatchmakeResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the StartGameResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
+        static FClientStartGameResult decodeStartGameResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
+    // Platform Specific Methods
+    //////////////////////////////////////////////////////
+
+    /** Decode the AndroidDevicePushNotificationRegistrationResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
+        static FClientAndroidDevicePushNotificationRegistrationResult decodeAndroidDevicePushNotificationRegistrationResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the RegisterForIOSPushNotificationResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
+        static FClientRegisterForIOSPushNotificationResult decodeRegisterForIOSPushNotificationResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the RestoreIOSPurchasesResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
+        static FClientRestoreIOSPurchasesResult decodeRestoreIOSPurchasesResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ValidateAmazonReceiptResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
+        static FClientValidateAmazonReceiptResult decodeValidateAmazonReceiptResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ValidateGooglePlayPurchaseResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
+        static FClientValidateGooglePlayPurchaseResult decodeValidateGooglePlayPurchaseResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ValidateIOSReceiptResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
+        static FClientValidateIOSReceiptResult decodeValidateIOSReceiptResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ValidateWindowsReceiptResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
+        static FClientValidateWindowsReceiptResult decodeValidateWindowsReceiptResultResponse(UPlayFabJsonObject* response);
+
+
+
+    ///////////////////////////////////////////////////////
     // Player Data Management
     //////////////////////////////////////////////////////
 
@@ -245,36 +407,6 @@ public:
     /** Decode the UpdateUserDataResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Player Data Management Models")
         static FClientUpdateUserDataResult decodeUpdateUserDataResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Title-Wide Data Management
-    //////////////////////////////////////////////////////
-
-    /** Decode the GetCatalogItemsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
-        static FClientGetCatalogItemsResult decodeGetCatalogItemsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetPublisherDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
-        static FClientGetPublisherDataResult decodeGetPublisherDataResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetStoreItemsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
-        static FClientGetStoreItemsResult decodeGetStoreItemsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetTimeResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
-        static FClientGetTimeResult decodeGetTimeResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetTitleDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
-        static FClientGetTitleDataResult decodeGetTitleDataResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetTitleNewsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
-        static FClientGetTitleNewsResult decodeGetTitleNewsResultResponse(UPlayFabJsonObject* response);
 
 
 
@@ -329,56 +461,26 @@ public:
 
 
     ///////////////////////////////////////////////////////
-    // Friend List Management
+    // PlayStream
     //////////////////////////////////////////////////////
 
-    /** Decode the AddFriendResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
-        static FClientAddFriendResult decodeAddFriendResultResponse(UPlayFabJsonObject* response);
+    /** Decode the GetPlayerSegmentsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | PlayStream Models")
+        static FClientGetPlayerSegmentsResult decodeGetPlayerSegmentsResultResponse(UPlayFabJsonObject* response);
 
-    /** Decode the GetFriendsListResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
-        static FClientGetFriendsListResult decodeGetFriendsListResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the RemoveFriendResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
-        static FClientRemoveFriendResult decodeRemoveFriendResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the SetFriendTagsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Friend List Management Models")
-        static FClientSetFriendTagsResult decodeSetFriendTagsResultResponse(UPlayFabJsonObject* response);
+    /** Decode the GetPlayerTagsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | PlayStream Models")
+        static FClientGetPlayerTagsResult decodeGetPlayerTagsResultResponse(UPlayFabJsonObject* response);
 
 
 
     ///////////////////////////////////////////////////////
-    // Matchmaking
+    // Server-Side Cloud Script
     //////////////////////////////////////////////////////
 
-    /** Decode the CurrentGamesResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
-        static FClientCurrentGamesResult decodeCurrentGamesResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GameServerRegionsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
-        static FClientGameServerRegionsResult decodeGameServerRegionsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the MatchmakeResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
-        static FClientMatchmakeResult decodeMatchmakeResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the StartGameResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Matchmaking Models")
-        static FClientStartGameResult decodeStartGameResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Analytics
-    //////////////////////////////////////////////////////
-
-    /** Decode the WriteEventResponse response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Analytics Models")
-        static FClientWriteEventResponse decodeWriteEventResponseResponse(UPlayFabJsonObject* response);
+    /** Decode the ExecuteCloudScriptResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Server-Side Cloud Script Models")
+        static FClientExecuteCloudScriptResult decodeExecuteCloudScriptResultResponse(UPlayFabJsonObject* response);
 
 
 
@@ -409,70 +511,32 @@ public:
 
 
     ///////////////////////////////////////////////////////
-    // Server-Side Cloud Script
+    // Title-Wide Data Management
     //////////////////////////////////////////////////////
 
-    /** Decode the ExecuteCloudScriptResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Server-Side Cloud Script Models")
-        static FClientExecuteCloudScriptResult decodeExecuteCloudScriptResultResponse(UPlayFabJsonObject* response);
+    /** Decode the GetCatalogItemsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
+        static FClientGetCatalogItemsResult decodeGetCatalogItemsResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the GetPublisherDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
+        static FClientGetPublisherDataResult decodeGetPublisherDataResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the GetStoreItemsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
+        static FClientGetStoreItemsResult decodeGetStoreItemsResultResponse(UPlayFabJsonObject* response);
 
-    ///////////////////////////////////////////////////////
-    // Content
-    //////////////////////////////////////////////////////
+    /** Decode the GetTimeResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
+        static FClientGetTimeResult decodeGetTimeResultResponse(UPlayFabJsonObject* response);
 
-    /** Decode the GetContentDownloadUrlResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Content Models")
-        static FClientGetContentDownloadUrlResult decodeGetContentDownloadUrlResultResponse(UPlayFabJsonObject* response);
+    /** Decode the GetTitleDataResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
+        static FClientGetTitleDataResult decodeGetTitleDataResultResponse(UPlayFabJsonObject* response);
 
-
-
-    ///////////////////////////////////////////////////////
-    // Characters
-    //////////////////////////////////////////////////////
-
-    /** Decode the ListUsersCharactersResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
-        static FClientListUsersCharactersResult decodeListUsersCharactersResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetCharacterLeaderboardResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
-        static FClientGetCharacterLeaderboardResult decodeGetCharacterLeaderboardResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetCharacterStatisticsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
-        static FClientGetCharacterStatisticsResult decodeGetCharacterStatisticsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetLeaderboardAroundCharacterResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
-        static FClientGetLeaderboardAroundCharacterResult decodeGetLeaderboardAroundCharacterResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetLeaderboardForUsersCharactersResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
-        static FClientGetLeaderboardForUsersCharactersResult decodeGetLeaderboardForUsersCharactersResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GrantCharacterToUserResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
-        static FClientGrantCharacterToUserResult decodeGrantCharacterToUserResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdateCharacterStatisticsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Characters Models")
-        static FClientUpdateCharacterStatisticsResult decodeUpdateCharacterStatisticsResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Character Data
-    //////////////////////////////////////////////////////
-
-    /** Decode the GetCharacterDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Character Data Models")
-        static FClientGetCharacterDataResult decodeGetCharacterDataResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the UpdateCharacterDataResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Character Data Models")
-        static FClientUpdateCharacterDataResult decodeUpdateCharacterDataResultResponse(UPlayFabJsonObject* response);
+    /** Decode the GetTitleNewsResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Title-Wide Data Management Models")
+        static FClientGetTitleNewsResult decodeGetTitleNewsResultResponse(UPlayFabJsonObject* response);
 
 
 
@@ -499,70 +563,6 @@ public:
     /** Decode the OpenTradeResponse response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Trading Models")
         static FClientOpenTradeResponse decodeOpenTradeResponseResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Advertising
-    //////////////////////////////////////////////////////
-
-    /** Decode the AttributeInstallResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Advertising Models")
-        static FClientAttributeInstallResult decodeAttributeInstallResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Guilds
-    //////////////////////////////////////////////////////
-
-
-
-    ///////////////////////////////////////////////////////
-    // PlayStream
-    //////////////////////////////////////////////////////
-
-    /** Decode the GetPlayerSegmentsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | PlayStream Models")
-        static FClientGetPlayerSegmentsResult decodeGetPlayerSegmentsResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetPlayerTagsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | PlayStream Models")
-        static FClientGetPlayerTagsResult decodeGetPlayerTagsResultResponse(UPlayFabJsonObject* response);
-
-
-
-    ///////////////////////////////////////////////////////
-    // Platform Specific Methods
-    //////////////////////////////////////////////////////
-
-    /** Decode the AndroidDevicePushNotificationRegistrationResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
-        static FClientAndroidDevicePushNotificationRegistrationResult decodeAndroidDevicePushNotificationRegistrationResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the RegisterForIOSPushNotificationResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
-        static FClientRegisterForIOSPushNotificationResult decodeRegisterForIOSPushNotificationResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the RestoreIOSPurchasesResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
-        static FClientRestoreIOSPurchasesResult decodeRestoreIOSPurchasesResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ValidateAmazonReceiptResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
-        static FClientValidateAmazonReceiptResult decodeValidateAmazonReceiptResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ValidateGooglePlayPurchaseResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
-        static FClientValidateGooglePlayPurchaseResult decodeValidateGooglePlayPurchaseResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ValidateIOSReceiptResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
-        static FClientValidateIOSReceiptResult decodeValidateIOSReceiptResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the ValidateWindowsReceiptResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Platform Specific Methods Models")
-        static FClientValidateWindowsReceiptResult decodeValidateWindowsReceiptResultResponse(UPlayFabJsonObject* response);
 
 
 

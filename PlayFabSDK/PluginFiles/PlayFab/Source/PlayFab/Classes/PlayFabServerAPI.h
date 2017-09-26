@@ -45,36 +45,6 @@ public:
     //////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////
-    // Authentication
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAuthenticateSessionTicket, FServerAuthenticateSessionTicketResult, result, UObject*, customData);
-
-    /** Validated a client's session ticket, and if successful, returns details for that user */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* AuthenticateSessionTicket(FServerAuthenticateSessionTicketRequest request,
-            FDelegateOnSuccessAuthenticateSessionTicket onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAuthenticateSessionTicket(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPlayerSecret, FServerSetPlayerSecretResult, result, UObject*, customData);
-
-    /** Sets the player's secret if it is not already set. Player secrets are used to sign API requests. To reset a player's secret use the Admin or Server API method SetPlayerSecret. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetPlayerSecret(FServerSetPlayerSecretRequest request,
-            FDelegateOnSuccessSetPlayerSecret onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetPlayerSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
     // Account Management
     //////////////////////////////////////////////////////
     // callbacks
@@ -219,6 +189,471 @@ public:
     // Implements FOnPlayFabServerRequestCompleted
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
         void HelperUpdateBans(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Analytics
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessWriteCharacterEvent, FServerWriteEventResponse, result, UObject*, customData);
+
+    /** Writes a character-based event into PlayStream. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* WriteCharacterEvent(FServerWriteServerCharacterEventRequest request,
+            FDelegateOnSuccessWriteCharacterEvent onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperWriteCharacterEvent(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessWritePlayerEvent, FServerWriteEventResponse, result, UObject*, customData);
+
+    /** Writes a player-based event into PlayStream. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* WritePlayerEvent(FServerWriteServerPlayerEventRequest request,
+            FDelegateOnSuccessWritePlayerEvent onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperWritePlayerEvent(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessWriteTitleEvent, FServerWriteEventResponse, result, UObject*, customData);
+
+    /** Writes a title-based event into PlayStream. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* WriteTitleEvent(FServerWriteTitleEventRequest request,
+            FDelegateOnSuccessWriteTitleEvent onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperWriteTitleEvent(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Authentication
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAuthenticateSessionTicket, FServerAuthenticateSessionTicketResult, result, UObject*, customData);
+
+    /** Validated a client's session ticket, and if successful, returns details for that user */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* AuthenticateSessionTicket(FServerAuthenticateSessionTicketRequest request,
+            FDelegateOnSuccessAuthenticateSessionTicket onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAuthenticateSessionTicket(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPlayerSecret, FServerSetPlayerSecretResult, result, UObject*, customData);
+
+    /** Sets the player's secret if it is not already set. Player secrets are used to sign API requests. To reset a player's secret use the Admin or Server API method SetPlayerSecret. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetPlayerSecret(FServerSetPlayerSecretRequest request,
+            FDelegateOnSuccessSetPlayerSecret onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetPlayerSecret(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Character Data
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterData, FServerGetCharacterDataResult, result, UObject*, customData);
+
+    /** Retrieves the title-specific custom data for the user which is readable and writable by the client */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetCharacterData(FServerGetCharacterDataRequest request,
+            FDelegateOnSuccessGetCharacterData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCharacterData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterInternalData, FServerGetCharacterDataResult, result, UObject*, customData);
+
+    /** Retrieves the title-specific custom data for the user's character which cannot be accessed by the client */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetCharacterInternalData(FServerGetCharacterDataRequest request,
+            FDelegateOnSuccessGetCharacterInternalData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCharacterInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterReadOnlyData, FServerGetCharacterDataResult, result, UObject*, customData);
+
+    /** Retrieves the title-specific custom data for the user's character which can only be read by the client */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetCharacterReadOnlyData(FServerGetCharacterDataRequest request,
+            FDelegateOnSuccessGetCharacterReadOnlyData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCharacterReadOnlyData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterData, FServerUpdateCharacterDataResult, result, UObject*, customData);
+
+    /** Updates the title-specific custom data for the user's character which is readable and writable by the client */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* UpdateCharacterData(FServerUpdateCharacterDataRequest request,
+            FDelegateOnSuccessUpdateCharacterData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdateCharacterData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterInternalData, FServerUpdateCharacterDataResult, result, UObject*, customData);
+
+    /** Updates the title-specific custom data for the user's character which cannot  be accessed by the client */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* UpdateCharacterInternalData(FServerUpdateCharacterDataRequest request,
+            FDelegateOnSuccessUpdateCharacterInternalData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdateCharacterInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterReadOnlyData, FServerUpdateCharacterDataResult, result, UObject*, customData);
+
+    /** Updates the title-specific custom data for the user's character which can only be read by the client */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* UpdateCharacterReadOnlyData(FServerUpdateCharacterDataRequest request,
+            FDelegateOnSuccessUpdateCharacterReadOnlyData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdateCharacterReadOnlyData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Characters
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteCharacterFromUser, FServerDeleteCharacterFromUserResult, result, UObject*, customData);
+
+    /** Deletes the specific character ID from the specified user. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* DeleteCharacterFromUser(FServerDeleteCharacterFromUserRequest request,
+            FDelegateOnSuccessDeleteCharacterFromUser onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperDeleteCharacterFromUser(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetAllUsersCharacters, FServerListUsersCharactersResult, result, UObject*, customData);
+
+    /** Lists all of the characters that belong to a specific user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetAllUsersCharacters(FServerListUsersCharactersRequest request,
+            FDelegateOnSuccessGetAllUsersCharacters onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetAllUsersCharacters(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterLeaderboard, FServerGetCharacterLeaderboardResult, result, UObject*, customData);
+
+    /** Retrieves a list of ranked characters for the given statistic, starting from the indicated point in the leaderboard */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetCharacterLeaderboard(FServerGetCharacterLeaderboardRequest request,
+            FDelegateOnSuccessGetCharacterLeaderboard onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCharacterLeaderboard(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterStatistics, FServerGetCharacterStatisticsResult, result, UObject*, customData);
+
+    /** Retrieves the details of all title-specific statistics for the specific character */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetCharacterStatistics(FServerGetCharacterStatisticsRequest request,
+            FDelegateOnSuccessGetCharacterStatistics onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetLeaderboardAroundCharacter, FServerGetLeaderboardAroundCharacterResult, result, UObject*, customData);
+
+    /** Retrieves a list of ranked characters for the given statistic, centered on the requested user */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetLeaderboardAroundCharacter(FServerGetLeaderboardAroundCharacterRequest request,
+            FDelegateOnSuccessGetLeaderboardAroundCharacter onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetLeaderboardAroundCharacter(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetLeaderboardForUserCharacters, FServerGetLeaderboardForUsersCharactersResult, result, UObject*, customData);
+
+    /** Retrieves a list of all of the user's characters for the given statistic. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetLeaderboardForUserCharacters(FServerGetLeaderboardForUsersCharactersRequest request,
+            FDelegateOnSuccessGetLeaderboardForUserCharacters onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetLeaderboardForUserCharacters(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGrantCharacterToUser, FServerGrantCharacterToUserResult, result, UObject*, customData);
+
+    /** Grants the specified character type to the user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GrantCharacterToUser(FServerGrantCharacterToUserRequest request,
+            FDelegateOnSuccessGrantCharacterToUser onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGrantCharacterToUser(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterStatistics, FServerUpdateCharacterStatisticsResult, result, UObject*, customData);
+
+    /** Updates the values of the specified title-specific statistics for the specific character */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* UpdateCharacterStatistics(FServerUpdateCharacterStatisticsRequest request,
+            FDelegateOnSuccessUpdateCharacterStatistics onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdateCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Content
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetContentDownloadUrl, FServerGetContentDownloadUrlResult, result, UObject*, customData);
+
+    /** This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service.  Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetContentDownloadUrl(FServerGetContentDownloadUrlRequest request,
+            FDelegateOnSuccessGetContentDownloadUrl onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Content ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetContentDownloadUrl(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Friend List Management
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddFriend, FServerEmptyResult, result, UObject*, customData);
+
+    /** Adds the Friend user to the friendlist of the user with PlayFabId. At least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* AddFriend(FServerAddFriendRequest request,
+            FDelegateOnSuccessAddFriend onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAddFriend(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetFriendsList, FServerGetFriendsListResult, result, UObject*, customData);
+
+    /** Retrieves the current friends for the user with PlayFabId, constrained to users who have PlayFab accounts. Friends from linked accounts (Facebook, Steam) are also included. You may optionally exclude some linked services' friends. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetFriendsList(FServerGetFriendsListRequest request,
+            FDelegateOnSuccessGetFriendsList onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetFriendsList(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveFriend, FServerEmptyResult, result, UObject*, customData);
+
+    /** Removes the specified friend from the the user's friend list */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* RemoveFriend(FServerRemoveFriendRequest request,
+            FDelegateOnSuccessRemoveFriend onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRemoveFriend(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetFriendTags, FServerEmptyResult, result, UObject*, customData);
+
+    /** Updates the tag list for a specified user in the friend list of another user */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetFriendTags(FServerSetFriendTagsRequest request,
+            FDelegateOnSuccessSetFriendTags onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetFriendTags(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Guilds
+    //////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////
+    // Matchmaking
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeregisterGame, FServerDeregisterGameResponse, result, UObject*, customData);
+
+    /** Inform the matchmaker that a Game Server Instance is removed. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* DeregisterGame(FServerDeregisterGameRequest request,
+            FDelegateOnSuccessDeregisterGame onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperDeregisterGame(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessNotifyMatchmakerPlayerLeft, FServerNotifyMatchmakerPlayerLeftResult, result, UObject*, customData);
+
+    /** Informs the PlayFab match-making service that the user specified has left the Game Server Instance */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* NotifyMatchmakerPlayerLeft(FServerNotifyMatchmakerPlayerLeftRequest request,
+            FDelegateOnSuccessNotifyMatchmakerPlayerLeft onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperNotifyMatchmakerPlayerLeft(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRedeemMatchmakerTicket, FServerRedeemMatchmakerTicketResult, result, UObject*, customData);
+
+    /** Validates a Game Server session ticket and returns details about the user */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* RedeemMatchmakerTicket(FServerRedeemMatchmakerTicketRequest request,
+            FDelegateOnSuccessRedeemMatchmakerTicket onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRedeemMatchmakerTicket(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRefreshGameServerInstanceHeartbeat, FServerRefreshGameServerInstanceHeartbeatResult, result, UObject*, customData);
+
+    /** Set the state of the indicated Game Server Instance. Also update the heartbeat for the instance. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* RefreshGameServerInstanceHeartbeat(FServerRefreshGameServerInstanceHeartbeatRequest request,
+            FDelegateOnSuccessRefreshGameServerInstanceHeartbeat onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRefreshGameServerInstanceHeartbeat(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRegisterGame, FServerRegisterGameResponse, result, UObject*, customData);
+
+    /** Inform the matchmaker that a new Game Server Instance is added. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* RegisterGame(FServerRegisterGameRequest request,
+            FDelegateOnSuccessRegisterGame onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRegisterGame(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetGameServerInstanceData, FServerSetGameServerInstanceDataResult, result, UObject*, customData);
+
+    /** Sets the custom data of the indicated Game Server Instance */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetGameServerInstanceData(FServerSetGameServerInstanceDataRequest request,
+            FDelegateOnSuccessSetGameServerInstanceData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetGameServerInstanceData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetGameServerInstanceState, FServerSetGameServerInstanceStateResult, result, UObject*, customData);
+
+    /** Set the state of the indicated Game Server Instance. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetGameServerInstanceState(FServerSetGameServerInstanceStateRequest request,
+            FDelegateOnSuccessSetGameServerInstanceState onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetGameServerInstanceState(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetGameServerInstanceTags, FServerSetGameServerInstanceTagsResult, result, UObject*, customData);
+
+    /** Set custom tags for the specified Game Server Instance */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetGameServerInstanceTags(FServerSetGameServerInstanceTagsRequest request,
+            FDelegateOnSuccessSetGameServerInstanceTags onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetGameServerInstanceTags(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Platform Specific Methods
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAwardSteamAchievement, FServerAwardSteamAchievementResult, result, UObject*, customData);
+
+    /** Awards the specified users the specified Steam achievements */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Platform Specific Methods ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* AwardSteamAchievement(FServerAwardSteamAchievementRequest request,
+            FDelegateOnSuccessAwardSteamAchievement onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Platform Specific Methods ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAwardSteamAchievement(FPlayFabBaseModel response, UObject* customData, bool successful);
 
 
     ///////////////////////////////////////////////////////
@@ -483,127 +918,6 @@ public:
     // Implements FOnPlayFabServerRequestCompleted
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Player Data Management ", meta = (BlueprintInternalUseOnly = "true"))
         void HelperUpdateUserReadOnlyData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Title-Wide Data Management
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCatalogItems, FServerGetCatalogItemsResult, result, UObject*, customData);
-
-    /** Retrieves the specified version of the title's catalog of virtual goods, including all defined properties */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetCatalogItems(FServerGetCatalogItemsRequest request,
-            FDelegateOnSuccessGetCatalogItems onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCatalogItems(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPublisherData, FServerGetPublisherDataResult, result, UObject*, customData);
-
-    /** Retrieves the key-value store of custom publisher settings */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetPublisherData(FServerGetPublisherDataRequest request,
-            FDelegateOnSuccessGetPublisherData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTime, FServerGetTimeResult, result, UObject*, customData);
-
-    /** Retrieves the current server time */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetTime(FServerGetTimeRequest request,
-            FDelegateOnSuccessGetTime onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetTime(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTitleData, FServerGetTitleDataResult, result, UObject*, customData);
-
-    /** Retrieves the key-value store of custom title settings */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetTitleData(FServerGetTitleDataRequest request,
-            FDelegateOnSuccessGetTitleData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetTitleData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTitleInternalData, FServerGetTitleDataResult, result, UObject*, customData);
-
-    /** Retrieves the key-value store of custom internal title settings */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetTitleInternalData(FServerGetTitleDataRequest request,
-            FDelegateOnSuccessGetTitleInternalData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetTitleInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTitleNews, FServerGetTitleNewsResult, result, UObject*, customData);
-
-    /** Retrieves the title news feed, as configured in the developer portal */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetTitleNews(FServerGetTitleNewsRequest request,
-            FDelegateOnSuccessGetTitleNews onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetTitleNews(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPublisherData, FServerSetPublisherDataResult, result, UObject*, customData);
-
-    /** Updates the key-value store of custom publisher settings */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetPublisherData(FServerSetPublisherDataRequest request,
-            FDelegateOnSuccessSetPublisherData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetTitleData, FServerSetTitleDataResult, result, UObject*, customData);
-
-    /** Updates the key-value store of custom title settings */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetTitleData(FServerSetTitleDataRequest request,
-            FDelegateOnSuccessSetTitleData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetTitleData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetTitleInternalData, FServerSetTitleDataResult, result, UObject*, customData);
-
-    /** Updates the key-value store of custom title settings */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetTitleInternalData(FServerSetTitleDataRequest request,
-            FDelegateOnSuccessSetTitleInternalData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetTitleInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
 
 
     ///////////////////////////////////////////////////////
@@ -897,523 +1211,6 @@ public:
 
 
     ///////////////////////////////////////////////////////
-    // Friend List Management
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddFriend, FServerEmptyResult, result, UObject*, customData);
-
-    /** Adds the Friend user to the friendlist of the user with PlayFabId. At least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* AddFriend(FServerAddFriendRequest request,
-            FDelegateOnSuccessAddFriend onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAddFriend(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetFriendsList, FServerGetFriendsListResult, result, UObject*, customData);
-
-    /** Retrieves the current friends for the user with PlayFabId, constrained to users who have PlayFab accounts. Friends from linked accounts (Facebook, Steam) are also included. You may optionally exclude some linked services' friends. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetFriendsList(FServerGetFriendsListRequest request,
-            FDelegateOnSuccessGetFriendsList onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetFriendsList(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveFriend, FServerEmptyResult, result, UObject*, customData);
-
-    /** Removes the specified friend from the the user's friend list */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* RemoveFriend(FServerRemoveFriendRequest request,
-            FDelegateOnSuccessRemoveFriend onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRemoveFriend(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetFriendTags, FServerEmptyResult, result, UObject*, customData);
-
-    /** Updates the tag list for a specified user in the friend list of another user */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetFriendTags(FServerSetFriendTagsRequest request,
-            FDelegateOnSuccessSetFriendTags onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Friend List Management ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetFriendTags(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Matchmaking
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeregisterGame, FServerDeregisterGameResponse, result, UObject*, customData);
-
-    /** Inform the matchmaker that a Game Server Instance is removed. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* DeregisterGame(FServerDeregisterGameRequest request,
-            FDelegateOnSuccessDeregisterGame onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperDeregisterGame(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessNotifyMatchmakerPlayerLeft, FServerNotifyMatchmakerPlayerLeftResult, result, UObject*, customData);
-
-    /** Informs the PlayFab match-making service that the user specified has left the Game Server Instance */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* NotifyMatchmakerPlayerLeft(FServerNotifyMatchmakerPlayerLeftRequest request,
-            FDelegateOnSuccessNotifyMatchmakerPlayerLeft onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperNotifyMatchmakerPlayerLeft(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRedeemMatchmakerTicket, FServerRedeemMatchmakerTicketResult, result, UObject*, customData);
-
-    /** Validates a Game Server session ticket and returns details about the user */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* RedeemMatchmakerTicket(FServerRedeemMatchmakerTicketRequest request,
-            FDelegateOnSuccessRedeemMatchmakerTicket onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRedeemMatchmakerTicket(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRefreshGameServerInstanceHeartbeat, FServerRefreshGameServerInstanceHeartbeatResult, result, UObject*, customData);
-
-    /** Set the state of the indicated Game Server Instance. Also update the heartbeat for the instance. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* RefreshGameServerInstanceHeartbeat(FServerRefreshGameServerInstanceHeartbeatRequest request,
-            FDelegateOnSuccessRefreshGameServerInstanceHeartbeat onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRefreshGameServerInstanceHeartbeat(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRegisterGame, FServerRegisterGameResponse, result, UObject*, customData);
-
-    /** Inform the matchmaker that a new Game Server Instance is added. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* RegisterGame(FServerRegisterGameRequest request,
-            FDelegateOnSuccessRegisterGame onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRegisterGame(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetGameServerInstanceData, FServerSetGameServerInstanceDataResult, result, UObject*, customData);
-
-    /** Sets the custom data of the indicated Game Server Instance */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetGameServerInstanceData(FServerSetGameServerInstanceDataRequest request,
-            FDelegateOnSuccessSetGameServerInstanceData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetGameServerInstanceData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetGameServerInstanceState, FServerSetGameServerInstanceStateResult, result, UObject*, customData);
-
-    /** Set the state of the indicated Game Server Instance. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetGameServerInstanceState(FServerSetGameServerInstanceStateRequest request,
-            FDelegateOnSuccessSetGameServerInstanceState onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetGameServerInstanceState(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetGameServerInstanceTags, FServerSetGameServerInstanceTagsResult, result, UObject*, customData);
-
-    /** Set custom tags for the specified Game Server Instance */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* SetGameServerInstanceTags(FServerSetGameServerInstanceTagsRequest request,
-            FDelegateOnSuccessSetGameServerInstanceTags onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperSetGameServerInstanceTags(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Analytics
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessWriteCharacterEvent, FServerWriteEventResponse, result, UObject*, customData);
-
-    /** Writes a character-based event into PlayStream. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* WriteCharacterEvent(FServerWriteServerCharacterEventRequest request,
-            FDelegateOnSuccessWriteCharacterEvent onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperWriteCharacterEvent(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessWritePlayerEvent, FServerWriteEventResponse, result, UObject*, customData);
-
-    /** Writes a player-based event into PlayStream. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* WritePlayerEvent(FServerWriteServerPlayerEventRequest request,
-            FDelegateOnSuccessWritePlayerEvent onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperWritePlayerEvent(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessWriteTitleEvent, FServerWriteEventResponse, result, UObject*, customData);
-
-    /** Writes a title-based event into PlayStream. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* WriteTitleEvent(FServerWriteTitleEventRequest request,
-            FDelegateOnSuccessWriteTitleEvent onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperWriteTitleEvent(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Shared Group Data
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddSharedGroupMembers, FServerAddSharedGroupMembersResult, result, UObject*, customData);
-
-    /** Adds users to the set of those able to update both the shared data, as well as the set of users  in the group. Only users in the group (and the server) can add new members. Shared Groups are designed for sharing data  between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* AddSharedGroupMembers(FServerAddSharedGroupMembersRequest request,
-            FDelegateOnSuccessAddSharedGroupMembers onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAddSharedGroupMembers(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreateSharedGroup, FServerCreateSharedGroupResult, result, UObject*, customData);
-
-    /** Requests the creation of a shared group object, containing key/value pairs which may  be updated by all members of the group. When created by a server, the group will initially have no members.  Shared Groups are designed for sharing data between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* CreateSharedGroup(FServerCreateSharedGroupRequest request,
-            FDelegateOnSuccessCreateSharedGroup onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperCreateSharedGroup(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteSharedGroup, FServerEmptyResult, result, UObject*, customData);
-
-    /** Deletes a shared group, freeing up the shared group ID to be reused for a new group.  Shared Groups are designed for sharing data between a very small number of players, please see our guide:  https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* DeleteSharedGroup(FServerDeleteSharedGroupRequest request,
-            FDelegateOnSuccessDeleteSharedGroup onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperDeleteSharedGroup(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetSharedGroupData, FServerGetSharedGroupDataResult, result, UObject*, customData);
-
-    /** Retrieves data stored in a shared group object, as well as the list of members in the group.  The server can access all public and private group data. Shared Groups are designed for sharing data between a very  small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetSharedGroupData(FServerGetSharedGroupDataRequest request,
-            FDelegateOnSuccessGetSharedGroupData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetSharedGroupData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveSharedGroupMembers, FServerRemoveSharedGroupMembersResult, result, UObject*, customData);
-
-    /** Removes users from the set of those able to update the shared data and the set of users in the group. Only users in the group can remove members. If as a result of the call, zero users remain with access, the group and its associated data will be deleted. Shared Groups are designed for sharing data between a very small number of players,  please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* RemoveSharedGroupMembers(FServerRemoveSharedGroupMembersRequest request,
-            FDelegateOnSuccessRemoveSharedGroupMembers onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperRemoveSharedGroupMembers(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateSharedGroupData, FServerUpdateSharedGroupDataResult, result, UObject*, customData);
-
-    /** Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group (and the server) can update the data.  Shared Groups are designed for sharing data between a very small number of players, please see our guide:  https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* UpdateSharedGroupData(FServerUpdateSharedGroupDataRequest request,
-            FDelegateOnSuccessUpdateSharedGroupData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdateSharedGroupData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Server-Side Cloud Script
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessExecuteCloudScript, FServerExecuteCloudScriptResult, result, UObject*, customData);
-
-    /** Executes a CloudScript function, with the 'currentPlayerId' variable set to the specified PlayFabId parameter value. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* ExecuteCloudScript(FServerExecuteCloudScriptServerRequest request,
-            FDelegateOnSuccessExecuteCloudScript onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperExecuteCloudScript(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Content
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetContentDownloadUrl, FServerGetContentDownloadUrlResult, result, UObject*, customData);
-
-    /** This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service.  Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetContentDownloadUrl(FServerGetContentDownloadUrlRequest request,
-            FDelegateOnSuccessGetContentDownloadUrl onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Content ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetContentDownloadUrl(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Characters
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteCharacterFromUser, FServerDeleteCharacterFromUserResult, result, UObject*, customData);
-
-    /** Deletes the specific character ID from the specified user. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* DeleteCharacterFromUser(FServerDeleteCharacterFromUserRequest request,
-            FDelegateOnSuccessDeleteCharacterFromUser onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperDeleteCharacterFromUser(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetAllUsersCharacters, FServerListUsersCharactersResult, result, UObject*, customData);
-
-    /** Lists all of the characters that belong to a specific user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetAllUsersCharacters(FServerListUsersCharactersRequest request,
-            FDelegateOnSuccessGetAllUsersCharacters onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetAllUsersCharacters(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterLeaderboard, FServerGetCharacterLeaderboardResult, result, UObject*, customData);
-
-    /** Retrieves a list of ranked characters for the given statistic, starting from the indicated point in the leaderboard */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetCharacterLeaderboard(FServerGetCharacterLeaderboardRequest request,
-            FDelegateOnSuccessGetCharacterLeaderboard onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCharacterLeaderboard(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterStatistics, FServerGetCharacterStatisticsResult, result, UObject*, customData);
-
-    /** Retrieves the details of all title-specific statistics for the specific character */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetCharacterStatistics(FServerGetCharacterStatisticsRequest request,
-            FDelegateOnSuccessGetCharacterStatistics onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetLeaderboardAroundCharacter, FServerGetLeaderboardAroundCharacterResult, result, UObject*, customData);
-
-    /** Retrieves a list of ranked characters for the given statistic, centered on the requested user */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetLeaderboardAroundCharacter(FServerGetLeaderboardAroundCharacterRequest request,
-            FDelegateOnSuccessGetLeaderboardAroundCharacter onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetLeaderboardAroundCharacter(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetLeaderboardForUserCharacters, FServerGetLeaderboardForUsersCharactersResult, result, UObject*, customData);
-
-    /** Retrieves a list of all of the user's characters for the given statistic. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetLeaderboardForUserCharacters(FServerGetLeaderboardForUsersCharactersRequest request,
-            FDelegateOnSuccessGetLeaderboardForUserCharacters onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetLeaderboardForUserCharacters(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGrantCharacterToUser, FServerGrantCharacterToUserResult, result, UObject*, customData);
-
-    /** Grants the specified character type to the user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness. */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GrantCharacterToUser(FServerGrantCharacterToUserRequest request,
-            FDelegateOnSuccessGrantCharacterToUser onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGrantCharacterToUser(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterStatistics, FServerUpdateCharacterStatisticsResult, result, UObject*, customData);
-
-    /** Updates the values of the specified title-specific statistics for the specific character */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* UpdateCharacterStatistics(FServerUpdateCharacterStatisticsRequest request,
-            FDelegateOnSuccessUpdateCharacterStatistics onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Characters ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdateCharacterStatistics(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Character Data
-    //////////////////////////////////////////////////////
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterData, FServerGetCharacterDataResult, result, UObject*, customData);
-
-    /** Retrieves the title-specific custom data for the user which is readable and writable by the client */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetCharacterData(FServerGetCharacterDataRequest request,
-            FDelegateOnSuccessGetCharacterData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCharacterData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterInternalData, FServerGetCharacterDataResult, result, UObject*, customData);
-
-    /** Retrieves the title-specific custom data for the user's character which cannot be accessed by the client */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetCharacterInternalData(FServerGetCharacterDataRequest request,
-            FDelegateOnSuccessGetCharacterInternalData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCharacterInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCharacterReadOnlyData, FServerGetCharacterDataResult, result, UObject*, customData);
-
-    /** Retrieves the title-specific custom data for the user's character which can only be read by the client */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* GetCharacterReadOnlyData(FServerGetCharacterDataRequest request,
-            FDelegateOnSuccessGetCharacterReadOnlyData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperGetCharacterReadOnlyData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterData, FServerUpdateCharacterDataResult, result, UObject*, customData);
-
-    /** Updates the title-specific custom data for the user's character which is readable and writable by the client */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* UpdateCharacterData(FServerUpdateCharacterDataRequest request,
-            FDelegateOnSuccessUpdateCharacterData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdateCharacterData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterInternalData, FServerUpdateCharacterDataResult, result, UObject*, customData);
-
-    /** Updates the title-specific custom data for the user's character which cannot  be accessed by the client */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* UpdateCharacterInternalData(FServerUpdateCharacterDataRequest request,
-            FDelegateOnSuccessUpdateCharacterInternalData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdateCharacterInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-    // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateCharacterReadOnlyData, FServerUpdateCharacterDataResult, result, UObject*, customData);
-
-    /** Updates the title-specific custom data for the user's character which can only be read by the client */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* UpdateCharacterReadOnlyData(FServerUpdateCharacterDataRequest request,
-            FDelegateOnSuccessUpdateCharacterReadOnlyData onSuccess,
-            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
-
-    // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Character Data ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperUpdateCharacterReadOnlyData(FPlayFabBaseModel response, UObject* customData, bool successful);
-
-
-    ///////////////////////////////////////////////////////
-    // Guilds
-    //////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////
     // PlayStream
     //////////////////////////////////////////////////////
     // callbacks
@@ -1509,20 +1306,223 @@ public:
 
 
     ///////////////////////////////////////////////////////
-    // Platform Specific Methods
+    // Server-Side Cloud Script
     //////////////////////////////////////////////////////
     // callbacks
-    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAwardSteamAchievement, FServerAwardSteamAchievementResult, result, UObject*, customData);
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessExecuteCloudScript, FServerExecuteCloudScriptResult, result, UObject*, customData);
 
-    /** Awards the specified users the specified Steam achievements */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Platform Specific Methods ", meta = (BlueprintInternalUseOnly = "true"))
-        static UPlayFabServerAPI* AwardSteamAchievement(FServerAwardSteamAchievementRequest request,
-            FDelegateOnSuccessAwardSteamAchievement onSuccess,
+    /** Executes a CloudScript function, with the 'currentPlayerId' variable set to the specified PlayFabId parameter value. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* ExecuteCloudScript(FServerExecuteCloudScriptServerRequest request,
+            FDelegateOnSuccessExecuteCloudScript onSuccess,
             FDelegateOnFailurePlayFabError onFailure, UObject* customData);
 
     // Implements FOnPlayFabServerRequestCompleted
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Platform Specific Methods ", meta = (BlueprintInternalUseOnly = "true"))
-        void HelperAwardSteamAchievement(FPlayFabBaseModel response, UObject* customData, bool successful);
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Server-Side Cloud Script ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperExecuteCloudScript(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Shared Group Data
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddSharedGroupMembers, FServerAddSharedGroupMembersResult, result, UObject*, customData);
+
+    /** Adds users to the set of those able to update both the shared data, as well as the set of users  in the group. Only users in the group (and the server) can add new members. Shared Groups are designed for sharing data  between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* AddSharedGroupMembers(FServerAddSharedGroupMembersRequest request,
+            FDelegateOnSuccessAddSharedGroupMembers onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAddSharedGroupMembers(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCreateSharedGroup, FServerCreateSharedGroupResult, result, UObject*, customData);
+
+    /** Requests the creation of a shared group object, containing key/value pairs which may  be updated by all members of the group. When created by a server, the group will initially have no members.  Shared Groups are designed for sharing data between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* CreateSharedGroup(FServerCreateSharedGroupRequest request,
+            FDelegateOnSuccessCreateSharedGroup onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperCreateSharedGroup(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessDeleteSharedGroup, FServerEmptyResult, result, UObject*, customData);
+
+    /** Deletes a shared group, freeing up the shared group ID to be reused for a new group.  Shared Groups are designed for sharing data between a very small number of players, please see our guide:  https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* DeleteSharedGroup(FServerDeleteSharedGroupRequest request,
+            FDelegateOnSuccessDeleteSharedGroup onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperDeleteSharedGroup(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetSharedGroupData, FServerGetSharedGroupDataResult, result, UObject*, customData);
+
+    /** Retrieves data stored in a shared group object, as well as the list of members in the group.  The server can access all public and private group data. Shared Groups are designed for sharing data between a very  small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetSharedGroupData(FServerGetSharedGroupDataRequest request,
+            FDelegateOnSuccessGetSharedGroupData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetSharedGroupData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveSharedGroupMembers, FServerRemoveSharedGroupMembersResult, result, UObject*, customData);
+
+    /** Removes users from the set of those able to update the shared data and the set of users in the group. Only users in the group can remove members. If as a result of the call, zero users remain with access, the group and its associated data will be deleted. Shared Groups are designed for sharing data between a very small number of players,  please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* RemoveSharedGroupMembers(FServerRemoveSharedGroupMembersRequest request,
+            FDelegateOnSuccessRemoveSharedGroupMembers onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRemoveSharedGroupMembers(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUpdateSharedGroupData, FServerUpdateSharedGroupDataResult, result, UObject*, customData);
+
+    /** Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group (and the server) can update the data.  Shared Groups are designed for sharing data between a very small number of players, please see our guide:  https://api.playfab.com/docs/tutorials/landing-players/shared-groups */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* UpdateSharedGroupData(FServerUpdateSharedGroupDataRequest request,
+            FDelegateOnSuccessUpdateSharedGroupData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Shared Group Data ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperUpdateSharedGroupData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+
+    ///////////////////////////////////////////////////////
+    // Title-Wide Data Management
+    //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetCatalogItems, FServerGetCatalogItemsResult, result, UObject*, customData);
+
+    /** Retrieves the specified version of the title's catalog of virtual goods, including all defined properties */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetCatalogItems(FServerGetCatalogItemsRequest request,
+            FDelegateOnSuccessGetCatalogItems onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetCatalogItems(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPublisherData, FServerGetPublisherDataResult, result, UObject*, customData);
+
+    /** Retrieves the key-value store of custom publisher settings */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetPublisherData(FServerGetPublisherDataRequest request,
+            FDelegateOnSuccessGetPublisherData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTime, FServerGetTimeResult, result, UObject*, customData);
+
+    /** Retrieves the current server time */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetTime(FServerGetTimeRequest request,
+            FDelegateOnSuccessGetTime onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetTime(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTitleData, FServerGetTitleDataResult, result, UObject*, customData);
+
+    /** Retrieves the key-value store of custom title settings */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetTitleData(FServerGetTitleDataRequest request,
+            FDelegateOnSuccessGetTitleData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetTitleData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTitleInternalData, FServerGetTitleDataResult, result, UObject*, customData);
+
+    /** Retrieves the key-value store of custom internal title settings */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetTitleInternalData(FServerGetTitleDataRequest request,
+            FDelegateOnSuccessGetTitleInternalData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetTitleInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetTitleNews, FServerGetTitleNewsResult, result, UObject*, customData);
+
+    /** Retrieves the title news feed, as configured in the developer portal */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* GetTitleNews(FServerGetTitleNewsRequest request,
+            FDelegateOnSuccessGetTitleNews onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetTitleNews(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetPublisherData, FServerSetPublisherDataResult, result, UObject*, customData);
+
+    /** Updates the key-value store of custom publisher settings */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetPublisherData(FServerSetPublisherDataRequest request,
+            FDelegateOnSuccessSetPublisherData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetPublisherData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetTitleData, FServerSetTitleDataResult, result, UObject*, customData);
+
+    /** Updates the key-value store of custom title settings */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetTitleData(FServerSetTitleDataRequest request,
+            FDelegateOnSuccessSetTitleData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetTitleData(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSetTitleInternalData, FServerSetTitleDataResult, result, UObject*, customData);
+
+    /** Updates the key-value store of custom title settings */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SetTitleInternalData(FServerSetTitleDataRequest request,
+            FDelegateOnSuccessSetTitleInternalData onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Title-Wide Data Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSetTitleInternalData(FPlayFabBaseModel response, UObject* customData, bool successful);
 
 
 
@@ -1539,8 +1539,6 @@ public:
     UObject* mCustomData;
 
     FDelegateOnFailurePlayFabError OnFailure;
-    FDelegateOnSuccessAuthenticateSessionTicket OnSuccessAuthenticateSessionTicket;
-    FDelegateOnSuccessSetPlayerSecret OnSuccessSetPlayerSecret;
     FDelegateOnSuccessBanUsers OnSuccessBanUsers;
     FDelegateOnSuccessGetPlayerProfile OnSuccessGetPlayerProfile;
     FDelegateOnSuccessGetPlayFabIDsFromFacebookIDs OnSuccessGetPlayFabIDsFromFacebookIDs;
@@ -1552,6 +1550,39 @@ public:
     FDelegateOnSuccessSendPushNotification OnSuccessSendPushNotification;
     FDelegateOnSuccessUpdateAvatarUrl OnSuccessUpdateAvatarUrl;
     FDelegateOnSuccessUpdateBans OnSuccessUpdateBans;
+    FDelegateOnSuccessWriteCharacterEvent OnSuccessWriteCharacterEvent;
+    FDelegateOnSuccessWritePlayerEvent OnSuccessWritePlayerEvent;
+    FDelegateOnSuccessWriteTitleEvent OnSuccessWriteTitleEvent;
+    FDelegateOnSuccessAuthenticateSessionTicket OnSuccessAuthenticateSessionTicket;
+    FDelegateOnSuccessSetPlayerSecret OnSuccessSetPlayerSecret;
+    FDelegateOnSuccessGetCharacterData OnSuccessGetCharacterData;
+    FDelegateOnSuccessGetCharacterInternalData OnSuccessGetCharacterInternalData;
+    FDelegateOnSuccessGetCharacterReadOnlyData OnSuccessGetCharacterReadOnlyData;
+    FDelegateOnSuccessUpdateCharacterData OnSuccessUpdateCharacterData;
+    FDelegateOnSuccessUpdateCharacterInternalData OnSuccessUpdateCharacterInternalData;
+    FDelegateOnSuccessUpdateCharacterReadOnlyData OnSuccessUpdateCharacterReadOnlyData;
+    FDelegateOnSuccessDeleteCharacterFromUser OnSuccessDeleteCharacterFromUser;
+    FDelegateOnSuccessGetAllUsersCharacters OnSuccessGetAllUsersCharacters;
+    FDelegateOnSuccessGetCharacterLeaderboard OnSuccessGetCharacterLeaderboard;
+    FDelegateOnSuccessGetCharacterStatistics OnSuccessGetCharacterStatistics;
+    FDelegateOnSuccessGetLeaderboardAroundCharacter OnSuccessGetLeaderboardAroundCharacter;
+    FDelegateOnSuccessGetLeaderboardForUserCharacters OnSuccessGetLeaderboardForUserCharacters;
+    FDelegateOnSuccessGrantCharacterToUser OnSuccessGrantCharacterToUser;
+    FDelegateOnSuccessUpdateCharacterStatistics OnSuccessUpdateCharacterStatistics;
+    FDelegateOnSuccessGetContentDownloadUrl OnSuccessGetContentDownloadUrl;
+    FDelegateOnSuccessAddFriend OnSuccessAddFriend;
+    FDelegateOnSuccessGetFriendsList OnSuccessGetFriendsList;
+    FDelegateOnSuccessRemoveFriend OnSuccessRemoveFriend;
+    FDelegateOnSuccessSetFriendTags OnSuccessSetFriendTags;
+    FDelegateOnSuccessDeregisterGame OnSuccessDeregisterGame;
+    FDelegateOnSuccessNotifyMatchmakerPlayerLeft OnSuccessNotifyMatchmakerPlayerLeft;
+    FDelegateOnSuccessRedeemMatchmakerTicket OnSuccessRedeemMatchmakerTicket;
+    FDelegateOnSuccessRefreshGameServerInstanceHeartbeat OnSuccessRefreshGameServerInstanceHeartbeat;
+    FDelegateOnSuccessRegisterGame OnSuccessRegisterGame;
+    FDelegateOnSuccessSetGameServerInstanceData OnSuccessSetGameServerInstanceData;
+    FDelegateOnSuccessSetGameServerInstanceState OnSuccessSetGameServerInstanceState;
+    FDelegateOnSuccessSetGameServerInstanceTags OnSuccessSetGameServerInstanceTags;
+    FDelegateOnSuccessAwardSteamAchievement OnSuccessAwardSteamAchievement;
     FDelegateOnSuccessDeleteUsers OnSuccessDeleteUsers;
     FDelegateOnSuccessGetFriendLeaderboard OnSuccessGetFriendLeaderboard;
     FDelegateOnSuccessGetLeaderboard OnSuccessGetLeaderboard;
@@ -1572,15 +1603,6 @@ public:
     FDelegateOnSuccessUpdateUserPublisherInternalData OnSuccessUpdateUserPublisherInternalData;
     FDelegateOnSuccessUpdateUserPublisherReadOnlyData OnSuccessUpdateUserPublisherReadOnlyData;
     FDelegateOnSuccessUpdateUserReadOnlyData OnSuccessUpdateUserReadOnlyData;
-    FDelegateOnSuccessGetCatalogItems OnSuccessGetCatalogItems;
-    FDelegateOnSuccessGetPublisherData OnSuccessGetPublisherData;
-    FDelegateOnSuccessGetTime OnSuccessGetTime;
-    FDelegateOnSuccessGetTitleData OnSuccessGetTitleData;
-    FDelegateOnSuccessGetTitleInternalData OnSuccessGetTitleInternalData;
-    FDelegateOnSuccessGetTitleNews OnSuccessGetTitleNews;
-    FDelegateOnSuccessSetPublisherData OnSuccessSetPublisherData;
-    FDelegateOnSuccessSetTitleData OnSuccessSetTitleData;
-    FDelegateOnSuccessSetTitleInternalData OnSuccessSetTitleInternalData;
     FDelegateOnSuccessAddCharacterVirtualCurrency OnSuccessAddCharacterVirtualCurrency;
     FDelegateOnSuccessAddUserVirtualCurrency OnSuccessAddUserVirtualCurrency;
     FDelegateOnSuccessConsumeItem OnSuccessConsumeItem;
@@ -1603,43 +1625,6 @@ public:
     FDelegateOnSuccessUnlockContainerInstance OnSuccessUnlockContainerInstance;
     FDelegateOnSuccessUnlockContainerItem OnSuccessUnlockContainerItem;
     FDelegateOnSuccessUpdateUserInventoryItemCustomData OnSuccessUpdateUserInventoryItemCustomData;
-    FDelegateOnSuccessAddFriend OnSuccessAddFriend;
-    FDelegateOnSuccessGetFriendsList OnSuccessGetFriendsList;
-    FDelegateOnSuccessRemoveFriend OnSuccessRemoveFriend;
-    FDelegateOnSuccessSetFriendTags OnSuccessSetFriendTags;
-    FDelegateOnSuccessDeregisterGame OnSuccessDeregisterGame;
-    FDelegateOnSuccessNotifyMatchmakerPlayerLeft OnSuccessNotifyMatchmakerPlayerLeft;
-    FDelegateOnSuccessRedeemMatchmakerTicket OnSuccessRedeemMatchmakerTicket;
-    FDelegateOnSuccessRefreshGameServerInstanceHeartbeat OnSuccessRefreshGameServerInstanceHeartbeat;
-    FDelegateOnSuccessRegisterGame OnSuccessRegisterGame;
-    FDelegateOnSuccessSetGameServerInstanceData OnSuccessSetGameServerInstanceData;
-    FDelegateOnSuccessSetGameServerInstanceState OnSuccessSetGameServerInstanceState;
-    FDelegateOnSuccessSetGameServerInstanceTags OnSuccessSetGameServerInstanceTags;
-    FDelegateOnSuccessWriteCharacterEvent OnSuccessWriteCharacterEvent;
-    FDelegateOnSuccessWritePlayerEvent OnSuccessWritePlayerEvent;
-    FDelegateOnSuccessWriteTitleEvent OnSuccessWriteTitleEvent;
-    FDelegateOnSuccessAddSharedGroupMembers OnSuccessAddSharedGroupMembers;
-    FDelegateOnSuccessCreateSharedGroup OnSuccessCreateSharedGroup;
-    FDelegateOnSuccessDeleteSharedGroup OnSuccessDeleteSharedGroup;
-    FDelegateOnSuccessGetSharedGroupData OnSuccessGetSharedGroupData;
-    FDelegateOnSuccessRemoveSharedGroupMembers OnSuccessRemoveSharedGroupMembers;
-    FDelegateOnSuccessUpdateSharedGroupData OnSuccessUpdateSharedGroupData;
-    FDelegateOnSuccessExecuteCloudScript OnSuccessExecuteCloudScript;
-    FDelegateOnSuccessGetContentDownloadUrl OnSuccessGetContentDownloadUrl;
-    FDelegateOnSuccessDeleteCharacterFromUser OnSuccessDeleteCharacterFromUser;
-    FDelegateOnSuccessGetAllUsersCharacters OnSuccessGetAllUsersCharacters;
-    FDelegateOnSuccessGetCharacterLeaderboard OnSuccessGetCharacterLeaderboard;
-    FDelegateOnSuccessGetCharacterStatistics OnSuccessGetCharacterStatistics;
-    FDelegateOnSuccessGetLeaderboardAroundCharacter OnSuccessGetLeaderboardAroundCharacter;
-    FDelegateOnSuccessGetLeaderboardForUserCharacters OnSuccessGetLeaderboardForUserCharacters;
-    FDelegateOnSuccessGrantCharacterToUser OnSuccessGrantCharacterToUser;
-    FDelegateOnSuccessUpdateCharacterStatistics OnSuccessUpdateCharacterStatistics;
-    FDelegateOnSuccessGetCharacterData OnSuccessGetCharacterData;
-    FDelegateOnSuccessGetCharacterInternalData OnSuccessGetCharacterInternalData;
-    FDelegateOnSuccessGetCharacterReadOnlyData OnSuccessGetCharacterReadOnlyData;
-    FDelegateOnSuccessUpdateCharacterData OnSuccessUpdateCharacterData;
-    FDelegateOnSuccessUpdateCharacterInternalData OnSuccessUpdateCharacterInternalData;
-    FDelegateOnSuccessUpdateCharacterReadOnlyData OnSuccessUpdateCharacterReadOnlyData;
     FDelegateOnSuccessAddPlayerTag OnSuccessAddPlayerTag;
     FDelegateOnSuccessGetAllActionGroups OnSuccessGetAllActionGroups;
     FDelegateOnSuccessGetAllSegments OnSuccessGetAllSegments;
@@ -1647,7 +1632,22 @@ public:
     FDelegateOnSuccessGetPlayersInSegment OnSuccessGetPlayersInSegment;
     FDelegateOnSuccessGetPlayerTags OnSuccessGetPlayerTags;
     FDelegateOnSuccessRemovePlayerTag OnSuccessRemovePlayerTag;
-    FDelegateOnSuccessAwardSteamAchievement OnSuccessAwardSteamAchievement;
+    FDelegateOnSuccessExecuteCloudScript OnSuccessExecuteCloudScript;
+    FDelegateOnSuccessAddSharedGroupMembers OnSuccessAddSharedGroupMembers;
+    FDelegateOnSuccessCreateSharedGroup OnSuccessCreateSharedGroup;
+    FDelegateOnSuccessDeleteSharedGroup OnSuccessDeleteSharedGroup;
+    FDelegateOnSuccessGetSharedGroupData OnSuccessGetSharedGroupData;
+    FDelegateOnSuccessRemoveSharedGroupMembers OnSuccessRemoveSharedGroupMembers;
+    FDelegateOnSuccessUpdateSharedGroupData OnSuccessUpdateSharedGroupData;
+    FDelegateOnSuccessGetCatalogItems OnSuccessGetCatalogItems;
+    FDelegateOnSuccessGetPublisherData OnSuccessGetPublisherData;
+    FDelegateOnSuccessGetTime OnSuccessGetTime;
+    FDelegateOnSuccessGetTitleData OnSuccessGetTitleData;
+    FDelegateOnSuccessGetTitleInternalData OnSuccessGetTitleInternalData;
+    FDelegateOnSuccessGetTitleNews OnSuccessGetTitleNews;
+    FDelegateOnSuccessSetPublisherData OnSuccessSetPublisherData;
+    FDelegateOnSuccessSetTitleData OnSuccessSetTitleData;
+    FDelegateOnSuccessSetTitleInternalData OnSuccessSetTitleInternalData;
 
 private:
     /** Internal bind function for the IHTTPRequest::OnProcessRequestCompleted() event */
