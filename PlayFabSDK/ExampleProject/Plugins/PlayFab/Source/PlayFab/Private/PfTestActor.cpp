@@ -26,7 +26,7 @@ void APfTestActor::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     TickTestSuite();
-    _outputSummary = GenerateSummary();
+    _outputSummary = GenerateTestSummary();
 }
 
 /////////////////////////////////////// The actual testing framework ///////////////////////////////////////
@@ -109,7 +109,7 @@ bool APfTestActor::TickTestSuite()
     return result;
 }
 
-FString APfTestActor::GenerateSummary()
+FString APfTestActor::GenerateTestSummary()
 {
     _outputSummary.Empty(SUMMARY_INIT_BUFFER_SIZE); // Set the capacity to handle everything we're about to put into it
 
@@ -120,7 +120,7 @@ FString APfTestActor::GenerateSummary()
     {
         if (_outputSummary.Len() != 0)
             _outputSummary += '\n';
-        _outputSummary += testContexts[i]->GenerateSummary(now);
+        _outputSummary += testContexts[i]->GenerateTestSummary(now);
         if (testContexts[i]->finishState == PlayFabApiTestFinishState::PASSED) numPassed++;
         else if (testContexts[i]->finishState == PlayFabApiTestFinishState::FAILED) numFailed++;
     }

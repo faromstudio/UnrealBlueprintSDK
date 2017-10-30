@@ -778,17 +778,6 @@ FServerAddPlayerTagResult UPlayFabServerModelDecoder::decodeAddPlayerTagResultRe
     return tempStruct;
 }
 
-FServerGetAllActionGroupsResult UPlayFabServerModelDecoder::decodeGetAllActionGroupsResultResponse(UPlayFabJsonObject* response)
-{
-    // Temp ustruct
-    FServerGetAllActionGroupsResult tempStruct;
-    UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
-
-    tempStruct.ActionGroups = !(dataObj->HasField("ActionGroups")) ? TArray<UPlayFabJsonObject*>() : dataObj->GetObjectArrayField("ActionGroups");
-
-    return tempStruct;
-}
-
 FServerGetAllSegmentsResult UPlayFabServerModelDecoder::decodeGetAllSegmentsResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct

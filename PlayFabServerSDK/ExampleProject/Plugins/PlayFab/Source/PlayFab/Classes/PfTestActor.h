@@ -63,7 +63,7 @@ public:
     };
 
     UFUNCTION()
-        FString GenerateSummary(FDateTime now)
+        FString GenerateTestSummary(FDateTime now)
     {
         FDateTime tempEndTime = (activeState == PlayFabApiTestActiveState::COMPLETE) ? endTime : now;
         FDateTime tempStartTime = (startTime != 0) ? startTime : now;
@@ -132,7 +132,7 @@ public:
     UFUNCTION()
         bool TickTestSuite();
     UFUNCTION()
-        FString GenerateSummary();
+        FString GenerateTestSummary();
 
     UFUNCTION()
         bool ClassSetup();

@@ -367,6 +367,12 @@ FString UPlayFabUtilities::getErrorText(int32 code)
     case 1341: returnText = "SmtpAddonNotEnabled"; break;
     case 1342: returnText = "APIConcurrentRequestLimitExceeded"; break;
     case 1343: returnText = "XboxRejectedXSTSExchangeRequest"; break;
+    case 1344: returnText = "VariableNotDefined"; break;
+    case 1345: returnText = "TemplateVersionNotDefined"; break;
+    case 1346: returnText = "FileTooLarge"; break;
+    case 1347: returnText = "TitleDeleted"; break;
+    case 1348: returnText = "TitleContainsUserAccounts"; break;
+    case 1349: returnText = "TitleDeletionPlayerCleanupFailure"; break;
     }
 
     // Return the text

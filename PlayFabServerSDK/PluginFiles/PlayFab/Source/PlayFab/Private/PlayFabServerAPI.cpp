@@ -2415,6 +2415,11 @@ UPlayFabServerAPI* UPlayFabServerAPI::RegisterGame(FServerRegisterGameRequest re
     } else {
         OutRestJsonObj->SetStringField(TEXT("ServerHost"), request.ServerHost);
     }
+    if (request.ServerIPV6Address.IsEmpty() || request.ServerIPV6Address == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ServerIPV6Address"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ServerIPV6Address"), request.ServerIPV6Address);
+    }
     if (request.ServerPort.IsEmpty() || request.ServerPort == "") {
         OutRestJsonObj->SetFieldNull(TEXT("ServerPort"));
     } else {
@@ -4899,7 +4904,7 @@ void UPlayFabServerAPI::HelperRevokeInventoryItem(FPlayFabBaseModel response, UO
     this->RemoveFromRoot();
 }
 
-/** Decrements the character's balance of the specified virtual currency by the stated amount */
+/** Decrements the character's balance of the specified virtual currency by the stated amount. It is possible to make a VC balance negative with this API. */
 UPlayFabServerAPI* UPlayFabServerAPI::SubtractCharacterVirtualCurrency(FServerSubtractCharacterVirtualCurrencyRequest request,
     FDelegateOnSuccessSubtractCharacterVirtualCurrency onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -4961,7 +4966,7 @@ void UPlayFabServerAPI::HelperSubtractCharacterVirtualCurrency(FPlayFabBaseModel
     this->RemoveFromRoot();
 }
 
-/** Decrements the user's balance of the specified virtual currency by the stated amount */
+/** Decrements the user's balance of the specified virtual currency by the stated amount. It is possible to make a VC balance negative with this API. */
 UPlayFabServerAPI* UPlayFabServerAPI::SubtractUserVirtualCurrency(FServerSubtractUserVirtualCurrencyRequest request,
     FDelegateOnSuccessSubtractUserVirtualCurrency onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -5281,52 +5286,6 @@ void UPlayFabServerAPI::HelperAddPlayerTag(FPlayFabBaseModel response, UObject* 
     {
         FServerAddPlayerTagResult result = UPlayFabServerModelDecoder::decodeAddPlayerTagResultResponse(response.responseData);
         OnSuccessAddPlayerTag.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieve a list of all PlayStream actions groups. */
-UPlayFabServerAPI* UPlayFabServerAPI::GetAllActionGroups(FServerGetAllActionGroupsRequest request,
-    FDelegateOnSuccessGetAllActionGroups onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabServerAPI* manager = NewObject<UPlayFabServerAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetAllActionGroups = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabServerAPI::HelperGetAllActionGroups);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Server/GetAllActionGroups";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabServerRequestCompleted
-void UPlayFabServerAPI::HelperGetAllActionGroups(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetAllActionGroups.IsBound())
-    {
-        FServerGetAllActionGroupsResult result = UPlayFabServerModelDecoder::decodeGetAllActionGroupsResultResponse(response.responseData);
-        OnSuccessGetAllActionGroups.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }

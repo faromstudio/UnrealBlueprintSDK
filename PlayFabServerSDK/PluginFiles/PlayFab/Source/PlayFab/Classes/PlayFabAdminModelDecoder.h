@@ -38,6 +38,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminDeletePlayerResult decodeDeletePlayerResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the DeleteTitleResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
+        static FAdminDeleteTitleResult decodeDeleteTitleResultResponse(UPlayFabJsonObject* response);
+
     /** Decode the LookupUserAccountInfoResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminLookupUserAccountInfoResult decodeLookupUserAccountInfoResultResponse(UPlayFabJsonObject* response);
@@ -45,10 +49,6 @@ public:
     /** Decode the GetUserBansResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminGetUserBansResult decodeGetUserBansResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the BlankResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
-        static FAdminBlankResult decodeBlankResultResponse(UPlayFabJsonObject* response);
 
     /** Decode the RevokeAllBansForUserResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
@@ -120,6 +120,10 @@ public:
     // Content
     //////////////////////////////////////////////////////
 
+    /** Decode the BlankResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content Models")
+        static FAdminBlankResult decodeBlankResultResponse(UPlayFabJsonObject* response);
+
     /** Decode the GetContentListResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Content Models")
         static FAdminGetContentListResult decodeGetContentListResultResponse(UPlayFabJsonObject* response);
@@ -185,10 +189,6 @@ public:
     /** Decode the CreatePlayerStatisticDefinitionResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Data Management Models")
         static FAdminCreatePlayerStatisticDefinitionResult decodeCreatePlayerStatisticDefinitionResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the DeleteUsersResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Data Management Models")
-        static FAdminDeleteUsersResult decodeDeleteUsersResultResponse(UPlayFabJsonObject* response);
 
     /** Decode the GetDataReportResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Data Management Models")
@@ -261,10 +261,6 @@ public:
     /** Decode the AddPlayerTagResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream Models")
         static FAdminAddPlayerTagResult decodeAddPlayerTagResultResponse(UPlayFabJsonObject* response);
-
-    /** Decode the GetAllActionGroupsResult response object*/
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream Models")
-        static FAdminGetAllActionGroupsResult decodeGetAllActionGroupsResultResponse(UPlayFabJsonObject* response);
 
     /** Decode the GetAllSegmentsResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | PlayStream Models")

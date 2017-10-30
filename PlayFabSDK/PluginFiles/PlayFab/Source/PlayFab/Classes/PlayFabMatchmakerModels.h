@@ -50,7 +50,10 @@ struct FMatchmakerPlayerJoinedRequest
 {
     GENERATED_USTRUCT_BODY()
 public:
-    /** Unique identifier of the Game Server Instance the user is joining. This must be a Game Server Instance started with the Matchmaker/StartGame API. */
+    /**
+     * Unique identifier of the Game Server Instance the user is joining. This must be a Game Server Instance started with the
+     * Matchmaker/StartGame API.
+     */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         FString LobbyId;
     /** PlayFab unique identifier for the player joining. */
@@ -70,7 +73,10 @@ struct FMatchmakerPlayerLeftRequest
 {
     GENERATED_USTRUCT_BODY()
 public:
-    /** Unique identifier of the Game Server Instance the user is leaving. This must be a Game Server Instance started with the Matchmaker/StartGame API. */
+    /**
+     * Unique identifier of the Game Server Instance the user is leaving. This must be a Game Server Instance started with the
+     * Matchmaker/StartGame API.
+     */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         FString LobbyId;
     /** PlayFab unique identifier for the player leaving. */
@@ -96,7 +102,11 @@ public:
     /** Custom command line argument when starting game server process. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         FString CustomCommandLineData;
-    /** HTTP endpoint URL for receiving game status events, if using an external matchmaker. When the game ends, PlayFab will make a POST request to this URL with the X-SecretKey header set to the value of the game's secret and an application/json body of { "EventName": "game_ended", "GameID": "<gameid>" }. */
+    /**
+     * HTTP endpoint URL for receiving game status events, if using an external matchmaker. When the game ends, PlayFab will
+     * make a POST request to this URL with the X-SecretKey header set to the value of the game's secret and an
+     * application/json body of { "EventName": "game_ended", "GameID": "<gameid>" }.
+     */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         FString ExternalMatchmakerEventEndpoint;
     /** Game mode for this Game Server Instance. */
@@ -115,9 +125,12 @@ public:
     /** Unique identifier for the game/lobby in the new Game Server Instance. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         FString GameID;
-    /** IP address of the new Game Server Instance. */
+    /** IPV4 address of the new Game Server Instance. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         FString ServerHostname;
+    /** IPV6 address of the new Game Server Instance. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
+        FString ServerIPV6Address;
     /** Port number for communication with the Game Server Instance. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         int32 ServerPort = 0;
@@ -128,7 +141,10 @@ struct FMatchmakerUserInfoRequest
 {
     GENERATED_USTRUCT_BODY()
 public:
-    /** Minimum catalog version for which data is requested (filters the results to only contain inventory items which have a catalog version of this or higher). */
+    /**
+     * Minimum catalog version for which data is requested (filters the results to only contain inventory items which have a
+     * catalog version of this or higher).
+     */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Matchmaker | Matchmaking Models")
         int32 MinCatalogVersion = 0;
     /** PlayFab unique identifier of the user whose information is being requested. */

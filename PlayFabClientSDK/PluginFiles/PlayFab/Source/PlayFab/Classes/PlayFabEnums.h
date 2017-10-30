@@ -496,6 +496,15 @@ enum class ECurrency : uint8
     pfenum_ZWD UMETA(DisplayName = "ZWD"),
 };
 
+// Enum for EmailVerificationStatus
+UENUM(BlueprintType)
+enum class EEmailVerificationStatus : uint8
+{
+    pfenum_Unverified UMETA(DisplayName = "Unverified"),
+    pfenum_Pending UMETA(DisplayName = "Pending"),
+    pfenum_Confirmed UMETA(DisplayName = "Confirmed"),
+};
+
 // Enum for GameInstanceState
 UENUM(BlueprintType)
 enum class EGameInstanceState : uint8

@@ -162,6 +162,52 @@ void UPlayFabAdminAPI::HelperDeletePlayer(FPlayFabBaseModel response, UObject* c
     this->RemoveFromRoot();
 }
 
+/** Permanently deletes a title and all associated configuration */
+UPlayFabAdminAPI* UPlayFabAdminAPI::DeleteTitle(FAdminDeleteTitleRequest request,
+    FDelegateOnSuccessDeleteTitle onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessDeleteTitle = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeleteTitle);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/DeleteTitle";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperDeleteTitle(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessDeleteTitle.IsBound())
+    {
+        FAdminDeleteTitleResult result = UPlayFabAdminModelDecoder::decodeDeleteTitleResultResponse(response.responseData);
+        OnSuccessDeleteTitle.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
 /** Retrieves the relevant details for a specified user, based upon a match against a supplied unique identifier */
 UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserAccountInfo(FAdminLookupUserAccountInfoRequest request,
     FDelegateOnSuccessGetUserAccountInfo onSuccess,
@@ -275,57 +321,6 @@ void UPlayFabAdminAPI::HelperGetUserBans(FPlayFabBaseModel response, UObject* cu
     {
         FAdminGetUserBansResult result = UPlayFabAdminModelDecoder::decodeGetUserBansResultResponse(response.responseData);
         OnSuccessGetUserBans.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Resets all title-specific information about a particular account, including user data, virtual currency balances, inventory, purchase history, and statistics */
-UPlayFabAdminAPI* UPlayFabAdminAPI::ResetUsers(FAdminResetUsersRequest request,
-    FDelegateOnSuccessResetUsers onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessResetUsers = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperResetUsers);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/ResetUsers";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    if (request.Users.Num() == 0) {
-        OutRestJsonObj->SetFieldNull(TEXT("Users"));
-    } else {
-        OutRestJsonObj->SetObjectArrayField(TEXT("Users"), request.Users);
-    }
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperResetUsers(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessResetUsers.IsBound())
-    {
-        FAdminBlankResult result = UPlayFabAdminModelDecoder::decodeBlankResultResponse(response.responseData);
-        OnSuccessResetUsers.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }
@@ -1767,61 +1762,6 @@ void UPlayFabAdminAPI::HelperCreatePlayerStatisticDefinition(FPlayFabBaseModel r
     {
         FAdminCreatePlayerStatisticDefinitionResult result = UPlayFabAdminModelDecoder::decodeCreatePlayerStatisticDefinitionResultResponse(response.responseData);
         OnSuccessCreatePlayerStatisticDefinition.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Deletes the users for the provided game. Deletes custom data, all account linkages, and statistics. This method does not remove the player's event history, login history, inventory items, nor virtual currencies. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::DeleteUsers(FAdminDeleteUsersRequest request,
-    FDelegateOnSuccessDeleteUsers onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessDeleteUsers = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperDeleteUsers);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/DeleteUsers";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-    // Check to see if string is empty
-    if (request.PlayFabIds.IsEmpty() || request.PlayFabIds == "") {
-        OutRestJsonObj->SetFieldNull(TEXT("PlayFabIds"));
-    } else {
-        TArray<FString> PlayFabIdsArray;
-        FString(request.PlayFabIds).ParseIntoArray(PlayFabIdsArray, TEXT(","), false);
-        OutRestJsonObj->SetStringArrayField(TEXT("PlayFabIds"), PlayFabIdsArray);
-    }
-    OutRestJsonObj->SetStringField(TEXT("TitleId"), IPlayFab::Get().getGameTitleId());
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperDeleteUsers(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessDeleteUsers.IsBound())
-    {
-        FAdminDeleteUsersResult result = UPlayFabAdminModelDecoder::decodeDeleteUsersResultResponse(response.responseData);
-        OnSuccessDeleteUsers.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }
@@ -3335,52 +3275,6 @@ void UPlayFabAdminAPI::HelperAddPlayerTag(FPlayFabBaseModel response, UObject* c
     {
         FAdminAddPlayerTagResult result = UPlayFabAdminModelDecoder::decodeAddPlayerTagResultResponse(response.responseData);
         OnSuccessAddPlayerTag.Execute(result, mCustomData);
-    }
-    this->RemoveFromRoot();
-}
-
-/** Retrieve a list of all PlayStream actions groups. */
-UPlayFabAdminAPI* UPlayFabAdminAPI::GetAllActionGroups(FAdminGetAllActionGroupsRequest request,
-    FDelegateOnSuccessGetAllActionGroups onSuccess,
-    FDelegateOnFailurePlayFabError onFailure,
-    UObject* customData)
-{
-    // Objects containing request data
-    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
-    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
-    manager->mCustomData = customData;
-
-    // Assign delegates
-    manager->OnSuccessGetAllActionGroups = onSuccess;
-    manager->OnFailure = onFailure;
-    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetAllActionGroups);
-
-    // Setup the request
-    manager->PlayFabRequestURL = "/Admin/GetAllActionGroups";
-    manager->useSessionTicket = false;
-    manager->useSecretKey = true;
-
-    // Serialize all the request properties to json
-
-    // Add Request to manager
-    manager->SetRequestObject(OutRestJsonObj);
-
-    return manager;
-}
-
-// Implements FOnPlayFabAdminRequestCompleted
-void UPlayFabAdminAPI::HelperGetAllActionGroups(FPlayFabBaseModel response, UObject* customData, bool successful)
-{
-    FPlayFabError error = response.responseError;
-    if (error.hasError && OnFailure.IsBound())
-    {
-        OnFailure.Execute(error, customData);
-    }
-    else if (!error.hasError && OnSuccessGetAllActionGroups.IsBound())
-    {
-        FAdminGetAllActionGroupsResult result = UPlayFabAdminModelDecoder::decodeGetAllActionGroupsResultResponse(response.responseData);
-        OnSuccessGetAllActionGroups.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }

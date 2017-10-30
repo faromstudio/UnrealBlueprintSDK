@@ -708,6 +708,7 @@ FClientMatchmakeResult UPlayFabClientModelDecoder::decodeMatchmakeResultResponse
     tempStruct.LobbyID = !(dataObj->HasField("LobbyID")) ? TEXT("") : dataObj->GetStringField("LobbyID");
     tempStruct.PollWaitTimeMS = !(dataObj->HasField("PollWaitTimeMS")) ? 0 : int(dataObj->GetNumberField("PollWaitTimeMS"));
     tempStruct.ServerHostname = !(dataObj->HasField("ServerHostname")) ? TEXT("") : dataObj->GetStringField("ServerHostname");
+    tempStruct.ServerIPV6Address = !(dataObj->HasField("ServerIPV6Address")) ? TEXT("") : dataObj->GetStringField("ServerIPV6Address");
     tempStruct.ServerPort = !(dataObj->HasField("ServerPort")) ? 0 : int(dataObj->GetNumberField("ServerPort"));
     GetEnumValueFromString<EMatchmakeStatus>(TEXT("EMatchmakeStatus"), dataObj->GetStringField("Status"), tempStruct.Status);
     tempStruct.Ticket = !(dataObj->HasField("Ticket")) ? TEXT("") : dataObj->GetStringField("Ticket");
@@ -725,6 +726,7 @@ FClientStartGameResult UPlayFabClientModelDecoder::decodeStartGameResultResponse
     tempStruct.LobbyID = !(dataObj->HasField("LobbyID")) ? TEXT("") : dataObj->GetStringField("LobbyID");
     tempStruct.Password = !(dataObj->HasField("Password")) ? TEXT("") : dataObj->GetStringField("Password");
     tempStruct.ServerHostname = !(dataObj->HasField("ServerHostname")) ? TEXT("") : dataObj->GetStringField("ServerHostname");
+    tempStruct.ServerIPV6Address = !(dataObj->HasField("ServerIPV6Address")) ? TEXT("") : dataObj->GetStringField("ServerIPV6Address");
     tempStruct.ServerPort = !(dataObj->HasField("ServerPort")) ? 0 : int(dataObj->GetNumberField("ServerPort"));
     tempStruct.Ticket = !(dataObj->HasField("Ticket")) ? TEXT("") : dataObj->GetStringField("Ticket");
 

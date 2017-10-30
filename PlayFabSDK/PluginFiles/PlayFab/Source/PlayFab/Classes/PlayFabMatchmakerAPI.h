@@ -102,7 +102,10 @@ public:
     // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessUserInfo, FMatchmakerUserInfoResponse, result, UObject*, customData);
 
-    /** Retrieves the relevant details for a specified user, which the external match-making service can then use to compute effective matches */
+    /**
+     * Retrieves the relevant details for a specified user, which the external match-making service can then use to compute
+     * effective matches
+     */
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Matchmaker | Matchmaking ", meta = (BlueprintInternalUseOnly = "true"))
         static UPlayFabMatchmakerAPI* UserInfo(FMatchmakerUserInfoRequest request,
             FDelegateOnSuccessUserInfo onSuccess,

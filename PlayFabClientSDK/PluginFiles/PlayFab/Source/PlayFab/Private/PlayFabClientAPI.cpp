@@ -6196,7 +6196,7 @@ void UPlayFabClientAPI::HelperStartPurchase(FPlayFabBaseModel response, UObject*
     this->RemoveFromRoot();
 }
 
-/** Decrements the user's balance of the specified virtual currency by the stated amount */
+/** Decrements the user's balance of the specified virtual currency by the stated amount. It is possible to make a VC balance negative with this API. */
 UPlayFabClientAPI* UPlayFabClientAPI::SubtractUserVirtualCurrency(FClientSubtractUserVirtualCurrencyRequest request,
     FDelegateOnSuccessSubtractUserVirtualCurrency onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
