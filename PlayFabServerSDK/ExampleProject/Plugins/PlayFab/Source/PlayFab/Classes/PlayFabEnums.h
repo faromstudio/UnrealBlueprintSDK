@@ -51,6 +51,13 @@ static FORCEINLINE bool GetEnumValueToString(const FString& enumTypeName, const 
     return true;
 }
 
+// Enum for AuthTokenType
+UENUM(BlueprintType)
+enum class EAuthTokenType : uint8
+{
+    pfenum_Email UMETA(DisplayName = "Email"),
+};
+
 // Enum for Conditionals
 UENUM(BlueprintType)
 enum class EConditionals : uint8

@@ -40,6 +40,23 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FClientAddOrUpdateContactEmailRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** The new contact email to associate with the player. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Account Management Models")
+        FString EmailAddress;
+};
+
+USTRUCT(BlueprintType)
+struct FClientAddOrUpdateContactEmailResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
+};
+
+USTRUCT(BlueprintType)
 struct FClientAddUsernamePasswordRequest
 {
     GENERATED_USTRUCT_BODY()
@@ -521,6 +538,20 @@ public:
 
 USTRUCT(BlueprintType)
 struct FClientLinkWindowsHelloAccountResponse
+{
+    GENERATED_USTRUCT_BODY()
+public:
+};
+
+USTRUCT(BlueprintType)
+struct FClientRemoveContactEmailRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+};
+
+USTRUCT(BlueprintType)
+struct FClientRemoveContactEmailResult
 {
     GENERATED_USTRUCT_BODY()
 public:

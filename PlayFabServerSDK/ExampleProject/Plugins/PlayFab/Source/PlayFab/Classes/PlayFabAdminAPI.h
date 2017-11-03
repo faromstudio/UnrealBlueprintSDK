@@ -87,6 +87,19 @@ public:
         void HelperDeleteTitle(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerIdFromAuthToken, FAdminGetPlayerIdFromAuthTokenResult, result, UObject*, customData);
+
+    /** Gets a player's ID from an auth token. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetPlayerIdFromAuthToken(FAdminGetPlayerIdFromAuthTokenRequest request,
+            FDelegateOnSuccessGetPlayerIdFromAuthToken onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPlayerIdFromAuthToken(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetUserAccountInfo, FAdminLookupUserAccountInfoResult, result, UObject*, customData);
 
     /** Retrieves the relevant details for a specified user, based upon a match against a supplied unique identifier */
@@ -111,6 +124,19 @@ public:
     // Implements FOnPlayFabAdminRequestCompleted
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
         void HelperGetUserBans(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessResetPassword, FAdminResetPasswordResult, result, UObject*, customData);
+
+    /** Reset a player's password for a given title. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* ResetPassword(FAdminResetPasswordRequest request,
+            FDelegateOnSuccessResetPassword onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperResetPassword(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRevokeAllBansForUser, FAdminRevokeAllBansForUserResult, result, UObject*, customData);
@@ -1413,8 +1439,10 @@ public:
     FDelegateOnSuccessBanUsers OnSuccessBanUsers;
     FDelegateOnSuccessDeletePlayer OnSuccessDeletePlayer;
     FDelegateOnSuccessDeleteTitle OnSuccessDeleteTitle;
+    FDelegateOnSuccessGetPlayerIdFromAuthToken OnSuccessGetPlayerIdFromAuthToken;
     FDelegateOnSuccessGetUserAccountInfo OnSuccessGetUserAccountInfo;
     FDelegateOnSuccessGetUserBans OnSuccessGetUserBans;
+    FDelegateOnSuccessResetPassword OnSuccessResetPassword;
     FDelegateOnSuccessRevokeAllBansForUser OnSuccessRevokeAllBansForUser;
     FDelegateOnSuccessRevokeBans OnSuccessRevokeBans;
     FDelegateOnSuccessSendAccountRecoveryEmail OnSuccessSendAccountRecoveryEmail;

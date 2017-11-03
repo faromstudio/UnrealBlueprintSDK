@@ -74,6 +74,29 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FAdminGetPlayerIdFromAuthTokenRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** The auth token of the player requesting the password reset. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        FString Token;
+    /** The type of auth token of the player requesting the password reset. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        EAuthTokenType TokenType;
+};
+
+USTRUCT(BlueprintType)
+struct FAdminGetPlayerIdFromAuthTokenResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** The player ID from the token passed in */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        FString PlayFabId;
+};
+
+USTRUCT(BlueprintType)
 struct FAdminLookupUserAccountInfoRequest
 {
     GENERATED_USTRUCT_BODY()
@@ -120,6 +143,26 @@ public:
     /** Information about the bans */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
         TArray<UPlayFabJsonObject*> BanData;
+};
+
+USTRUCT(BlueprintType)
+struct FAdminResetPasswordRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** The new password for the player. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        FString Password;
+    /** The token of the player requesting the password reset. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        FString Token;
+};
+
+USTRUCT(BlueprintType)
+struct FAdminResetPasswordResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
 };
 
 USTRUCT(BlueprintType)

@@ -45,6 +45,17 @@ FAdminDeleteTitleResult UPlayFabAdminModelDecoder::decodeDeleteTitleResultRespon
     return tempStruct;
 }
 
+FAdminGetPlayerIdFromAuthTokenResult UPlayFabAdminModelDecoder::decodeGetPlayerIdFromAuthTokenResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FAdminGetPlayerIdFromAuthTokenResult tempStruct;
+    UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
+
+    tempStruct.PlayFabId = !(dataObj->HasField("PlayFabId")) ? TEXT("") : dataObj->GetStringField("PlayFabId");
+
+    return tempStruct;
+}
+
 FAdminLookupUserAccountInfoResult UPlayFabAdminModelDecoder::decodeLookupUserAccountInfoResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct
@@ -63,6 +74,15 @@ FAdminGetUserBansResult UPlayFabAdminModelDecoder::decodeGetUserBansResultRespon
     UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
 
     tempStruct.BanData = !(dataObj->HasField("BanData")) ? TArray<UPlayFabJsonObject*>() : dataObj->GetObjectArrayField("BanData");
+
+    return tempStruct;
+}
+
+FAdminResetPasswordResult UPlayFabAdminModelDecoder::decodeResetPasswordResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FAdminResetPasswordResult tempStruct;
+
 
     return tempStruct;
 }

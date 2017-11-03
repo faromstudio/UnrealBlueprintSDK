@@ -65,6 +65,19 @@ public:
         void HelperAddGenericID(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddOrUpdateContactEmail, FClientAddOrUpdateContactEmailResult, result, UObject*, customData);
+
+    /** Adds or updates a contact email to the player's profile */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabClientAPI* AddOrUpdateContactEmail(FClientAddOrUpdateContactEmailRequest request,
+            FDelegateOnSuccessAddOrUpdateContactEmail onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabClientRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperAddOrUpdateContactEmail(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddUsernamePassword, FClientAddUsernamePasswordResult, result, UObject*, customData);
 
     /**
@@ -360,6 +373,19 @@ public:
     // Implements FOnPlayFabClientRequestCompleted
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
         void HelperLinkWindowsHello(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveContactEmail, FClientRemoveContactEmailResult, result, UObject*, customData);
+
+    /** Removes a contact email from the player's profile */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabClientAPI* RemoveContactEmail(FClientRemoveContactEmailRequest request,
+            FDelegateOnSuccessRemoveContactEmail onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabClientRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperRemoveContactEmail(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveGenericID, FClientRemoveGenericIDResult, result, UObject*, customData);
@@ -2016,6 +2042,7 @@ public:
 
     FDelegateOnFailurePlayFabError OnFailure;
     FDelegateOnSuccessAddGenericID OnSuccessAddGenericID;
+    FDelegateOnSuccessAddOrUpdateContactEmail OnSuccessAddOrUpdateContactEmail;
     FDelegateOnSuccessAddUsernamePassword OnSuccessAddUsernamePassword;
     FDelegateOnSuccessGetAccountInfo OnSuccessGetAccountInfo;
     FDelegateOnSuccessGetPlayerCombinedInfo OnSuccessGetPlayerCombinedInfo;
@@ -2037,6 +2064,7 @@ public:
     FDelegateOnSuccessLinkSteamAccount OnSuccessLinkSteamAccount;
     FDelegateOnSuccessLinkTwitch OnSuccessLinkTwitch;
     FDelegateOnSuccessLinkWindowsHello OnSuccessLinkWindowsHello;
+    FDelegateOnSuccessRemoveContactEmail OnSuccessRemoveContactEmail;
     FDelegateOnSuccessRemoveGenericID OnSuccessRemoveGenericID;
     FDelegateOnSuccessReportPlayer OnSuccessReportPlayer;
     FDelegateOnSuccessSendAccountRecoveryEmail OnSuccessSendAccountRecoveryEmail;

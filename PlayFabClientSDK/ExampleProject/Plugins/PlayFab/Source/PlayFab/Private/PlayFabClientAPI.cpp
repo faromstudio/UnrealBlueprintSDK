@@ -106,6 +106,56 @@ void UPlayFabClientAPI::HelperAddGenericID(FPlayFabBaseModel response, UObject* 
     this->RemoveFromRoot();
 }
 
+/** Adds or updates a contact email to the player's profile */
+UPlayFabClientAPI* UPlayFabClientAPI::AddOrUpdateContactEmail(FClientAddOrUpdateContactEmailRequest request,
+    FDelegateOnSuccessAddOrUpdateContactEmail onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabClientAPI* manager = NewObject<UPlayFabClientAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessAddOrUpdateContactEmail = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabClientAPI::HelperAddOrUpdateContactEmail);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Client/AddOrUpdateContactEmail";
+    manager->useSessionTicket = true;
+
+    // Serialize all the request properties to json
+    if (request.EmailAddress.IsEmpty() || request.EmailAddress == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("EmailAddress"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("EmailAddress"), request.EmailAddress);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabClientRequestCompleted
+void UPlayFabClientAPI::HelperAddOrUpdateContactEmail(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessAddOrUpdateContactEmail.IsBound())
+    {
+        FClientAddOrUpdateContactEmailResult result = UPlayFabClientModelDecoder::decodeAddOrUpdateContactEmailResultResponse(response.responseData);
+        OnSuccessAddOrUpdateContactEmail.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
 /** Adds playfab username/password auth to an existing account created via an anonymous auth method, e.g. automatic device ID login. */
 UPlayFabClientAPI* UPlayFabClientAPI::AddUsernamePassword(FClientAddUsernamePasswordRequest request,
     FDelegateOnSuccessAddUsernamePassword onSuccess,
@@ -1242,6 +1292,51 @@ void UPlayFabClientAPI::HelperLinkWindowsHello(FPlayFabBaseModel response, UObje
     {
         FClientLinkWindowsHelloAccountResponse result = UPlayFabClientModelDecoder::decodeLinkWindowsHelloAccountResponseResponse(response.responseData);
         OnSuccessLinkWindowsHello.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Removes a contact email from the player's profile */
+UPlayFabClientAPI* UPlayFabClientAPI::RemoveContactEmail(FClientRemoveContactEmailRequest request,
+    FDelegateOnSuccessRemoveContactEmail onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabClientAPI* manager = NewObject<UPlayFabClientAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessRemoveContactEmail = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabClientAPI::HelperRemoveContactEmail);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Client/RemoveContactEmail";
+    manager->useSessionTicket = true;
+
+    // Serialize all the request properties to json
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabClientRequestCompleted
+void UPlayFabClientAPI::HelperRemoveContactEmail(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessRemoveContactEmail.IsBound())
+    {
+        FClientRemoveContactEmailResult result = UPlayFabClientModelDecoder::decodeRemoveContactEmailResultResponse(response.responseData);
+        OnSuccessRemoveContactEmail.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }

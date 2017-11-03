@@ -42,6 +42,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminDeleteTitleResult decodeDeleteTitleResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the GetPlayerIdFromAuthTokenResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
+        static FAdminGetPlayerIdFromAuthTokenResult decodeGetPlayerIdFromAuthTokenResultResponse(UPlayFabJsonObject* response);
+
     /** Decode the LookupUserAccountInfoResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminLookupUserAccountInfoResult decodeLookupUserAccountInfoResultResponse(UPlayFabJsonObject* response);
@@ -49,6 +53,10 @@ public:
     /** Decode the GetUserBansResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminGetUserBansResult decodeGetUserBansResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the ResetPasswordResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
+        static FAdminResetPasswordResult decodeResetPasswordResultResponse(UPlayFabJsonObject* response);
 
     /** Decode the RevokeAllBansForUserResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")

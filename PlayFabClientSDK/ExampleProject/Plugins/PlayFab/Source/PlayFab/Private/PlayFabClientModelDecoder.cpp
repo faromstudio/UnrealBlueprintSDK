@@ -25,6 +25,15 @@ FClientAddGenericIDResult UPlayFabClientModelDecoder::decodeAddGenericIDResultRe
     return tempStruct;
 }
 
+FClientAddOrUpdateContactEmailResult UPlayFabClientModelDecoder::decodeAddOrUpdateContactEmailResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FClientAddOrUpdateContactEmailResult tempStruct;
+
+
+    return tempStruct;
+}
+
 FClientAddUsernamePasswordResult UPlayFabClientModelDecoder::decodeAddUsernamePasswordResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct
@@ -232,6 +241,15 @@ FClientLinkWindowsHelloAccountResponse UPlayFabClientModelDecoder::decodeLinkWin
 {
     // Temp ustruct
     FClientLinkWindowsHelloAccountResponse tempStruct;
+
+
+    return tempStruct;
+}
+
+FClientRemoveContactEmailResult UPlayFabClientModelDecoder::decodeRemoveContactEmailResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FClientRemoveContactEmailResult tempStruct;
 
 
     return tempStruct;

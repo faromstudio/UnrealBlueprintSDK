@@ -373,6 +373,9 @@ FString UPlayFabUtilities::getErrorText(int32 code)
     case 1347: returnText = "TitleDeleted"; break;
     case 1348: returnText = "TitleContainsUserAccounts"; break;
     case 1349: returnText = "TitleDeletionPlayerCleanupFailure"; break;
+    case 1350: returnText = "EntityFileOperationPending"; break;
+    case 1351: returnText = "NoEntityFileOperationPending"; break;
+    case 1352: returnText = "EntityProfileVersionMismatch"; break;
     }
 
     // Return the text

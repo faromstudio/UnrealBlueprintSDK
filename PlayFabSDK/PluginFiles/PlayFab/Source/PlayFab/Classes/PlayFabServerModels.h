@@ -193,6 +193,29 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FServerSendCustomAccountRecoveryEmailRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** User email address attached to their account */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
+        FString Email;
+    /** The email template id of the account recovery email template to send. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
+        FString EmailTemplateId;
+    /** The user's username requesting an account recovery. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
+        FString Username;
+};
+
+USTRUCT(BlueprintType)
+struct FServerSendCustomAccountRecoveryEmailResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
+};
+
+USTRUCT(BlueprintType)
 struct FServerSendPushNotificationRequest
 {
     GENERATED_USTRUCT_BODY()

@@ -478,6 +478,67 @@ void UPlayFabServerAPI::HelperRevokeBans(FPlayFabBaseModel response, UObject* cu
     this->RemoveFromRoot();
 }
 
+/** Forces an email to be sent to the registered contact email address for the user's account based on an account recovery email template */
+UPlayFabServerAPI* UPlayFabServerAPI::SendCustomAccountRecoveryEmail(FServerSendCustomAccountRecoveryEmailRequest request,
+    FDelegateOnSuccessSendCustomAccountRecoveryEmail onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabServerAPI* manager = NewObject<UPlayFabServerAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessSendCustomAccountRecoveryEmail = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabServerAPI::HelperSendCustomAccountRecoveryEmail);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Server/SendCustomAccountRecoveryEmail";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Email.IsEmpty() || request.Email == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Email"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Email"), request.Email);
+    }
+    if (request.EmailTemplateId.IsEmpty() || request.EmailTemplateId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("EmailTemplateId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("EmailTemplateId"), request.EmailTemplateId);
+    }
+    if (request.Username.IsEmpty() || request.Username == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Username"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Username"), request.Username);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabServerRequestCompleted
+void UPlayFabServerAPI::HelperSendCustomAccountRecoveryEmail(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessSendCustomAccountRecoveryEmail.IsBound())
+    {
+        FServerSendCustomAccountRecoveryEmailResult result = UPlayFabServerModelDecoder::decodeSendCustomAccountRecoveryEmailResultResponse(response.responseData);
+        OnSuccessSendCustomAccountRecoveryEmail.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
 /** Sends an iOS/Android Push Notification to a specific user, if that user's device has been configured for Push Notifications in PlayFab. If a user has linked both Android and iOS devices, both will be notified. */
 UPlayFabServerAPI* UPlayFabServerAPI::SendPushNotification(FServerSendPushNotificationRequest request,
     FDelegateOnSuccessSendPushNotification onSuccess,

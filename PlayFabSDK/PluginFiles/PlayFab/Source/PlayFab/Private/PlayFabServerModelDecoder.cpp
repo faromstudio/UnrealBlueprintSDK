@@ -104,6 +104,15 @@ FServerRevokeBansResult UPlayFabServerModelDecoder::decodeRevokeBansResultRespon
     return tempStruct;
 }
 
+FServerSendCustomAccountRecoveryEmailResult UPlayFabServerModelDecoder::decodeSendCustomAccountRecoveryEmailResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FServerSendCustomAccountRecoveryEmailResult tempStruct;
+
+
+    return tempStruct;
+}
+
 FServerSendPushNotificationResult UPlayFabServerModelDecoder::decodeSendPushNotificationResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct

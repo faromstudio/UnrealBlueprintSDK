@@ -34,6 +34,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management Models")
         static FClientAddGenericIDResult decodeAddGenericIDResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the AddOrUpdateContactEmailResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management Models")
+        static FClientAddOrUpdateContactEmailResult decodeAddOrUpdateContactEmailResultResponse(UPlayFabJsonObject* response);
+
     /** Decode the AddUsernamePasswordResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management Models")
         static FClientAddUsernamePasswordResult decodeAddUsernamePasswordResultResponse(UPlayFabJsonObject* response);
@@ -117,6 +121,10 @@ public:
     /** Decode the LinkWindowsHelloAccountResponse response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management Models")
         static FClientLinkWindowsHelloAccountResponse decodeLinkWindowsHelloAccountResponseResponse(UPlayFabJsonObject* response);
+
+    /** Decode the RemoveContactEmailResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management Models")
+        static FClientRemoveContactEmailResult decodeRemoveContactEmailResultResponse(UPlayFabJsonObject* response);
 
     /** Decode the RemoveGenericIDResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management Models")

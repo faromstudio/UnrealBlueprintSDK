@@ -208,6 +208,60 @@ void UPlayFabAdminAPI::HelperDeleteTitle(FPlayFabBaseModel response, UObject* cu
     this->RemoveFromRoot();
 }
 
+/** Gets a player's ID from an auth token. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerIdFromAuthToken(FAdminGetPlayerIdFromAuthTokenRequest request,
+    FDelegateOnSuccessGetPlayerIdFromAuthToken onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPlayerIdFromAuthToken = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerIdFromAuthToken);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetPlayerIdFromAuthToken";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Token.IsEmpty() || request.Token == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Token"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Token"), request.Token);
+    }
+    FString temp_TokenType;
+    if (GetEnumValueToString<EAuthTokenType>(TEXT("EAuthTokenType"), request.TokenType, temp_TokenType))
+        OutRestJsonObj->SetStringField(TEXT("TokenType"), temp_TokenType);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetPlayerIdFromAuthToken(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPlayerIdFromAuthToken.IsBound())
+    {
+        FAdminGetPlayerIdFromAuthTokenResult result = UPlayFabAdminModelDecoder::decodeGetPlayerIdFromAuthTokenResultResponse(response.responseData);
+        OnSuccessGetPlayerIdFromAuthToken.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
 /** Retrieves the relevant details for a specified user, based upon a match against a supplied unique identifier */
 UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserAccountInfo(FAdminLookupUserAccountInfoRequest request,
     FDelegateOnSuccessGetUserAccountInfo onSuccess,
@@ -321,6 +375,62 @@ void UPlayFabAdminAPI::HelperGetUserBans(FPlayFabBaseModel response, UObject* cu
     {
         FAdminGetUserBansResult result = UPlayFabAdminModelDecoder::decodeGetUserBansResultResponse(response.responseData);
         OnSuccessGetUserBans.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Reset a player's password for a given title. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::ResetPassword(FAdminResetPasswordRequest request,
+    FDelegateOnSuccessResetPassword onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessResetPassword = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperResetPassword);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/ResetPassword";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.Password.IsEmpty() || request.Password == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Password"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Password"), request.Password);
+    }
+    if (request.Token.IsEmpty() || request.Token == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("Token"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("Token"), request.Token);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperResetPassword(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessResetPassword.IsBound())
+    {
+        FAdminResetPasswordResult result = UPlayFabAdminModelDecoder::decodeResetPasswordResultResponse(response.responseData);
+        OnSuccessResetPassword.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }
