@@ -100,6 +100,19 @@ public:
         void HelperGetPlayerIdFromAuthToken(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPlayerProfile, FAdminGetPlayerProfileResult, result, UObject*, customData);
+
+    /** Retrieves the player's profile */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* GetPlayerProfile(FAdminGetPlayerProfileRequest request,
+            FDelegateOnSuccessGetPlayerProfile onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPlayerProfile(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetUserAccountInfo, FAdminLookupUserAccountInfoResult, result, UObject*, customData);
 
     /** Retrieves the relevant details for a specified user, based upon a match against a supplied unique identifier */
@@ -1440,6 +1453,7 @@ public:
     FDelegateOnSuccessDeletePlayer OnSuccessDeletePlayer;
     FDelegateOnSuccessDeleteTitle OnSuccessDeleteTitle;
     FDelegateOnSuccessGetPlayerIdFromAuthToken OnSuccessGetPlayerIdFromAuthToken;
+    FDelegateOnSuccessGetPlayerProfile OnSuccessGetPlayerProfile;
     FDelegateOnSuccessGetUserAccountInfo OnSuccessGetUserAccountInfo;
     FDelegateOnSuccessGetUserBans OnSuccessGetUserBans;
     FDelegateOnSuccessResetPassword OnSuccessResetPassword;

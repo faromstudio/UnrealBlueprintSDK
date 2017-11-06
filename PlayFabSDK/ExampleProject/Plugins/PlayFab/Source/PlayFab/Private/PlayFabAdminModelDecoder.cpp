@@ -56,6 +56,17 @@ FAdminGetPlayerIdFromAuthTokenResult UPlayFabAdminModelDecoder::decodeGetPlayerI
     return tempStruct;
 }
 
+FAdminGetPlayerProfileResult UPlayFabAdminModelDecoder::decodeGetPlayerProfileResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FAdminGetPlayerProfileResult tempStruct;
+    UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
+
+    tempStruct.PlayerProfile = !(dataObj->HasField("PlayerProfile")) ? nullptr : dataObj->GetObjectField("PlayerProfile");
+
+    return tempStruct;
+}
+
 FAdminLookupUserAccountInfoResult UPlayFabAdminModelDecoder::decodeLookupUserAccountInfoResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct

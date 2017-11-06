@@ -216,6 +216,26 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FServerSendEmailFromTemplateRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** The email template id of the email template to send. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
+        FString EmailTemplateId;
+    /** Unique PlayFab assigned ID of the user on whom the operation will be performed. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Server | Account Management Models")
+        FString PlayFabId;
+};
+
+USTRUCT(BlueprintType)
+struct FServerSendEmailFromTemplateResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
+};
+
+USTRUCT(BlueprintType)
 struct FServerSendPushNotificationRequest
 {
     GENERATED_USTRUCT_BODY()

@@ -113,6 +113,15 @@ FServerSendCustomAccountRecoveryEmailResult UPlayFabServerModelDecoder::decodeSe
     return tempStruct;
 }
 
+FServerSendEmailFromTemplateResult UPlayFabServerModelDecoder::decodeSendEmailFromTemplateResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FServerSendEmailFromTemplateResult tempStruct;
+
+
+    return tempStruct;
+}
+
 FServerSendPushNotificationResult UPlayFabServerModelDecoder::decodeSendPushNotificationResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct

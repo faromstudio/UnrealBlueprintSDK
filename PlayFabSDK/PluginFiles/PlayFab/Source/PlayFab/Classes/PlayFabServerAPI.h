@@ -171,6 +171,19 @@ public:
         void HelperSendCustomAccountRecoveryEmail(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSendEmailFromTemplate, FServerSendEmailFromTemplateResult, result, UObject*, customData);
+
+    /** Sends an email based on an email template to a player's contact email */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabServerAPI* SendEmailFromTemplate(FServerSendEmailFromTemplateRequest request,
+            FDelegateOnSuccessSendEmailFromTemplate onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabServerRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Server | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperSendEmailFromTemplate(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSendPushNotification, FServerSendPushNotificationResult, result, UObject*, customData);
 
     /**
@@ -1649,6 +1662,7 @@ public:
     FDelegateOnSuccessRevokeAllBansForUser OnSuccessRevokeAllBansForUser;
     FDelegateOnSuccessRevokeBans OnSuccessRevokeBans;
     FDelegateOnSuccessSendCustomAccountRecoveryEmail OnSuccessSendCustomAccountRecoveryEmail;
+    FDelegateOnSuccessSendEmailFromTemplate OnSuccessSendEmailFromTemplate;
     FDelegateOnSuccessSendPushNotification OnSuccessSendPushNotification;
     FDelegateOnSuccessUpdateAvatarUrl OnSuccessUpdateAvatarUrl;
     FDelegateOnSuccessUpdateBans OnSuccessUpdateBans;

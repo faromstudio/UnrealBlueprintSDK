@@ -262,6 +262,58 @@ void UPlayFabAdminAPI::HelperGetPlayerIdFromAuthToken(FPlayFabBaseModel response
     this->RemoveFromRoot();
 }
 
+/** Retrieves the player's profile */
+UPlayFabAdminAPI* UPlayFabAdminAPI::GetPlayerProfile(FAdminGetPlayerProfileRequest request,
+    FDelegateOnSuccessGetPlayerProfile onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPlayerProfile = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperGetPlayerProfile);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/GetPlayerProfile";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.PlayFabId.IsEmpty() || request.PlayFabId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("PlayFabId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("PlayFabId"), request.PlayFabId);
+    }
+    if (request.ProfileConstraints != nullptr) OutRestJsonObj->SetObjectField(TEXT("ProfileConstraints"), request.ProfileConstraints);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperGetPlayerProfile(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPlayerProfile.IsBound())
+    {
+        FAdminGetPlayerProfileResult result = UPlayFabAdminModelDecoder::decodeGetPlayerProfileResultResponse(response.responseData);
+        OnSuccessGetPlayerProfile.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
 /** Retrieves the relevant details for a specified user, based upon a match against a supplied unique identifier */
 UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserAccountInfo(FAdminLookupUserAccountInfoRequest request,
     FDelegateOnSuccessGetUserAccountInfo onSuccess,

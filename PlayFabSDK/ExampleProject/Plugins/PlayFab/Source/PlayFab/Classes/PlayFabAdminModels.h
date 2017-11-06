@@ -97,6 +97,36 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FAdminGetPlayerProfileRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** Unique PlayFab assigned ID of the user on whom the operation will be performed. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        FString PlayFabId;
+    /**
+     * If non-null, this determines which properties of the resulting player profiles to return. For API calls from the client,
+     * only the allowed client profile properties for the title may be requested. These allowed properties are configured in
+     * the Game Manager "Client Profile Options" tab in the "Settings" section.
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        UPlayFabJsonObject* ProfileConstraints = nullptr;
+};
+
+USTRUCT(BlueprintType)
+struct FAdminGetPlayerProfileResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /**
+     * The profile of the player. This profile is not guaranteed to be up-to-date. For a new player, this profile will not
+     * exist.
+     */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Account Management Models")
+        UPlayFabJsonObject* PlayerProfile = nullptr;
+};
+
+USTRUCT(BlueprintType)
 struct FAdminLookupUserAccountInfoRequest
 {
     GENERATED_USTRUCT_BODY()

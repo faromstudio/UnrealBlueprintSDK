@@ -46,6 +46,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminGetPlayerIdFromAuthTokenResult decodeGetPlayerIdFromAuthTokenResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the GetPlayerProfileResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
+        static FAdminGetPlayerProfileResult decodeGetPlayerProfileResultResponse(UPlayFabJsonObject* response);
+
     /** Decode the LookupUserAccountInfoResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Account Management Models")
         static FAdminLookupUserAccountInfoResult decodeLookupUserAccountInfoResultResponse(UPlayFabJsonObject* response);
