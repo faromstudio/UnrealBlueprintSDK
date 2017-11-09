@@ -843,6 +843,16 @@ public:
 //////////////////////////////////////////////////////
 
 USTRUCT(BlueprintType)
+struct FClientDeviceInfoRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** Information posted to the PlayStream Event. Currently arbitrary, and specific to the environment sending it. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Analytics Models")
+        UPlayFabJsonObject* Info = nullptr;
+};
+
+USTRUCT(BlueprintType)
 struct FClientWriteClientCharacterEventRequest
 {
     GENERATED_USTRUCT_BODY()
@@ -2574,6 +2584,29 @@ public:
     /** Array of remaining times and timestamps for virtual currencies. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Player Item Management Models")
         UPlayFabJsonObject* VirtualCurrencyRechargeTimes = nullptr;
+};
+
+USTRUCT(BlueprintType)
+struct FClientGetPaymentTokenRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** The name of service to provide the payment token. Allowed Values are: xsolla */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Player Item Management Models")
+        FString TokenProvider;
+};
+
+USTRUCT(BlueprintType)
+struct FClientGetPaymentTokenResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** PlayFab's purchase order identifier. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Player Item Management Models")
+        FString OrderId;
+    /** The token from provider. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Client | Player Item Management Models")
+        FString ProviderToken;
 };
 
 USTRUCT(BlueprintType)

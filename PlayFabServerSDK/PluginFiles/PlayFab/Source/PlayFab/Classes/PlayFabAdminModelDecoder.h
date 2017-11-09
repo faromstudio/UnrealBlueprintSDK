@@ -252,6 +252,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management Models")
         static FAdminModifyUserVirtualCurrencyResult decodeModifyUserVirtualCurrencyResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the CheckLimitedEditionItemAvailabilityResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management Models")
+        static FAdminCheckLimitedEditionItemAvailabilityResult decodeCheckLimitedEditionItemAvailabilityResultResponse(UPlayFabJsonObject* response);
+
     /** Decode the GetUserInventoryResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management Models")
         static FAdminGetUserInventoryResult decodeGetUserInventoryResultResponse(UPlayFabJsonObject* response);
@@ -259,6 +263,10 @@ public:
     /** Decode the GrantItemsToUsersResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management Models")
         static FAdminGrantItemsToUsersResult decodeGrantItemsToUsersResultResponse(UPlayFabJsonObject* response);
+
+    /** Decode the IncrementLimitedEditionItemAvailabilityResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management Models")
+        static FAdminIncrementLimitedEditionItemAvailabilityResult decodeIncrementLimitedEditionItemAvailabilityResultResponse(UPlayFabJsonObject* response);
 
     /** Decode the RevokeInventoryResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management Models")

@@ -3156,6 +3156,62 @@ void UPlayFabAdminAPI::HelperAddUserVirtualCurrency(FPlayFabBaseModel response, 
     this->RemoveFromRoot();
 }
 
+/** Checks the global count for the limited edition item. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::CheckLimitedEditionItemAvailability(FAdminCheckLimitedEditionItemAvailabilityRequest request,
+    FDelegateOnSuccessCheckLimitedEditionItemAvailability onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessCheckLimitedEditionItemAvailability = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperCheckLimitedEditionItemAvailability);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/CheckLimitedEditionItemAvailability";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    if (request.CatalogVersion.IsEmpty() || request.CatalogVersion == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("CatalogVersion"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
+    }
+    if (request.ItemId.IsEmpty() || request.ItemId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ItemId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ItemId"), request.ItemId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperCheckLimitedEditionItemAvailability(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessCheckLimitedEditionItemAvailability.IsBound())
+    {
+        FAdminCheckLimitedEditionItemAvailabilityResult result = UPlayFabAdminModelDecoder::decodeCheckLimitedEditionItemAvailabilityResultResponse(response.responseData);
+        OnSuccessCheckLimitedEditionItemAvailability.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
 /** Retrieves the specified user's current inventory of virtual goods */
 UPlayFabAdminAPI* UPlayFabAdminAPI::GetUserInventory(FAdminGetUserInventoryRequest request,
     FDelegateOnSuccessGetUserInventory onSuccess,
@@ -3259,6 +3315,63 @@ void UPlayFabAdminAPI::HelperGrantItemsToUsers(FPlayFabBaseModel response, UObje
     {
         FAdminGrantItemsToUsersResult result = UPlayFabAdminModelDecoder::decodeGrantItemsToUsersResultResponse(response.responseData);
         OnSuccessGrantItemsToUsers.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** Increases the global count for the given scarce resource. */
+UPlayFabAdminAPI* UPlayFabAdminAPI::IncrementLimitedEditionItemAvailability(FAdminIncrementLimitedEditionItemAvailabilityRequest request,
+    FDelegateOnSuccessIncrementLimitedEditionItemAvailability onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabAdminAPI* manager = NewObject<UPlayFabAdminAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessIncrementLimitedEditionItemAvailability = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabAdminAPI::HelperIncrementLimitedEditionItemAvailability);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Admin/IncrementLimitedEditionItemAvailability";
+    manager->useSessionTicket = false;
+    manager->useSecretKey = true;
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetNumberField(TEXT("Amount"), request.Amount);
+    if (request.CatalogVersion.IsEmpty() || request.CatalogVersion == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("CatalogVersion"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("CatalogVersion"), request.CatalogVersion);
+    }
+    if (request.ItemId.IsEmpty() || request.ItemId == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("ItemId"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("ItemId"), request.ItemId);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabAdminRequestCompleted
+void UPlayFabAdminAPI::HelperIncrementLimitedEditionItemAvailability(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessIncrementLimitedEditionItemAvailability.IsBound())
+    {
+        FAdminIncrementLimitedEditionItemAvailabilityResult result = UPlayFabAdminModelDecoder::decodeIncrementLimitedEditionItemAvailabilityResultResponse(response.responseData);
+        OnSuccessIncrementLimitedEditionItemAvailability.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }

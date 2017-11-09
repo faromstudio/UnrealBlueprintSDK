@@ -978,6 +978,18 @@ FClientGetCharacterInventoryResult UPlayFabClientModelDecoder::decodeGetCharacte
     return tempStruct;
 }
 
+FClientGetPaymentTokenResult UPlayFabClientModelDecoder::decodeGetPaymentTokenResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FClientGetPaymentTokenResult tempStruct;
+    UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
+
+    tempStruct.OrderId = !(dataObj->HasField("OrderId")) ? TEXT("") : dataObj->GetStringField("OrderId");
+    tempStruct.ProviderToken = !(dataObj->HasField("ProviderToken")) ? TEXT("") : dataObj->GetStringField("ProviderToken");
+
+    return tempStruct;
+}
+
 FClientGetPurchaseResult UPlayFabClientModelDecoder::decodeGetPurchaseResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct

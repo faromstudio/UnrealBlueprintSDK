@@ -1276,6 +1276,29 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FAdminCheckLimitedEditionItemAvailabilityRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** Which catalog is being updated. If null, uses the default catalog. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Player Item Management Models")
+        FString CatalogVersion;
+    /** The item to check for. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Player Item Management Models")
+        FString ItemId;
+};
+
+USTRUCT(BlueprintType)
+struct FAdminCheckLimitedEditionItemAvailabilityResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** The amount of the specified resource remaining. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Player Item Management Models")
+        int32 Amount = 0;
+};
+
+USTRUCT(BlueprintType)
 struct FAdminGetUserInventoryRequest
 {
     GENERATED_USTRUCT_BODY()
@@ -1325,6 +1348,29 @@ public:
     /** Array of items granted to users. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Player Item Management Models")
         TArray<UPlayFabJsonObject*> ItemGrantResults;
+};
+
+USTRUCT(BlueprintType)
+struct FAdminIncrementLimitedEditionItemAvailabilityRequest
+{
+    GENERATED_USTRUCT_BODY()
+public:
+    /** Amount to increase availability by. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Player Item Management Models")
+        int32 Amount = 0;
+    /** Which catalog is being updated. If null, uses the default catalog. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Player Item Management Models")
+        FString CatalogVersion;
+    /** The item which needs more availability. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayFab | Admin | Player Item Management Models")
+        FString ItemId;
+};
+
+USTRUCT(BlueprintType)
+struct FAdminIncrementLimitedEditionItemAvailabilityResult
+{
+    GENERATED_USTRUCT_BODY()
+public:
 };
 
 USTRUCT(BlueprintType)

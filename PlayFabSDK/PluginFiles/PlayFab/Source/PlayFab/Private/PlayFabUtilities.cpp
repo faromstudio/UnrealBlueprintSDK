@@ -376,6 +376,7 @@ FString UPlayFabUtilities::getErrorText(int32 code)
     case 1350: returnText = "EntityFileOperationPending"; break;
     case 1351: returnText = "NoEntityFileOperationPending"; break;
     case 1352: returnText = "EntityProfileVersionMismatch"; break;
+    case 1353: returnText = "TemplateVersionTooOld"; break;
     }
 
     // Return the text

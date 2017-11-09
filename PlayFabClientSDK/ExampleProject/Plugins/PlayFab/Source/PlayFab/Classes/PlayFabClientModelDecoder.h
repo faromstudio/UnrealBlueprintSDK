@@ -438,6 +438,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Player Item Management Models")
         static FClientGetCharacterInventoryResult decodeGetCharacterInventoryResultResponse(UPlayFabJsonObject* response);
 
+    /** Decode the GetPaymentTokenResult response object*/
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Player Item Management Models")
+        static FClientGetPaymentTokenResult decodeGetPaymentTokenResultResponse(UPlayFabJsonObject* response);
+
     /** Decode the GetPurchaseResult response object*/
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Player Item Management Models")
         static FClientGetPurchaseResult decodeGetPurchaseResultResponse(UPlayFabJsonObject* response);

@@ -67,7 +67,7 @@ public:
     // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessAddOrUpdateContactEmail, FClientAddOrUpdateContactEmailResult, result, UObject*, customData);
 
-    /** Adds or updates a contact email to the player's profile */
+    /** Adds or updates a contact email to the player's profile. */
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
         static UPlayFabClientAPI* AddOrUpdateContactEmail(FClientAddOrUpdateContactEmailRequest request,
             FDelegateOnSuccessAddOrUpdateContactEmail onSuccess,
@@ -377,7 +377,7 @@ public:
     // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRemoveContactEmail, FClientRemoveContactEmailResult, result, UObject*, customData);
 
-    /** Removes a contact email from the player's profile */
+    /** Removes a contact email from the player's profile. */
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Account Management ", meta = (BlueprintInternalUseOnly = "true"))
         static UPlayFabClientAPI* RemoveContactEmail(FClientRemoveContactEmailRequest request,
             FDelegateOnSuccessRemoveContactEmail onSuccess,
@@ -612,6 +612,22 @@ public:
     ///////////////////////////////////////////////////////
     // Analytics
     //////////////////////////////////////////////////////
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessReportDeviceInfo, FClientEmptyResult, result, UObject*, customData);
+
+    /**
+     * Write a PlayStream event to describe the provided player device information. This API method is not designed to be
+     * called directly by developers. Each PlayFab client SDK will eventually report this information automatically.
+     */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabClientAPI* ReportDeviceInfo(FClientDeviceInfoRequest request,
+            FDelegateOnSuccessReportDeviceInfo onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabClientRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Analytics ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperReportDeviceInfo(FPlayFabBaseModel response, UObject* customData, bool successful);
+
     // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessWriteCharacterEvent, FClientWriteEventResponse, result, UObject*, customData);
 
@@ -1590,6 +1606,23 @@ public:
         void HelperGetCharacterInventory(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPaymentToken, FClientGetPaymentTokenResult, result, UObject*, customData);
+
+    /**
+     * For payments flows where the provider requires playfab (the fulfiller) to initiate the transaction, but the client
+     * completes the rest of the flow. In the Xsolla case, the token returned here will be passed to Xsolla by the client to
+     * create a cart. Poll GetPurchase using the returned OrderId once you've completed the payment.
+     */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabClientAPI* GetPaymentToken(FClientGetPaymentTokenRequest request,
+            FDelegateOnSuccessGetPaymentToken onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabClientRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperGetPaymentToken(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetPurchase, FClientGetPurchaseResult, result, UObject*, customData);
 
     /**
@@ -2081,6 +2114,7 @@ public:
     FDelegateOnSuccessUpdateAvatarUrl OnSuccessUpdateAvatarUrl;
     FDelegateOnSuccessUpdateUserTitleDisplayName OnSuccessUpdateUserTitleDisplayName;
     FDelegateOnSuccessAttributeInstall OnSuccessAttributeInstall;
+    FDelegateOnSuccessReportDeviceInfo OnSuccessReportDeviceInfo;
     FDelegateOnSuccessWriteCharacterEvent OnSuccessWriteCharacterEvent;
     FDelegateOnSuccessWritePlayerEvent OnSuccessWritePlayerEvent;
     FDelegateOnSuccessWriteTitleEvent OnSuccessWriteTitleEvent;
@@ -2145,6 +2179,7 @@ public:
     FDelegateOnSuccessConfirmPurchase OnSuccessConfirmPurchase;
     FDelegateOnSuccessConsumeItem OnSuccessConsumeItem;
     FDelegateOnSuccessGetCharacterInventory OnSuccessGetCharacterInventory;
+    FDelegateOnSuccessGetPaymentToken OnSuccessGetPaymentToken;
     FDelegateOnSuccessGetPurchase OnSuccessGetPurchase;
     FDelegateOnSuccessGetUserInventory OnSuccessGetUserInventory;
     FDelegateOnSuccessPayForPurchase OnSuccessPayForPurchase;

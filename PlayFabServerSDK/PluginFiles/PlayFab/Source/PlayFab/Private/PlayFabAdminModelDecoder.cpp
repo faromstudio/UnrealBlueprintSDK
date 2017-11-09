@@ -573,6 +573,17 @@ FAdminModifyUserVirtualCurrencyResult UPlayFabAdminModelDecoder::decodeModifyUse
     return tempStruct;
 }
 
+FAdminCheckLimitedEditionItemAvailabilityResult UPlayFabAdminModelDecoder::decodeCheckLimitedEditionItemAvailabilityResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FAdminCheckLimitedEditionItemAvailabilityResult tempStruct;
+    UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
+
+    tempStruct.Amount = !(dataObj->HasField("Amount")) ? 0 : int(dataObj->GetNumberField("Amount"));
+
+    return tempStruct;
+}
+
 FAdminGetUserInventoryResult UPlayFabAdminModelDecoder::decodeGetUserInventoryResultResponse(UPlayFabJsonObject* response)
 {
     // Temp ustruct
@@ -594,6 +605,15 @@ FAdminGrantItemsToUsersResult UPlayFabAdminModelDecoder::decodeGrantItemsToUsers
     UPlayFabJsonObject* dataObj = !(response->HasField("data")) ? nullptr : response->GetObjectField("data");
 
     tempStruct.ItemGrantResults = !(dataObj->HasField("ItemGrantResults")) ? TArray<UPlayFabJsonObject*>() : dataObj->GetObjectArrayField("ItemGrantResults");
+
+    return tempStruct;
+}
+
+FAdminIncrementLimitedEditionItemAvailabilityResult UPlayFabAdminModelDecoder::decodeIncrementLimitedEditionItemAvailabilityResultResponse(UPlayFabJsonObject* response)
+{
+    // Temp ustruct
+    FAdminIncrementLimitedEditionItemAvailabilityResult tempStruct;
+
 
     return tempStruct;
 }

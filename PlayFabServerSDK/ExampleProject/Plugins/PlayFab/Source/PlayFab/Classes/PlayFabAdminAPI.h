@@ -822,6 +822,19 @@ public:
         void HelperAddUserVirtualCurrency(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessCheckLimitedEditionItemAvailability, FAdminCheckLimitedEditionItemAvailabilityResult, result, UObject*, customData);
+
+    /** Checks the global count for the limited edition item. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* CheckLimitedEditionItemAvailability(FAdminCheckLimitedEditionItemAvailabilityRequest request,
+            FDelegateOnSuccessCheckLimitedEditionItemAvailability onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperCheckLimitedEditionItemAvailability(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessGetUserInventory, FAdminGetUserInventoryResult, result, UObject*, customData);
 
     /** Retrieves the specified user's current inventory of virtual goods */
@@ -846,6 +859,19 @@ public:
     // Implements FOnPlayFabAdminRequestCompleted
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
         void HelperGrantItemsToUsers(FPlayFabBaseModel response, UObject* customData, bool successful);
+
+    // callbacks
+    DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessIncrementLimitedEditionItemAvailability, FAdminIncrementLimitedEditionItemAvailabilityResult, result, UObject*, customData);
+
+    /** Increases the global count for the given scarce resource. */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        static UPlayFabAdminAPI* IncrementLimitedEditionItemAvailability(FAdminIncrementLimitedEditionItemAvailabilityRequest request,
+            FDelegateOnSuccessIncrementLimitedEditionItemAvailability onSuccess,
+            FDelegateOnFailurePlayFabError onFailure, UObject* customData);
+
+    // Implements FOnPlayFabAdminRequestCompleted
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Admin | Player Item Management ", meta = (BlueprintInternalUseOnly = "true"))
+        void HelperIncrementLimitedEditionItemAvailability(FPlayFabBaseModel response, UObject* customData, bool successful);
 
     // callbacks
     DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessRevokeInventoryItem, FAdminRevokeInventoryResult, result, UObject*, customData);
@@ -1504,8 +1530,10 @@ public:
     FDelegateOnSuccessUpdateUserPublisherReadOnlyData OnSuccessUpdateUserPublisherReadOnlyData;
     FDelegateOnSuccessUpdateUserReadOnlyData OnSuccessUpdateUserReadOnlyData;
     FDelegateOnSuccessAddUserVirtualCurrency OnSuccessAddUserVirtualCurrency;
+    FDelegateOnSuccessCheckLimitedEditionItemAvailability OnSuccessCheckLimitedEditionItemAvailability;
     FDelegateOnSuccessGetUserInventory OnSuccessGetUserInventory;
     FDelegateOnSuccessGrantItemsToUsers OnSuccessGrantItemsToUsers;
+    FDelegateOnSuccessIncrementLimitedEditionItemAvailability OnSuccessIncrementLimitedEditionItemAvailability;
     FDelegateOnSuccessRevokeInventoryItem OnSuccessRevokeInventoryItem;
     FDelegateOnSuccessSubtractUserVirtualCurrency OnSuccessSubtractUserVirtualCurrency;
     FDelegateOnSuccessAddPlayerTag OnSuccessAddPlayerTag;

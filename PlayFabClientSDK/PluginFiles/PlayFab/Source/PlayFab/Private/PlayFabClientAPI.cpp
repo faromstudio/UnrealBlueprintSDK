@@ -106,7 +106,7 @@ void UPlayFabClientAPI::HelperAddGenericID(FPlayFabBaseModel response, UObject* 
     this->RemoveFromRoot();
 }
 
-/** Adds or updates a contact email to the player's profile */
+/** Adds or updates a contact email to the player's profile. */
 UPlayFabClientAPI* UPlayFabClientAPI::AddOrUpdateContactEmail(FClientAddOrUpdateContactEmailRequest request,
     FDelegateOnSuccessAddOrUpdateContactEmail onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -1296,7 +1296,7 @@ void UPlayFabClientAPI::HelperLinkWindowsHello(FPlayFabBaseModel response, UObje
     this->RemoveFromRoot();
 }
 
-/** Removes a contact email from the player's profile */
+/** Removes a contact email from the player's profile. */
 UPlayFabClientAPI* UPlayFabClientAPI::RemoveContactEmail(FClientRemoveContactEmailRequest request,
     FDelegateOnSuccessRemoveContactEmail onSuccess,
     FDelegateOnFailurePlayFabError onFailure,
@@ -2126,6 +2126,52 @@ void UPlayFabClientAPI::HelperAttributeInstall(FPlayFabBaseModel response, UObje
 ///////////////////////////////////////////////////////
 // Analytics
 //////////////////////////////////////////////////////
+/** Write a PlayStream event to describe the provided player device information. This API method is not designed to be called directly by developers. Each PlayFab client SDK will eventually report this information automatically. */
+UPlayFabClientAPI* UPlayFabClientAPI::ReportDeviceInfo(FClientDeviceInfoRequest request,
+    FDelegateOnSuccessReportDeviceInfo onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabClientAPI* manager = NewObject<UPlayFabClientAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessReportDeviceInfo = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabClientAPI::HelperReportDeviceInfo);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Client/ReportDeviceInfo";
+    manager->useSessionTicket = true;
+
+    // Serialize all the request properties to json
+    if (request.Info != nullptr) OutRestJsonObj->SetObjectField(TEXT("Info"), request.Info);
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabClientRequestCompleted
+void UPlayFabClientAPI::HelperReportDeviceInfo(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessReportDeviceInfo.IsBound())
+    {
+        FClientEmptyResult result = UPlayFabClientModelDecoder::decodeEmptyResultResponse(response.responseData);
+        OnSuccessReportDeviceInfo.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
 /** Writes a character-based event into PlayStream. */
 UPlayFabClientAPI* UPlayFabClientAPI::WriteCharacterEvent(FClientWriteClientCharacterEventRequest request,
     FDelegateOnSuccessWriteCharacterEvent onSuccess,
@@ -5936,6 +5982,56 @@ void UPlayFabClientAPI::HelperGetCharacterInventory(FPlayFabBaseModel response, 
     {
         FClientGetCharacterInventoryResult result = UPlayFabClientModelDecoder::decodeGetCharacterInventoryResultResponse(response.responseData);
         OnSuccessGetCharacterInventory.Execute(result, mCustomData);
+    }
+    this->RemoveFromRoot();
+}
+
+/** For payments flows where the provider requires playfab (the fulfiller) to initiate the transaction, but the client completes the rest of the flow. In the Xsolla case, the token returned here will be passed to Xsolla by the client to create a cart. Poll GetPurchase using the returned OrderId once you've completed the payment. */
+UPlayFabClientAPI* UPlayFabClientAPI::GetPaymentToken(FClientGetPaymentTokenRequest request,
+    FDelegateOnSuccessGetPaymentToken onSuccess,
+    FDelegateOnFailurePlayFabError onFailure,
+    UObject* customData)
+{
+    // Objects containing request data
+    UPlayFabClientAPI* manager = NewObject<UPlayFabClientAPI>();
+    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UPlayFabJsonObject* OutRestJsonObj = NewObject<UPlayFabJsonObject>();
+    manager->mCustomData = customData;
+
+    // Assign delegates
+    manager->OnSuccessGetPaymentToken = onSuccess;
+    manager->OnFailure = onFailure;
+    manager->OnPlayFabResponse.AddDynamic(manager, &UPlayFabClientAPI::HelperGetPaymentToken);
+
+    // Setup the request
+    manager->PlayFabRequestURL = "/Client/GetPaymentToken";
+    manager->useSessionTicket = true;
+
+    // Serialize all the request properties to json
+    if (request.TokenProvider.IsEmpty() || request.TokenProvider == "") {
+        OutRestJsonObj->SetFieldNull(TEXT("TokenProvider"));
+    } else {
+        OutRestJsonObj->SetStringField(TEXT("TokenProvider"), request.TokenProvider);
+    }
+
+    // Add Request to manager
+    manager->SetRequestObject(OutRestJsonObj);
+
+    return manager;
+}
+
+// Implements FOnPlayFabClientRequestCompleted
+void UPlayFabClientAPI::HelperGetPaymentToken(FPlayFabBaseModel response, UObject* customData, bool successful)
+{
+    FPlayFabError error = response.responseError;
+    if (error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(error, customData);
+    }
+    else if (!error.hasError && OnSuccessGetPaymentToken.IsBound())
+    {
+        FClientGetPaymentTokenResult result = UPlayFabClientModelDecoder::decodeGetPaymentTokenResultResponse(response.responseData);
+        OnSuccessGetPaymentToken.Execute(result, mCustomData);
     }
     this->RemoveFromRoot();
 }
